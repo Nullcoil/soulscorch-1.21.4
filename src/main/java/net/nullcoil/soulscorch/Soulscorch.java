@@ -1,36 +1,54 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
-
-import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
-import net.nullcoil.soulscorch.effect.SoulscorchEffect;
+import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import it.crystalnest.soul_fire_d.api.FireManager;
 
+// <-- ADDED IMPORT (detector)
+import net.nullcoil.soulscorch.SoulCampfireDetector;
+
 public class Soulscorch implements ModInitializer {
-	public static final String MOD_ID = "soulscorch";
-	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final String MOD_ID = "soulscorch";
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	@Override
-	public void onInitialize() {
+    @Override
+    public void onInitialize() {
         ModEffects.registerEffects();
-        DamageEventHandler.register(); // Checks if a player is touching soul fire/campfire
-        ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
-            if (entity.hasStatusEffect(ModEffects.SOULSCORCH)) {
-                double newMax = entity.getAttributeValue(EntityAttributes.MAX_HEALTH) - 1.0; // Lowers Max Health by 1
-                if (newMax < 1.0) newMax = 1;
+        DamageEventHandler.register();
 
-                entity.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(newMax);
+        // <-- ADDED: register the soul-campfire detector (prints when players stand on a lit soul campfire)
+        SoulCampfireDetector.register();
 
-                if (entity.getHealth() > newMax) {
-                    entity.setHealth((float) newMax);
-                }
-            }
-        });
-	}
+        // In your mod loader class
+        FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);
+        FireManager.registerFire(
+                FireManager.fireBuilder(FireManager.SOUL_FIRE_TYPE)
+                        .setLight(10)
+                        .setDamage(2)
+                        .setBehavior(entity -> {
+                                    if (entity.isOnFire()
+                                            && !entity.getType().isIn(EntityTypeTags.UNDEAD)
+                                            && entity instanceof LivingEntity livingEntity) {
+                                        livingEntity.addStatusEffect(new StatusEffectInstance(
+                                                ModEffects.SOULSCORCH,
+                                                600, // Duration in ticks (30 seconds)
+                                                0,   // Amplifier
+                                                true, // Show particles
+                                                true,  // Show icon
+                                                false   // Can be removed by milk
+                                        ));
+
+                                    }
+                                }
+                        )
+                        .build()
+        );
+    }
 }

@@ -10,6 +10,8 @@ import net.nullcoil.soulscorch.event.DamageEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import it.crystalnest.soul_fire_d.api.FireManager;
+
 public class Soulscorch implements ModInitializer {
 	public static final String MOD_ID = "soulscorch";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);

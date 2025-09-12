@@ -11,7 +11,18 @@ base {
 }
 
 repositories {
-
+	// Crystal Nest repository where Soul Fire'd is hosted.
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Crystal Nest"
+				url = "https://maven.crystalnest.it"
+			}
+		}
+		filter {
+			includeGroup "it.crystalnest"
+		}
+	}
 }
 
 dependencies {
@@ -22,6 +33,9 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	
+	// Soul Fire'd common import
+	implementation "it.crystalnest:soul-fire-d-common:$minecraft_version-$soul_fire_d_version"
 	
 }
 

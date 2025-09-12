@@ -1,0 +1,25 @@
+package net.nullcoil.soulscorch.effect;
+
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.Identifier;
+import net.nullcoil.soulscorch.Soulscorch;
+
+public class ModEffects {
+
+    public static final RegistryEntry<StatusEffect> SOULSCORCH = registerStatusEffect("soulscorch",
+            new SoulscorchEffect(StatusEffectCategory.HARMFUL, 0x34ebd5));
+
+    private static RegistryEntry<StatusEffect> registerStatusEffect (String name, StatusEffect statusEffect) {
+        return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);
+    }
+
+    public static void registerEffects() {
+        Soulscorch.LOGGER.info("Registering Mod Effects for " + Soulscorch.MOD_ID);
+    }
+}

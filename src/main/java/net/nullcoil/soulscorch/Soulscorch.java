@@ -17,9 +17,10 @@ public class Soulscorch implements ModInitializer {
 	@Override
 	public void onInitialize() {
         ModEffects.registerEffects();
+        DamageEventHandler.register(); // Checks if a player is touching soul fire/campfire
         ServerLivingEntityEvents.AFTER_DAMAGE.register((entity, source, baseDamageTaken, damageTaken, blocked) -> {
             if (entity.hasStatusEffect(ModEffects.SOULSCORCH)) {
-                double newMax = entity.getAttributeValue(EntityAttributes.MAX_HEALTH) - 1.0;
+                double newMax = entity.getAttributeValue(EntityAttributes.MAX_HEALTH) - 1.0; // Lowers Max Health by 1
                 if (newMax < 1.0) newMax = 1;
 
                 entity.getAttributeInstance(EntityAttributes.MAX_HEALTH).setBaseValue(newMax);

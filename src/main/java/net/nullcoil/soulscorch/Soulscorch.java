@@ -7,6 +7,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
+import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.crystalnest.soul_fire_d.api.FireManager;
@@ -22,6 +23,7 @@ public class Soulscorch implements ModInitializer {
     public void onInitialize() {
         ModEffects.registerEffects();
         DamageEventHandler.register();
+        SleepHealthResetHandler.register();
 
         // <-- ADDED: register the soul-campfire detector (prints when players stand on a lit soul campfire)
         SoulCampfireDetector.register();

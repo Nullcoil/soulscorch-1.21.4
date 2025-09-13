@@ -8,6 +8,7 @@ import net.minecraft.potion.Potions;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
+import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
 import net.nullcoil.soulscorch.item.ModItems;
@@ -28,6 +29,7 @@ public class Soulscorch implements ModInitializer {
         SleepHealthResetHandler.register();
         SoulCampfireDetector.register();
         ModPotions.register();
+        ModEntities.register();
 
         // In your mod loader class
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);

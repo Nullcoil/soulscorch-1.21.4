@@ -1,13 +1,17 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.item.Items;
+import net.minecraft.potion.Potions;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
 import net.nullcoil.soulscorch.item.ModItems;
+import net.nullcoil.soulscorch.potion.ModPotions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.crystalnest.soul_fire_d.api.FireManager;
@@ -23,6 +27,7 @@ public class Soulscorch implements ModInitializer {
         DamageEventHandler.register();
         SleepHealthResetHandler.register();
         SoulCampfireDetector.register();
+        ModPotions.register();
 
         // In your mod loader class
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);
@@ -48,5 +53,9 @@ public class Soulscorch implements ModInitializer {
                         )
                         .build()
         );
+
+        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
+            builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, ModPotions.SOUL_RENDER_POTION);
+        });
     }
 }

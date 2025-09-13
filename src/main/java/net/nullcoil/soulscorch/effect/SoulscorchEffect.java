@@ -25,7 +25,7 @@ public class SoulscorchEffect extends StatusEffect {
         return false;
     }
 
-    public void onDamageTaken(LivingEntity entity, int amplifier) {
+
 
     }
-}
+

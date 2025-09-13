@@ -1,7 +1,6 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
@@ -13,9 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.crystalnest.soul_fire_d.api.FireManager;
 
-// <-- ADDED IMPORT (detector)
-import net.nullcoil.soulscorch.SoulCampfireDetector;
-
 public class Soulscorch implements ModInitializer {
     public static final String MOD_ID = "soulscorch";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -26,8 +22,6 @@ public class Soulscorch implements ModInitializer {
         ModEffects.registerEffects();
         DamageEventHandler.register();
         SleepHealthResetHandler.register();
-
-        // <-- ADDED: register the soul-campfire detector (prints when players stand on a lit soul campfire)
         SoulCampfireDetector.register();
 
         // In your mod loader class

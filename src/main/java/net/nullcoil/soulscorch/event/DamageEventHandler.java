@@ -9,7 +9,7 @@ import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.nullcoil.soulscorch.effect.ModEffects;
-import net.nullcoil.soulscorch.util.BlockUtils; // new import
+import net.nullcoil.soulscorch.util.BlockUtils;
 
 public class DamageEventHandler {
     public static void register() {

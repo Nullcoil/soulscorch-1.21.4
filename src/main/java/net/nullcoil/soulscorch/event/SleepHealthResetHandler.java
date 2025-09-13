@@ -7,10 +7,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 
-/**
- * Call SleepHealthResetHandler.register() from your ModInitializer to enable:
- * - Reset player's max health to 20 when they stop sleeping.
- */
+// Reset player's max health to 20 when they stop sleeping.
+
 public final class SleepHealthResetHandler {
     private SleepHealthResetHandler() {}
 

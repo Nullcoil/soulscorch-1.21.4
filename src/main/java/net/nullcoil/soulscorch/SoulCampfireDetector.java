@@ -10,7 +10,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.util.BlockUtils;
-
 import java.util.List;
 
 public class SoulCampfireDetector {

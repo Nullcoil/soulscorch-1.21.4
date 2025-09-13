@@ -8,6 +8,7 @@ import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
+import net.nullcoil.soulscorch.item.ModItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import it.crystalnest.soul_fire_d.api.FireManager;
@@ -21,6 +22,7 @@ public class Soulscorch implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ModItems.register();
         ModEffects.registerEffects();
         DamageEventHandler.register();
         SleepHealthResetHandler.register();

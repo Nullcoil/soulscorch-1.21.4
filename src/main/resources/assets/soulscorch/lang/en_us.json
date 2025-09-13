@@ -1,3 +1,6 @@
 {
-    "effect.soulscorch.soulscorch": "Soulscorched"
+    "effect.soulscorch.soulscorch": "Soulscorched",
+    "item.soulscorch.blazt_powder": "Blazt Powder",
+    "item.soulscorch.blazt_rod": "Blazt Rod",
+    "item.soulscorch.soul_cream": "Soul Cream"
 }

@@ -3,6 +3,8 @@ package net.nullcoil.soulscorch.entity.custom;
 import java.util.EnumSet;
 
 
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -23,6 +25,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
@@ -36,6 +40,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.nullcoil.soulscorch.item.ModItems;
 
 public class BlaztEntity extends FlyingEntity implements Monster {
     private static final TrackedData<Boolean> SHOOTING;
@@ -50,8 +55,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         this.experiencePoints = 5;
         this.moveControl = new BlaztMoveControl(this);
     }
-
-
 
     @Override
     protected void initGoals() {

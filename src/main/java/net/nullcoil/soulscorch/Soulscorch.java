@@ -1,6 +1,7 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Items;
@@ -9,6 +10,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.entity.ModEntities;
+import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
 import net.nullcoil.soulscorch.item.ModItems;
@@ -30,6 +32,8 @@ public class Soulscorch implements ModInitializer {
         SoulCampfireDetector.register();
         ModPotions.register();
         ModEntities.register();
+
+        FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
 
         // In your mod loader class
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);

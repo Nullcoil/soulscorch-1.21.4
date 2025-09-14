@@ -1,0 +1,17 @@
+{
+  "Egg Colors": "0x0f0f0f & 0x23c0c6",
+  "model": {
+    "type": "minecraft:model",
+    "model": "minecraft:item/template_spawn_egg",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": -2372158
+      },
+      {
+        "type": "minecraft:constant",
+        "value": -9133262
+      }
+    ]
+  }
+}

@@ -363,26 +363,38 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                         double g = livingEntity.getBodyY(0.5D) - (0.5D + this.blazt.getBodyY(0.5D));
                         double h = livingEntity.getZ() - (this.blazt.getZ() + vec3d.z * 4.0D);
                         Vec3d vec3d2 = new Vec3d(f, g, h);
+
                         if (!this.blazt.isSilent()) {
                             world.syncWorldEvent(null, 1016, this.blazt.getBlockPos(), 0);
                         }
 
-                        FireballEntity fireballEntity = new FireballEntity(world, this.blazt,
-                                vec3d2.normalize(), this.blazt.getFireballStrength());
-                        fireballEntity.setPosition(
-                                this.blazt.getX() + vec3d.x * 4.0D,
-                                this.blazt.getBodyY(0.5D) + 0.5D,
-                                fireballEntity.getZ() + vec3d.z * 4.0D
-                        );
-                        world.spawnEntity(fireballEntity);
+                        // Random choice between fireball types (50% chance each)
+                        if (this.blazt.getRandom().nextBoolean()) {
+                            // Create custom SoulscorchFireballEntity
+                            SoulscorchFireballEntity fireballEntity = new SoulscorchFireballEntity(world, this.blazt, vec3d2.normalize());
+                            fireballEntity.setPosition(
+                                    this.blazt.getX() + vec3d.x * 4.0D,
+                                    this.blazt.getBodyY(0.5D) + 0.5D,
+                                    this.blazt.getZ() + vec3d.z * 4.0D
+                            );
+                            world.spawnEntity(fireballEntity);
+                        } else {
+                            // Create regular ghast fireball
+                            FireballEntity fireballEntity = new FireballEntity(world, this.blazt, vec3d2.normalize(), this.blazt.getFireballStrength());
+                            fireballEntity.setPosition(
+                                    this.blazt.getX() + vec3d.x * 4.0D,
+                                    this.blazt.getBodyY(0.5D) + 0.5D,
+                                    this.blazt.getZ() + vec3d.z * 4.0D
+                            );
+                            world.spawnEntity(fireballEntity);
+                        }
+
                         this.cooldown = -40;
                     }
                 } else if (this.cooldown > 0) {
                     --this.cooldown;
                 }
                 this.blazt.setShooting(this.cooldown > 10);
-
-
             }
         }
     }

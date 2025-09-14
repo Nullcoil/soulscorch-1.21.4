@@ -31,23 +31,23 @@ public class BlaztModel extends EntityModel<BlaztRenderState> {
         ModelPartData modelPartData = modelData.getRoot();
         ModelPartData tentacles = modelPartData.addChild("tentacles", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
 
-        ModelPartData inner = tentacles.addChild("inner", ModelPartBuilder.create().uv(0, 0).cuboid(-8.0F, -17.0F, -8.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(-8.0F, -17.0F, 4.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(4.0F, -17.0F, 4.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F))
-                .uv(0, 0).cuboid(4.0F, -17.0F, -8.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
+        ModelPartData inner = tentacles.addChild("inner", ModelPartBuilder.create().uv(0, 0).cuboid(3.0F, -42.0F, -9.0F, 6.0F, 42.0F, 6.0F, new Dilation(0.0F))
+                .uv(0, 0).cuboid(-9.0F, -42.0F, -9.0F, 6.0F, 42.0F, 6.0F, new Dilation(0.0F))
+                .uv(0, 0).cuboid(3.0F, -42.0F, 3.0F, 6.0F, 42.0F, 6.0F, new Dilation(0.0F))
+                .uv(0, 0).cuboid(-9.0F, -42.0F, 3.0F, 6.0F, 42.0F, 6.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 12.0F, 0.0F));
 
-        ModelPartData outer = tentacles.addChild("outer", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, -23.0F, 0.0F));
+        ModelPartData outer = tentacles.addChild("outer", ModelPartBuilder.create(), ModelTransform.pivot(0.0F, 0.0F, 0.0F));
 
-        ModelPartData cube_r1 = outer.addChild("cube_r1", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(7.9993F, 11.9322F, -7.1145F, -0.2618F, -0.7854F, 0.0F));
+        ModelPartData cube_r1 = outer.addChild("cube_r1", ModelPartBuilder.create().uv(0, 0).cuboid(-3.0F, -20.5F, -3.0F, 6.0F, 41.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-11.0F, -4.5F, 11.0F, -0.2618F, 2.3562F, 0.0F));
 
-        ModelPartData cube_r2 = outer.addChild("cube_r2", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, 0.0F, 0.229F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(5.9993F, 11.9322F, 5.8855F, 0.2618F, 0.7854F, 0.0F));
+        ModelPartData cube_r2 = outer.addChild("cube_r2", ModelPartBuilder.create().uv(0, 0).cuboid(-3.0F, -20.5F, -3.0F, 6.0F, 41.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(11.0F, -4.5F, 11.0F, -0.2618F, -2.3562F, 0.0F));
 
-        ModelPartData cube_r3 = outer.addChild("cube_r3", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, 0.0F, 0.229F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-6.0007F, 11.9322F, 5.8855F, 0.2618F, -0.7854F, 0.0F));
+        ModelPartData cube_r3 = outer.addChild("cube_r3", ModelPartBuilder.create().uv(0, 0).cuboid(-3.0F, -20.5F, -3.0F, 6.0F, 41.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(-11.0F, -4.5F, -11.0F, -0.2618F, 0.7854F, 0.0F));
 
-        ModelPartData cube_r4 = outer.addChild("cube_r4", ModelPartBuilder.create().uv(0, 0).cuboid(-2.0F, 0.0F, -2.0F, 4.0F, 28.0F, 4.0F, new Dilation(0.0F)), ModelTransform.of(-8.0007F, 11.9322F, -7.1145F, -0.2618F, 0.7854F, 0.0F));
+        ModelPartData cube_r4 = outer.addChild("cube_r4", ModelPartBuilder.create().uv(0, 0).cuboid(-3.0F, -20.5F, -3.0F, 6.0F, 41.0F, 6.0F, new Dilation(0.0F)), ModelTransform.of(11.0F, -4.5F, -11.0F, -0.2618F, -0.7854F, 0.0F));
 
-        ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(0, 0).cuboid(-16.0F, -32.0F, -16.0F, 32.0F, 32.0F, 32.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
-        return TexturedModelData.of(modelData, 128, 64);
+        ModelPartData bb_main = modelPartData.addChild("bb_main", ModelPartBuilder.create().uv(0, 0).cuboid(-24.0F, -48.0F, -24.0F, 48.0F, 48.0F, 48.0F, new Dilation(0.0F)), ModelTransform.pivot(0.0F, 24.0F, 0.0F));
+        return TexturedModelData.of(modelData, 192, 96);
     }
 
     @Override

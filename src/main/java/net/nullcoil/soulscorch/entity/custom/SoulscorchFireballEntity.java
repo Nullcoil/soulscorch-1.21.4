@@ -9,6 +9,7 @@ import java.util.List;
 
 import net.minecraft.entity.*;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ExplosiveProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
@@ -51,6 +52,7 @@ public class SoulscorchFireballEntity extends ExplosiveProjectileEntity implemen
                 areaEffectCloudEntity.setDuration(600);
                 areaEffectCloudEntity.setRadiusGrowth((7.0F - areaEffectCloudEntity.getRadius()) / (float)areaEffectCloudEntity.getDuration());
                 areaEffectCloudEntity.addEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600, 0));
+                areaEffectCloudEntity.addEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 0));
                 if (!list.isEmpty()) {
                     for(LivingEntity livingEntity : list) {
                         double d = this.squaredDistanceTo(livingEntity);
@@ -61,7 +63,7 @@ public class SoulscorchFireballEntity extends ExplosiveProjectileEntity implemen
                     }
                 }
 
-                this.getWorld().syncWorldEvent(2006, this.getBlockPos(), this.isSilent() ? -1 : 1);
+                this.getWorld().syncWorldEvent(1016, this.getBlockPos(), this.isSilent() ? -1 : 1);
                 this.getWorld().spawnEntity(areaEffectCloudEntity);
                 this.discard();
             }

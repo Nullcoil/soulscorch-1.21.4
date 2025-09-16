@@ -3,8 +3,7 @@ package net.nullcoil.soulscorch.entity.custom;
 import java.util.EnumSet;
 
 
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
+
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,6 +17,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
@@ -25,13 +26,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
@@ -40,6 +38,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.sound.ModSounds;
 
 public class BlaztEntity extends FlyingEntity implements Monster {
@@ -60,7 +59,8 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     protected void initGoals() {
         this.goalSelector.add(5, new FlyRandomlyGoal(this));
         this.goalSelector.add(7, new LookAtTargetGoal(this));
-        this.goalSelector.add(7, new ShootFireballGoal(this));
+        this.goalSelector.add(6, new ShootFireballGoal(this));
+        this.goalSelector.add(4, new BlaztBullrushGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false,
                 (entity, world) -> Math.abs(entity.getY() - this.getY()) <= 4.0F));
     }
@@ -75,17 +75,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     public void tick() {
         super.tick();
 
-        if (this.getWorld().isClient()) {
-            // Always ensure idle animation is running
-            this.idleAnimationState.startIfNotRunning(this.age);
-
-            // Shooting animation management
-            if (this.isShooting()) {
-                this.shootAnimationState.startIfNotRunning(this.age);
-            } else {
-                this.shootAnimationState.stop();
-            }
-        }
         if (this.getWorld().isClient()) {
             // Always ensure idle animation is running
             this.idleAnimationState.startIfNotRunning(this.age);
@@ -175,13 +164,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     @Override
     protected float getSoundVolume() {
         return 5.0F;
-    }
-
-    public static boolean canSpawn(EntityType<BlaztEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos,
-                                   Random random) {
-        return world.getDifficulty() != Difficulty.PEACEFUL
-                && random.nextInt(20) == 0
-                && canMobSpawn(type, world, spawnReason, pos, random);
     }
 
     @Override
@@ -320,6 +302,134 @@ public class BlaztEntity extends FlyingEntity implements Monster {
             }
         }
     }
+
+    class BlaztBullrushGoal extends Goal {
+        private final BlaztEntity blazt;
+        private int cooldown = 0;
+        private int rushTicks = 0;
+        private Vec3d rushDirection = Vec3d.ZERO;
+        private static final double RUSH_SPEED = 1.2D;
+        private static final int MAX_RUSH_DISTANCE = 100;
+        private static final int RUSH_DURATION = 100;
+
+        public BlaztBullrushGoal(BlaztEntity blazt) {
+            this.blazt = blazt;
+            this.setControls(EnumSet.of(Control.MOVE)); // Remove LOOK control to not interfere with LookAtTargetGoal
+        }
+
+        @Override
+        public boolean canStart() {
+            // Decrement cooldown here since this is called every tick
+            if (cooldown > 0) {
+                cooldown--;
+            }
+
+            boolean canStart = blazt.getTarget() != null && cooldown <= 0;
+            System.out.println("[Blazt] canStart? " + canStart + " (cooldown=" + cooldown + ")");
+            return canStart;
+        }
+
+        @Override
+        public void start() {
+            LivingEntity target = blazt.getTarget();
+            if (target == null) {
+                System.out.println("[Blazt] start aborted – no target!");
+                return;
+            }
+
+            double distanceSq = blazt.squaredDistanceTo(target);
+            if (distanceSq <= MAX_RUSH_DISTANCE * MAX_RUSH_DISTANCE) {
+                rushTicks = RUSH_DURATION;
+                System.out.println("[Blazt] Bullrush priming! DistanceSq=" + distanceSq);
+                spawnSoulFireParticles();
+
+                if (!blazt.getWorld().isClient()) {
+                    blazt.getWorld().playSound(null, blazt.getX(), blazt.getY(), blazt.getZ(),
+                            ModSounds.BLAZT_BREATHE_IN, SoundCategory.HOSTILE, 5.0F, 1.0F);
+                }
+
+                rushDirection = target.getPos().subtract(blazt.getPos()).normalize();
+            } else {
+                System.out.println("[Blazt] Target out of range. Moving closer...");
+                blazt.getMoveControl().moveTo(target.getX(), target.getY(), target.getZ(), 0.8D);
+                rushTicks = 0;
+            }
+        }
+
+        @Override
+        public boolean shouldContinue() {
+            boolean continueRush = rushTicks > 0;
+            System.out.println("[Blazt] shouldContinue? " + continueRush + " (rushTicks=" + rushTicks + ")");
+            return continueRush;
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity target = blazt.getTarget();
+
+            if (rushTicks > 0 && target != null) {
+                rushTicks--;
+                System.out.println("[Blazt] Rushing! rushTicks left=" + rushTicks);
+
+                blazt.setVelocity(rushDirection.multiply(RUSH_SPEED));
+                blazt.velocityModified = true;
+
+                if (blazt.getBoundingBox().intersects(target.getBoundingBox()) &&
+                        blazt.getWorld() instanceof ServerWorld serverWorld) {
+
+                    System.out.println("[Blazt] Collided with target! Applying damage/effects.");
+                    DamageSource source = serverWorld.getDamageSources().mobAttack(blazt);
+                    target.damage(serverWorld, source, 8.0F);
+
+                    if (target instanceof LivingEntity living) {
+                        living.addStatusEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600, 0));
+                        target.addVelocity(rushDirection.x * 1.5, 0.4D, rushDirection.z * 1.5);
+                        target.velocityModified = true;
+                    }
+
+                    endRush();
+                }
+
+                if (rushTicks <= 0) {
+                    System.out.println("[Blazt] Rush duration ended without hitting.");
+                    endRush();
+                }
+            }
+        }
+
+        private void endRush() {
+            System.out.println("[Blazt] Ending bullrush. Applying slowness and cooldown.");
+            blazt.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 0));
+
+            if (!blazt.getWorld().isClient()) {
+                blazt.getWorld().playSound(null, blazt.getX(), blazt.getY(), blazt.getZ(),
+                        ModSounds.BLAZT_BREATHE_OUT, SoundCategory.HOSTILE, 5.0F, 1.0F);
+            }
+
+            cooldown = 300;  // Increased cooldown to 15 seconds (300 ticks)
+            rushTicks = 0;
+        }
+
+        private void spawnSoulFireParticles() {
+            if (!blazt.getWorld().isClient()) return;
+
+            double cx = blazt.getX();
+            double cy = blazt.getY() + 1;
+            double cz = blazt.getZ();
+            int count = 16;
+
+            for (int i = 0; i < count; i++) {
+                double angle = 2 * Math.PI * i / count;
+                double radius = 1.0;
+                double px = cx + Math.cos(angle) * radius;
+                double pz = cz + Math.sin(angle) * radius;
+                blazt.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, cy, pz, 0, 0.05, 0);
+            }
+            System.out.println("[Blazt] Spawned soul fire particles.");
+        }
+    }
+
+
 
     static class ShootFireballGoal extends Goal {
         private final BlaztEntity blazt;

@@ -11,26 +11,26 @@ public class BlaztAnimations {
             .addBoneAnimation("inner",
                     new Transformation(Transformation.Targets.ROTATE,
                             new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
-                                    Transformation.Interpolations.LINEAR),
+                                    Transformation.Interpolations.CUBIC),
                             new Keyframe(2f, AnimationHelper.createRotationalVector(0f, -360f, 0f),
-                                    Transformation.Interpolations.LINEAR)))
+                                    Transformation.Interpolations.CUBIC)))
             .addBoneAnimation("outer",
                     new Transformation(Transformation.Targets.ROTATE,
                             new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
-                                    Transformation.Interpolations.LINEAR),
+                                    Transformation.Interpolations.CUBIC),
                             new Keyframe(2f, AnimationHelper.createRotationalVector(0f, 360f, 0f),
-                                    Transformation.Interpolations.LINEAR))).build();
+                                    Transformation.Interpolations.CUBIC))).build();
     public static final Animation AGGRO = Animation.Builder.create(1f).looping()
             .addBoneAnimation("inner",
                     new Transformation(Transformation.Targets.ROTATE,
-                            new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 360f, 0f),
-                                    Transformation.Interpolations.LINEAR),
-                            new Keyframe(1f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
-                                    Transformation.Interpolations.LINEAR)))
+                            new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
+                                    Transformation.Interpolations.CUBIC),
+                            new Keyframe(1f, AnimationHelper.createRotationalVector(0f, -360f, 0f),
+                                    Transformation.Interpolations.CUBIC)))
             .addBoneAnimation("outer",
                     new Transformation(Transformation.Targets.ROTATE,
                             new Keyframe(0f, AnimationHelper.createRotationalVector(0f, 0f, 0f),
-                                    Transformation.Interpolations.LINEAR),
+                                    Transformation.Interpolations.CUBIC),
                             new Keyframe(1f, AnimationHelper.createRotationalVector(0f, 360f, 0f),
-                                    Transformation.Interpolations.LINEAR))).build();
+                                    Transformation.Interpolations.CUBIC))).build();
 }

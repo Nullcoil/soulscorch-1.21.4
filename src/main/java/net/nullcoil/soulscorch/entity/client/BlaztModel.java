@@ -1,13 +1,10 @@
 package net.nullcoil.soulscorch.entity.client;
 
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
 
 public class BlaztModel extends EntityModel<BlaztRenderState> {
     public static final EntityModelLayer BLAZT = new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "blazt"), "main");
@@ -54,27 +51,16 @@ public class BlaztModel extends EntityModel<BlaztRenderState> {
     public void setAngles(BlaztRenderState state) {
         super.setAngles(state);
 
-        // Reset transforms
-        this.inner.resetTransform();
-        this.outer.resetTransform();
-        this.bb_main.resetTransform();
+        // Reset all transforms first
+        this.getRootPart().traverse().forEach(ModelPart::resetTransform);
 
-        // Debug output (keep for now)
-        if (state.age % 40 == 0) { // Every 2 seconds
-            System.out.println("Animation Debug - Shooting: " + state.shooting +
-                    ", IdleRunning: " + state.idleAnimationState.isRunning() +
-                    ", ShootRunning: " + state.shootAnimationState.isRunning());
-        }
-
-        // Apply animations - the animation system should work now
+        // Apply animations using the AnimationState objects
         if (state.shooting) {
-            float time = state.age * 0.3f; // Slow rotation for testing
-            this.inner.yaw = time;
-            this.outer.yaw = -time;
+            // Use AGGRO animation when shooting
+            this.animate(state.shootAnimationState, BlaztAnimations.AGGRO, state.age);
         } else {
-            float time = state.age * 0.1f; // Slow rotation for testing
-            this.inner.yaw = time;
-            this.outer.yaw = -time;
+            // Use IDLE animation when not shooting
+            this.animate(state.idleAnimationState, BlaztAnimations.IDLE, state.age);
         }
     }
 }

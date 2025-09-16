@@ -28,6 +28,7 @@ public class BlaztRenderer extends MobEntityRenderer<BlaztEntity, BlaztRenderSta
         super.updateRenderState(entity, state, tickDelta);
         state.shooting = entity.isShooting();
 
+        state.shooting = entity.isShooting();
         state.idleAnimationState.copyFrom(entity.idleAnimationState);
         state.shootAnimationState.copyFrom(entity.shootAnimationState);
     }

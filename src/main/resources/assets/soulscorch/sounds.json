@@ -1,0 +1,32 @@
+{
+  "blazt_ambient": {
+    "subtitle": "sounds.soulscorch.blazt_ambient",
+    "sounds": [
+      "soulscorch:blazt_ambient"
+    ]
+  },
+  "blazt_hurt": {
+    "subtitle": "sounds.soulscorch.blazt_hurt",
+    "sounds": [
+      "soulscorch:blazt_hurt"
+    ]
+  },
+  "blazt_death": {
+    "subtitle": "sounds.soulscorch.blazt_death",
+    "sounds": [
+      "soulscorch:blazt_death"
+    ]
+  },
+  "blazt_shooting": {
+    "subtitle": "sounds.soulscorch.blazt_shooting",
+    "sounds": [
+      "soulscorch:blazt_shooting"
+    ]
+  },
+  "blazt_soul_charge": {
+    "subtitle": "sounds.soulscorch.blazt_soul_charge",
+    "sounds": [
+      "soulscorch:blazt_soul_charge"
+    ]
+  }
+}

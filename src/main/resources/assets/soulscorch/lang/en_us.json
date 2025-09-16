@@ -1,11 +1,19 @@
 {
-    "effect.soulscorch.soulscorch": "Soulscorched",
-    "item.soulscorch.blazt_powder": "Blazt Powder",
-    "item.soulscorch.blazt_rod": "Blazt Rod",
-    "item.soulscorch.soul_cream": "Soul Cream",
-    "item.soulscorch.soul_charge": "Soul Charge",
+  "effect.soulscorch.soulscorch": "Soulscorched",
+  "item.soulscorch.blazt_powder": "Blazt Powder",
+  "item.soulscorch.blazt_rod": "Blazt Rod",
+  "item.soulscorch.soul_cream": "Soul Cream",
+  "item.soulscorch.soul_charge": "Soul Charge",
 
-    "item.minecraft.potion.effect.soul_render": "Potion of Soul Rendering",
-    "item.minecraft.splash_potion.effect.soul_render": "Splash Potion of Soul Rendering",
-    "item.minecraft.lingering_potion.effect.soul_render": "Lingering Potion of Soul Rendering"
+  "item.minecraft.potion.effect.soul_render": "Potion of Soul Rendering",
+  "item.minecraft.splash_potion.effect.soul_render": "Splash Potion of Soul Rendering",
+  "item.minecraft.lingering_potion.effect.soul_render": "Lingering Potion of Soul Rendering",
+  "item.minecraft.tipped_arrow.effect.soul_render": "Arrow of Soul Rendering",
+
+  "entity.soulscorch.blazt": "Blazt",
+  "sounds.soulscorch.blazt_ambient": "Blazt bellows",
+  "sounds.soulscorch.blazt_death": "Blazt dies",
+  "sounds.soulscorch.blazt_hurt": "Blazt hurts",
+  "sounds.soulscorch.blazt_shooting": "Blazt primes projectile",
+  "sounds.soulscorch.blazt_soul_charge": "Blazt shoots"
 }

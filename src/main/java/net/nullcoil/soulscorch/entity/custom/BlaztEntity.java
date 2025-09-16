@@ -40,7 +40,7 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
-import net.nullcoil.soulscorch.item.ModItems;
+import net.nullcoil.soulscorch.sound.ModSounds;
 
 public class BlaztEntity extends FlyingEntity implements Monster {
     private static final TrackedData<Boolean> SHOOTING;
@@ -159,17 +159,17 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_GHAST_AMBIENT;
+        return ModSounds.BLAZT_AMBIENT;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.ENTITY_GHAST_HURT;
+        return ModSounds.BLAZT_HURT;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ENTITY_GHAST_DEATH;
+        return ModSounds.BLAZT_DEATH;
     }
 
     @Override
@@ -357,7 +357,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                     World world = this.blazt.getWorld();
                     ++this.cooldown;
                     if (this.cooldown == 10 && !this.blazt.isSilent()) {
-                        world.syncWorldEvent(null, 1015, this.blazt.getBlockPos(), 0);
+                        world.playSound(null, this.blazt.getX(), this.blazt.getY(), this.blazt.getZ(),ModSounds.BLAZT_SHOOTING,SoundCategory.HOSTILE,5.0f,1.0f);
                     }
 
                     if (this.cooldown == 20) {
@@ -368,7 +368,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                         Vec3d vec3d2 = new Vec3d(f, g, h);
 
                         if (!this.blazt.isSilent()) {
-                            world.syncWorldEvent(null, 1016, this.blazt.getBlockPos(), 0);
+                            world.playSound(null, this.blazt.getX(), this.blazt.getY(), this.blazt.getZ(),ModSounds.BLAZT_SOUL_CHARGE,SoundCategory.HOSTILE,5.0f,1.0f);
                         }
 
                         // Random choice between fireball types (50% chance each)

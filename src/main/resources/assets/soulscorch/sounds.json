@@ -23,10 +23,17 @@
       "soulscorch:blazt_shooting"
     ]
   },
-  "blazt_soul_charge": {
-    "subtitle": "sounds.soulscorch.blazt_soul_charge",
+  "blazt_breathe_in": {
+    "subtitle": "sounds.soulscorch.blazt_breathe_in",
     "sounds": [
-      "soulscorch:blazt_soul_charge"
+      "soulscorch:blazt_breathe_in"
+    ]
+  },
+  "blazt_breathe_out": {
+    "subtitle": "sounds.soulscorch.blazt_breathe_out",
+    "sounds": [
+      "soulscorch:blazt_breathe_out"
     ]
   }
+
 }

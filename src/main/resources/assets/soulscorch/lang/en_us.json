@@ -15,5 +15,7 @@
   "sounds.soulscorch.blazt_death": "Blazt dies",
   "sounds.soulscorch.blazt_hurt": "Blazt hurts",
   "sounds.soulscorch.blazt_shooting": "Blazt primes projectile",
-  "sounds.soulscorch.blazt_soul_charge": "Blazt shoots"
+  "sounds.soulscorch.blazt_soul_charge": "Blazt shoots",
+  "sounds.soulscorch.blazt_breathe_in": "Blazt breathes",
+  "sounds.soulscorch.blazt_breathe_out": "Blazt recovers"
 }

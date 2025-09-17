@@ -20,9 +20,6 @@ public class ModWorldGeneration {
                 BiomeSelectors.includeByKey((RegistryKey) soulSandKey),
                 ((biomeSelectionContext, biomeModificationContext) -> {
                     var spawnCtx = biomeModificationContext.getSpawnSettings();
-
-                    spawnCtx.removeSpawnsOfEntityType(EntityType.GHAST);
-                    spawnCtx.addSpawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(EntityType.GHAST, 35, 1, 4));
                 })
         );
 

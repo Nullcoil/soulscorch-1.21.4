@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:nether/root",
+  "display": {
+    "icon": {
+      "count": 1,
+      "id": "minecraft:fire_charge"
+    },
+    "title": {
+      "text": "You really thought!",
+      "color": "red"
+    },
+    "description": {
+      "text": "That doesn't work, silly."
+    },
+    "frame": "challenge"
+  },
+  "criteria": {
+    "blazt_fireball_reflect": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    ["blazt_fireball_reflect"]
+  ]
+}

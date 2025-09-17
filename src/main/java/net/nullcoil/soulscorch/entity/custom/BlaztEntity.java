@@ -2,12 +2,10 @@ package net.nullcoil.soulscorch.entity.custom;
 
 import java.util.EnumSet;
 
-
-
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
@@ -27,17 +25,17 @@ import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldAccess;
+import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.sound.ModSounds;
 
@@ -61,7 +59,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         this.goalSelector.add(7, new LookAtTargetGoal(this));
         this.goalSelector.add(6, new ShootFireballGoal(this));
         this.goalSelector.add(4, new BlaztBullrushGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false,
+        this.targetSelector.add(7, new ActiveTargetGoal<>(this, PlayerEntity.class, 10, true, false,
                 (entity, world) -> Math.abs(entity.getY() - this.getY()) <= 4.0F));
     }
 
@@ -110,7 +108,9 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     }
 
     private static boolean isFireballFromPlayer(DamageSource damageSource) {
-        return damageSource.getSource() instanceof FireballEntity && damageSource.getAttacker() instanceof PlayerEntity;
+        boolean result = damageSource.getSource() instanceof FireballEntity && damageSource.getAttacker() instanceof PlayerEntity;
+        System.out.println("isFireballFromPlayer check: source=" + damageSource.getSource() + ", attacker=" + damageSource.getAttacker() + ", result=" + result);
+        return result;
     }
 
     @Override
@@ -122,7 +122,23 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     @Override
     public boolean damage(ServerWorld world, DamageSource source, float amount) {
         if (isFireballFromPlayer(source)) {
-            super.damage(world, source, 1000.0F);
+            System.out.println("Fireball from player detected!");
+
+            if (source.getAttacker() instanceof ServerPlayerEntity serverPlayer) {
+                System.out.println("Player found: " + serverPlayer.getName().getString());
+
+                AdvancementEntry advancement = world.getServer().getAdvancementLoader()
+                        .get(Identifier.of(Soulscorch.MOD_ID, "blazt_blaster"));
+
+                System.out.println("Advancement found: " + (advancement != null));
+
+                if (advancement != null) {
+                    System.out.println("Granting criterion...");
+                    serverPlayer.getAdvancementTracker().grantCriterion(advancement, "blazt_fireball_reflect");
+                    System.out.println("Criterion granted!");
+                }
+            }
+            super.damage(world, source, 0.0F);
             return true;
         } else {
             return this.isInvulnerableTo(world, source) ? false : super.damage(world, source, amount);
@@ -428,8 +444,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
             System.out.println("[Blazt] Spawned soul fire particles.");
         }
     }
-
-
 
     static class ShootFireballGoal extends Goal {
         private final BlaztEntity blazt;

@@ -6,6 +6,7 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
+import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
@@ -13,7 +14,7 @@ import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 import org.joml.Vector3f;
 
 
-public class SoullessModel extends BipedEntityModel<SoullessRenderState> {
+public class SoullessModel extends EntityModel<SoullessRenderState> {
     public static final EntityModelLayer SOULLESS = new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID,"soulless"),"main");
     private final ModelPart upperBody;
 
@@ -25,6 +26,9 @@ public class SoullessModel extends BipedEntityModel<SoullessRenderState> {
     private final ModelPart leftArm;
     private final ModelPart rightArm;
     private final ModelPart body;
+
+    private final ModelPart leftLeg;
+    private final ModelPart rightLeg;
 
     private final ModelPart hat;
     public final ModelPart leftSleeve;
@@ -43,98 +47,69 @@ public class SoullessModel extends BipedEntityModel<SoullessRenderState> {
         this.arms = upperBody.getChild("arms");
 
         // Get standard biped parts
-        this.head = root.getChild("head");
-        this.body = root.getChild("body");
-        this.rightArm = root.getChild("right_arm");
-        this.leftArm = root.getChild("left_arm");
+        this.head = upperBody.getChild("head");
+
+        this.body = upperBody.getChild("body");
+        this.rightArm = arms.getChild("right_arm");
+        this.leftArm = arms.getChild("left_arm");
+        this.leftLeg = root.getChild("left_leg");
+        this.rightLeg = root.getChild("right_leg");
 
         // Get ears from head
-        this.leftEar = this.head.getChild("left_ear");
-        this.rightEar = this.head.getChild("right_ear");
+        this.leftEar = head.getChild("left_ear");
+        this.rightEar = head.getChild("right_ear");
 
         // Get clothing parts
-        this.hat = this.head.getChild("hat");
+        this.hat = head.getChild("hat");
         this.leftSleeve = this.leftArm.getChild("left_sleeve");
         this.rightSleeve = this.rightArm.getChild("right_sleeve");
         this.leftPants = this.leftLeg.getChild("left_pants");
         this.rightPants = this.rightLeg.getChild("right_pants");
         this.jacket = this.body.getChild("jacket");
+
+
     }
 
     public static TexturedModelData getTexturedModelData() {
-        return createModelData(Dilation.NONE);
+        return getTexturedModelData(Dilation.NONE);
     }
 
-    public static TexturedModelData createModelData(Dilation dilation) {
+    public static TexturedModelData getTexturedModelData(Dilation dilation) {
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
+        ModelPartData upperBody = modelPartData.addChild("upper_body", ModelPartBuilder.create(), ModelTransform.pivot(0,12,0));
+        ModelPartData arms = upperBody.addChild("arms", ModelPartBuilder.create(), ModelTransform.pivot(0,22,0));
 
-        // Create the standard biped structure first
-        ModelPartData head = modelPartData.addChild("head", ModelPartBuilder.create()
-                        .uv(0,0).cuboid(-4f, -8f, -4f, 8f, 8f, 8f, dilation)
-                        .uv(32,0).cuboid(-4f, -8f, -4f, 8f, 8f, 8f, dilation.add(0.5f)),
-                ModelTransform.pivot(0f, 0f, 0f));
-
-        ModelPartData hat = head.addChild("hat", ModelPartBuilder.create(),
+        ModelPartData head = upperBody.addChild("head", ModelPartBuilder.create()
+                        .uv(0,0).cuboid(-5f, -8f, -4f,10f,8f,8f, dilation)
+                        .uv(31,1).cuboid(-2f,-4f,-5f,4f,4f,1f,dilation)
+                        .uv(2,4).cuboid(2f,-2f,-5f,1f,2f,1f,dilation)
+                        .uv(2,0).cuboid(-3f,-2f,-5f,1f,2f,1f,dilation),
                 ModelTransform.NONE);
-
-        ModelPartData body = modelPartData.addChild("body", ModelPartBuilder.create()
-                        .uv(16,16).cuboid(-4f, 0f, -2f, 8f, 12f, 4f, dilation)
-                        .uv(16,32).cuboid(-4f, 0f, -2f, 8f, 12f, 4f, dilation.add(0.25f)),
-                ModelTransform.pivot(0f, 0f, 0f));
-
-        ModelPartData jacket = body.addChild("jacket", ModelPartBuilder.create(),
-                ModelTransform.NONE);
-
-        ModelPartData rightArm = modelPartData.addChild("right_arm", ModelPartBuilder.create()
-                        .uv(40,16).cuboid(-3f, -2f, -2f, 4f, 12f, 4f, dilation)
-                        .uv(40,32).cuboid(-3f, -2f, -2f, 4f, 12f, 4f, dilation.add(0.25f)),
-                ModelTransform.pivot(-5f, 2f, 0f));
-
-        ModelPartData rightSleeve = rightArm.addChild("right_sleeve", ModelPartBuilder.create(),
-                ModelTransform.NONE);
-
-        ModelPartData leftArm = modelPartData.addChild("left_arm", ModelPartBuilder.create()
-                        .uv(32,48).cuboid(-1f, -2f, -2f, 4f, 12f, 4f, dilation)
-                        .uv(48,48).cuboid(-1f, -2f, -2f, 4f, 12f, 4f, dilation.add(0.25f)),
-                ModelTransform.pivot(5f, 2f, 0f));
-
-        ModelPartData leftSleeve = leftArm.addChild("left_sleeve", ModelPartBuilder.create(),
-                ModelTransform.NONE);
-
-        ModelPartData rightLeg = modelPartData.addChild("right_leg", ModelPartBuilder.create()
-                        .uv(0,16).cuboid(-2f, 0f, -2f, 4f, 12f, 4f, dilation)
-                        .uv(0,32).cuboid(-2f, 0f, -2f, 4f, 12f, 4f, dilation.add(0.25f)),
-                ModelTransform.pivot(-1.9f, 12f, 0f));
-
-        ModelPartData rightPants = rightLeg.addChild("right_pants", ModelPartBuilder.create(),
-                ModelTransform.NONE);
-
-        ModelPartData leftLeg = modelPartData.addChild("left_leg", ModelPartBuilder.create()
-                        .uv(16,48).cuboid(-2f, 0f, -2f, 4f, 12f, 4f, dilation)
-                        .uv(0,48).cuboid(-2f, 0f, -2f, 4f, 12f, 4f, dilation.add(0.25f)),
-                ModelTransform.pivot(1.9f, 12f, 0f));
-
-        ModelPartData leftPants = leftLeg.addChild("left_pants", ModelPartBuilder.create(),
-                ModelTransform.NONE);
-
-        // Custom parts for the soulless entity
-        ModelPartData upper_body = modelPartData.addChild("upper_body", ModelPartBuilder.create(),
-                ModelTransform.pivot(0f, 0f, 0f));
-
-        ModelPartData arms = upper_body.addChild("arms", ModelPartBuilder.create(),
-                ModelTransform.pivot(0f, 2f, 0f));
-
-        // Add ears to the head
         ModelPartData leftEar = head.addChild("left_ear", ModelPartBuilder.create()
-                        .uv(24,0).cuboid(-0.5f, -3f, -2f, 1f, 5f, 4f, dilation),
-                ModelTransform.of(-4f, -6f, 0f, 0f, 0f, (float)Math.toRadians(-22.5f)));
-
+                        .uv(51,6).cuboid(-5f,-25f,-2f,1f,5f,4f,dilation),
+                ModelTransform.of(-5f,30f,0f,0,0,(float)Math.toRadians(-22.5f)));
         ModelPartData rightEar = head.addChild("right_ear", ModelPartBuilder.create()
-                        .uv(24,0).cuboid(-0.5f, -3f, -2f, 1f, 5f, 4f, dilation),
-                ModelTransform.of(4f, -6f, 0f, 0f, 0f, (float)Math.toRadians(22.5f)));
+                        .uv(39,6).cuboid(4f,25f,-2f,1f,5f,4f,dilation),
+                ModelTransform.of(5,30,0,0,0,(float)Math.toRadians(22.5)));
 
-        return TexturedModelData.of(modelData, 64, 64);
+        ModelPartData body = upperBody.addChild("body",ModelPartBuilder.create()
+                        .uv(16,16).cuboid(-4f,12f,-2f,8f,12f,4f,dilation),
+                ModelTransform.pivot(0f,12f,0f));
+
+        ModelPartData leftArm = arms.addChild("left_arm", ModelPartBuilder.create()
+                        .uv(32,48).cuboid(-8f,12f,-2f,4f,12f,4f,dilation),
+                ModelTransform.pivot(-4f,22f,0f));
+        ModelPartData rightArm = arms.addChild("right_arm", ModelPartBuilder.create()
+                        .uv(40,16).cuboid(4f,12f,-2f,4f,12f,4f,dilation),
+                ModelTransform.pivot(4f,22f,0f));
+
+        //TODO: Make left and right legs bc Java's a bum
+
+
+
+
+        return TexturedModelData.of(modelData, 64,64);
     }
 
     public void setAngles(SoullessRenderState state) {
@@ -180,7 +155,7 @@ public class SoullessModel extends BipedEntityModel<SoullessRenderState> {
 
                 // Apply random neutral animation when animation state is running
                 if (state.neutralAnimationState.isRunning()) {
-                    AnimationHelper.animate(this, SoullessAnimations.NEUTRAL(), state.neutralAnimationState.getTimeInMilliseconds(state.age), 1.0f, new Vector3f());
+                    AnimationHelper.animate(this, SoullessAnimations.NEUTRAL(), state.neutralAnimationState.getTimeInMilliseconds(state.age), 1.0f,new Vector3f());
                 }
             }
             case HOSTILE -> {
@@ -196,14 +171,5 @@ public class SoullessModel extends BipedEntityModel<SoullessRenderState> {
         this.leftPants.copyTransform(this.leftLeg);
         this.rightPants.copyTransform(this.rightLeg);
         this.jacket.copyTransform(this.upperBody);
-    }
-
-    public void setVisible(boolean visible) {
-        super.setVisible(visible);
-        this.leftSleeve.visible = visible;
-        this.rightSleeve.visible = visible;
-        this.leftPants.visible = visible;
-        this.rightPants.visible = visible;
-        this.jacket.visible = visible;
     }
 }

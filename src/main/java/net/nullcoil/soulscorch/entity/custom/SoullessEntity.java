@@ -11,7 +11,6 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -27,8 +26,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumSet;
 import java.util.Random;
 
-public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
-    /*----ATTRIBUTES & STATS----*/
+public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implements Monster (redundant)
+
     private static final TrackedData<Integer> ACTIVITY =
             DataTracker.registerData(SoullessEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -36,6 +35,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
     public final AnimationState neutralAnimationState = new AnimationState();
     public final AnimationState hostileAnimationState = new AnimationState();
 
+    private Animation currentNeutralAnimation;
     private int ticksUntilNextNeutral = 0;
     private static final Random RANDOM = new Random();
 
@@ -44,40 +44,17 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-
-        if (this.getWorld().isClient()) {
-            // Handle animation states based on current activity
-            switch (getActivity()) {
-                case PASSIVE -> {
-                    passiveAnimationState.startIfNotRunning(this.age);
-                    neutralAnimationState.stop();
-                    hostileAnimationState.stop();
-                }
-                case NEUTRAL -> {
-                    passiveAnimationState.stop();
-                    hostileAnimationState.stop();
-
-                    ticksUntilNextNeutral--;
-                    if (ticksUntilNextNeutral <= 0) {
-                        neutralAnimationState.start(this.age);
-                        ticksUntilNextNeutral = 40 + RANDOM.nextInt(60); // Random interval between animations
-                    }
-                }
-                case HOSTILE -> {
-                    passiveAnimationState.stop();
-                    neutralAnimationState.stop();
-                    hostileAnimationState.startIfNotRunning(this.age);
-                }
-            }
-        }
-    }
-
-    @Override
     protected void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(ACTIVITY, SoullessActivity.PASSIVE.getId());
+    }
+
+    public static DefaultAttributeContainer.Builder createAttributes() {
+        return ZombifiedPiglinEntity.createZombifiedPiglinAttributes()
+                .add(EntityAttributes.MAX_HEALTH, 20.0)
+                .add(EntityAttributes.ATTACK_DAMAGE, 4.0)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.25)
+                .add(EntityAttributes.FOLLOW_RANGE, 35.0);
     }
 
     public SoullessActivity getActivity() {
@@ -96,14 +73,40 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
         }
     }
 
-    public static DefaultAttributeContainer createAttributes() {
-        return MobEntity.createMobAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 15.0D)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.25)
-                .add(EntityAttributes.ATTACK_DAMAGE, 4.0D).build();
+    @Override
+    public void tick() {
+        super.tick();
+        ticksUntilNextNeutral--;
+
+        if (ticksUntilNextNeutral <= 0) {
+            currentNeutralAnimation = SoullessAnimations.NEUTRAL();
+            ticksUntilNextNeutral = 40 + RANDOM.nextInt(60);
+        }
+
+        if (this.getWorld().isClient()) {
+            switch (getActivity()) {
+                case PASSIVE -> {
+                    passiveAnimationState.startIfNotRunning(this.age);
+                    neutralAnimationState.stop();
+                    hostileAnimationState.stop();
+                }
+                case NEUTRAL -> {
+                    passiveAnimationState.stop();
+                    neutralAnimationState.startIfNotRunning(this.age);
+                    hostileAnimationState.stop();
+                }
+                case HOSTILE -> {
+                    passiveAnimationState.stop();
+                    neutralAnimationState.stop();
+                    hostileAnimationState.startIfNotRunning(this.age);
+                }
+            }
+        }
     }
 
-    /*----GOALS----*/
+    public Animation getCurrentNeutralAnimation() {
+        return currentNeutralAnimation;
+    }
 
     @Override
     protected void initGoals() {
@@ -113,13 +116,13 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
                 return getActivity() != SoullessActivity.PASSIVE && getTarget() != null;
             }
         });
-        this.goalSelector.add(2, new ZombieAttackGoal(this, (double)1.0F, false) {
+        this.goalSelector.add(2, new ZombieAttackGoal(this, 1.0F, false) {
             @Override
             public boolean canStart() {
                 return getActivity() == SoullessActivity.HOSTILE;
             }
         });
-        this.goalSelector.add(7, new WanderAroundFarGoal(this, (double)1.0F) {
+        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0F) {
             @Override
             public boolean canStart() {
                 return getActivity() == SoullessActivity.HOSTILE;
@@ -184,8 +187,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
         }
     }
 
-    /*----SOUNDS----*/
-
     @Override
     public SoundCategory getSoundCategory() {
         return SoundCategory.NEUTRAL;
@@ -197,9 +198,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Monster {
             case NEUTRAL -> { return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_AMBIENT; }
             case HOSTILE -> { return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_ANGRY; }
         }
-
         return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
     }
-
-
 }

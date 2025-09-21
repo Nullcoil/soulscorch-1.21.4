@@ -7,6 +7,7 @@ import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
+import net.nullcoil.soulscorch.entity.client.soulless.SoullessModel;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessRenderer;
 
 public class SoulscorchClient implements ClientModInitializer {
@@ -21,9 +22,8 @@ public class SoulscorchClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(BlaztModel.BLAZT, BlaztModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.BLAZT, BlaztRenderer::new);
 
-        // Register Soulless Entity - Using vanilla zombified piglin model layer, so no custom model registration needed
-        System.out.println("Registering Soulless renderer..."); // Debug
-        EntityRendererRegistry.register(ModEntities.SOULLESS, SoullessRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(SoullessModel.SOULLESS, SoullessModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntities.SOULLESS,SoullessRenderer::new);
 
         System.out.println("SoulscorchClient initialization complete."); // Debug
     }

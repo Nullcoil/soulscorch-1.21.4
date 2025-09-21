@@ -44,7 +44,7 @@ public class Soulscorch implements ModInitializer {
         ModWorldGeneration.generateModWorldGen();
 
         FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
-        // FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
 
 
         // Re-registering Soul Fire'd's Soul Fire to be used in this mod

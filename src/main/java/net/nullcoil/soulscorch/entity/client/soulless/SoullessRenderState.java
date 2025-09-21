@@ -12,5 +12,5 @@ public class SoullessRenderState extends BipedEntityRenderState {
 
     public final AnimationState passiveAnimationState = new AnimationState();
     public final AnimationState neutralAnimationState = new AnimationState();
-    public final AnimationState hostileAnimationState = new AnimationState(); // may not be used bc using zombie arms
+    public final AnimationState hostileAnimationState = new AnimationState();
 }

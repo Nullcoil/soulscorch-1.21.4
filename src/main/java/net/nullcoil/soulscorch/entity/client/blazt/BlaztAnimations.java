@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.entity.client;
+package net.nullcoil.soulscorch.entity.client.blazt;
 
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.AnimationHelper;

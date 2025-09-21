@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.entity.client;
+package net.nullcoil.soulscorch.entity.client.blazt;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.EntityModel;

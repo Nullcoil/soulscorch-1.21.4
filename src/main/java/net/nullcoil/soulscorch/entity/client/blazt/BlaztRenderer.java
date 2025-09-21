@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.entity.client;
+package net.nullcoil.soulscorch.entity.client.blazt;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

@@ -109,7 +109,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
     private static boolean isFireballFromPlayer(DamageSource damageSource) {
         boolean result = damageSource.getSource() instanceof FireballEntity && damageSource.getAttacker() instanceof PlayerEntity;
-        System.out.println("isFireballFromPlayer check: source=" + damageSource.getSource() + ", attacker=" + damageSource.getAttacker() + ", result=" + result);
+
         return result;
     }
 
@@ -122,20 +122,14 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     @Override
     public boolean damage(ServerWorld world, DamageSource source, float amount) {
         if (isFireballFromPlayer(source)) {
-            System.out.println("Fireball from player detected!");
 
             if (source.getAttacker() instanceof ServerPlayerEntity serverPlayer) {
-                System.out.println("Player found: " + serverPlayer.getName().getString());
 
                 AdvancementEntry advancement = world.getServer().getAdvancementLoader()
                         .get(Identifier.of(Soulscorch.MOD_ID, "blazt_blaster"));
 
-                System.out.println("Advancement found: " + (advancement != null));
-
                 if (advancement != null) {
-                    System.out.println("Granting criterion...");
                     serverPlayer.getAdvancementTracker().grantCriterion(advancement, "blazt_fireball_reflect");
-                    System.out.println("Criterion granted!");
                 }
             }
             super.damage(world, source, 0.0F);
@@ -341,7 +335,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
             }
 
             boolean canStart = blazt.getTarget() != null && cooldown <= 0;
-            System.out.println("[Blazt] canStart? " + canStart + " (cooldown=" + cooldown + ")");
             return canStart;
         }
 
@@ -349,14 +342,12 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         public void start() {
             LivingEntity target = blazt.getTarget();
             if (target == null) {
-                System.out.println("[Blazt] start aborted – no target!");
                 return;
             }
 
             double distanceSq = blazt.squaredDistanceTo(target);
             if (distanceSq <= MAX_RUSH_DISTANCE * MAX_RUSH_DISTANCE) {
                 rushTicks = RUSH_DURATION;
-                System.out.println("[Blazt] Bullrush priming! DistanceSq=" + distanceSq);
                 spawnSoulFireParticles();
 
                 if (!blazt.getWorld().isClient()) {
@@ -366,7 +357,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
                 rushDirection = target.getPos().subtract(blazt.getPos()).normalize();
             } else {
-                System.out.println("[Blazt] Target out of range. Moving closer...");
                 blazt.getMoveControl().moveTo(target.getX(), target.getY(), target.getZ(), 0.8D);
                 rushTicks = 0;
             }
@@ -375,7 +365,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         @Override
         public boolean shouldContinue() {
             boolean continueRush = rushTicks > 0;
-            System.out.println("[Blazt] shouldContinue? " + continueRush + " (rushTicks=" + rushTicks + ")");
             return continueRush;
         }
 
@@ -385,7 +374,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
             if (rushTicks > 0 && target != null) {
                 rushTicks--;
-                System.out.println("[Blazt] Rushing! rushTicks left=" + rushTicks);
 
                 blazt.setVelocity(rushDirection.multiply(RUSH_SPEED));
                 blazt.velocityModified = true;
@@ -393,7 +381,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                 if (blazt.getBoundingBox().intersects(target.getBoundingBox()) &&
                         blazt.getWorld() instanceof ServerWorld serverWorld) {
 
-                    System.out.println("[Blazt] Collided with target! Applying damage/effects.");
                     DamageSource source = serverWorld.getDamageSources().mobAttack(blazt);
                     target.damage(serverWorld, source, 8.0F);
 
@@ -407,14 +394,12 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                 }
 
                 if (rushTicks <= 0) {
-                    System.out.println("[Blazt] Rush duration ended without hitting.");
                     endRush();
                 }
             }
         }
 
         private void endRush() {
-            System.out.println("[Blazt] Ending bullrush. Applying slowness and cooldown.");
             blazt.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 40, 0));
 
             if (!blazt.getWorld().isClient()) {
@@ -441,7 +426,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                 double pz = cz + Math.sin(angle) * radius;
                 blazt.getWorld().addParticle(ParticleTypes.SOUL_FIRE_FLAME, px, cy, pz, 0, 0.05, 0);
             }
-            System.out.println("[Blazt] Spawned soul fire particles.");
         }
     }
 

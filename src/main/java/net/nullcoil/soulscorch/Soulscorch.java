@@ -13,6 +13,7 @@ import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
+import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
 import net.nullcoil.soulscorch.item.ModItems;
@@ -37,9 +38,14 @@ public class Soulscorch implements ModInitializer {
         ModPotions.register();
         ModEntities.register();
         ModSounds.register();
+
+        //SoulbreakEventHandler.register();
+
         ModWorldGeneration.generateModWorldGen();
 
         FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
+        // FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
+
 
         // Re-registering Soul Fire'd's Soul Fire to be used in this mod
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);

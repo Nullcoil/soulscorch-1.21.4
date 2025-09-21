@@ -5,17 +5,26 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.nullcoil.soulscorch.entity.ModEntities;
-import net.nullcoil.soulscorch.entity.client.BlaztModel;
-import net.nullcoil.soulscorch.entity.client.BlaztRenderer;
+import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
+import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
+import net.nullcoil.soulscorch.entity.client.soulless.SoullessRenderer;
 
 public class SoulscorchClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        System.out.println("SoulscorchClient initializing..."); // Debug
 
+        // Register Soul Charge projectile
         EntityRendererRegistry.register(ModEntities.SOUL_CHARGE, FlyingItemEntityRenderer::new);
 
+        // Register Blazt Entity - Model layer first, then renderer
         EntityModelLayerRegistry.registerModelLayer(BlaztModel.BLAZT, BlaztModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.BLAZT, BlaztRenderer::new);
 
+        // Register Soulless Entity - Using vanilla zombified piglin model layer, so no custom model registration needed
+        System.out.println("Registering Soulless renderer..."); // Debug
+        EntityRendererRegistry.register(ModEntities.SOULLESS, SoullessRenderer::new);
+
+        System.out.println("SoulscorchClient initialization complete."); // Debug
     }
 }

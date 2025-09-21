@@ -1,7 +1,5 @@
 package net.nullcoil.soulscorch.entity;
 
-
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -26,6 +24,15 @@ public class ModEntities {
                             RegistryKey.of(RegistryKeys.ENTITY_TYPE,
                                     Identifier.of(Soulscorch.MOD_ID, "blazt"))
                     ));
+    /*
+    public static final EntityType<SoullessEntity> SOULLESS = Registry.register(Registries.ENTITY_TYPE,
+            Identifier.of(Soulscorch.MOD_ID, "soulless"),
+            EntityType.Builder.create(SoullessEntity::new, SpawnGroup.MONSTER)
+                    .dimensions(1.6f,1.95f).build(
+                            RegistryKey.of(RegistryKeys.ENTITY_TYPE,
+                                    Identifier.of(Soulscorch.MOD_ID, "soulless"))
+                    ));
+     */
 
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Entities for " + Soulscorch.MOD_ID);

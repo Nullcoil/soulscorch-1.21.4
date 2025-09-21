@@ -16,6 +16,7 @@ import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
+import net.nullcoil.soulscorch.event.SoulbreakEventHandler;
 import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.potion.ModPotions;
 import net.nullcoil.soulscorch.sound.ModSounds;
@@ -39,7 +40,7 @@ public class Soulscorch implements ModInitializer {
         ModEntities.register();
         ModSounds.register();
 
-        //SoulbreakEventHandler.register();
+        SoulbreakEventHandler.register();
 
         ModWorldGeneration.generateModWorldGen();
 

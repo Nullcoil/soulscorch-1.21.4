@@ -30,7 +30,7 @@ public class ModEntities {
     public static final EntityType<SoullessEntity> SOULLESS = Registry.register(Registries.ENTITY_TYPE,
             Identifier.of(Soulscorch.MOD_ID, "soulless"),
             EntityType.Builder.create(SoullessEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(1.6f,1.95f).build(
+                    .dimensions(0.6f,1.95f).build(
                             RegistryKey.of(RegistryKeys.ENTITY_TYPE,
                                     Identifier.of(Soulscorch.MOD_ID, "soulless"))
                     ));

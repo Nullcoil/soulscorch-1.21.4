@@ -35,8 +35,9 @@ public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implemen
     public final AnimationState neutralAnimationState = new AnimationState();
     public final AnimationState hostileAnimationState = new AnimationState();
 
-    private Animation currentNeutralAnimation;
-    private int ticksUntilNextNeutral = 0;
+    private Animation currentAnimation;
+    private int ticksUntilNext = 0;
+    private int twitchDuration = 0;
     private static final Random RANDOM = new Random();
 
     public SoullessEntity(EntityType<? extends ZombifiedPiglinEntity> entityType, World world) {
@@ -76,36 +77,40 @@ public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implemen
     @Override
     public void tick() {
         super.tick();
-        ticksUntilNextNeutral--;
 
-        if (ticksUntilNextNeutral <= 0) {
-            currentNeutralAnimation = SoullessAnimations.NEUTRAL();
-            ticksUntilNextNeutral = 40 + RANDOM.nextInt(60);
+        if (twitchDuration > 0) {
+            twitchDuration--;
+        }
+
+        if (ticksUntilNext > 0) {
+            ticksUntilNext--;
+        } else {
+            switch(getActivity()) {
+                case PASSIVE -> currentAnimation = SoullessAnimations.PASSIVE;
+                case NEUTRAL -> currentAnimation = SoullessAnimations.NEUTRAL();
+                case HOSTILE -> {} // could add HOSTILE animation later
+            }
+            if (currentAnimation != null) {
+                twitchDuration = (int)(currentAnimation.lengthInSeconds() * 20);
+            }
+            ticksUntilNext = 40; // + RANDOM.nextInt(20);
         }
 
         if (this.getWorld().isClient()) {
+            passiveAnimationState.stop();
+            neutralAnimationState.stop();
+            hostileAnimationState.stop();
+
             switch (getActivity()) {
-                case PASSIVE -> {
-                    passiveAnimationState.startIfNotRunning(this.age);
-                    neutralAnimationState.stop();
-                    hostileAnimationState.stop();
-                }
-                case NEUTRAL -> {
-                    passiveAnimationState.stop();
-                    neutralAnimationState.startIfNotRunning(this.age);
-                    hostileAnimationState.stop();
-                }
-                case HOSTILE -> {
-                    passiveAnimationState.stop();
-                    neutralAnimationState.stop();
-                    hostileAnimationState.startIfNotRunning(this.age);
-                }
+                case PASSIVE -> passiveAnimationState.startIfNotRunning(this.age);
+                case NEUTRAL -> neutralAnimationState.startIfNotRunning(this.age);
+                case HOSTILE -> hostileAnimationState.startIfNotRunning(this.age);
             }
         }
     }
 
-    public Animation getCurrentNeutralAnimation() {
-        return currentNeutralAnimation;
+    public Animation getCurrentAnimation() {
+        return this.currentAnimation;
     }
 
     @Override

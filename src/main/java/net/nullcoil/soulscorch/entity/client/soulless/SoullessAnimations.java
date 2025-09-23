@@ -12,6 +12,7 @@ public class SoullessAnimations {
     private static int counter = 0;
     private static int twitchTicksRemaining = 0;
 
+
     public static final Animation BLANK = Animation.Builder.create(10f).looping().build();
     public static final Animation PASSIVE = Animation.Builder.create(0.25f)
             .addBoneAnimation("head",
@@ -89,25 +90,35 @@ public class SoullessAnimations {
 
         float r = RANDOM.nextFloat();
         if (counter >= 600) { // 100 ticks = 5 seconds at 20 TPS
-            counter = 0;
+            counter = -RANDOM.nextInt(1200);
             if (r <= 0.2f) {
                 twitchTicksRemaining = 5; // 5 ticks = 0.25 seconds
-                System.out.println("TWITCHED. I TWITCHED. DID YOU SEE IT?");
                 return PASSIVE;
             }
         }
-
         counter++;
         return BLANK;
     }
 
+    private static Animation lastPlayed = BLANK;
     public static Animation NEUTRAL() {
-        float r = RANDOM.nextFloat();
-        if(r < 0.8f) {
-            return BLANK;
-        } else {
-            int index = RANDOM.nextInt(NEUTRAL_ANIMATIONS.length);
-            return NEUTRAL_ANIMATIONS[index];
+
+        if (twitchTicksRemaining > 0) {
+            twitchTicksRemaining--;
+            return lastPlayed; // enforce minimum duration
         }
+
+        float r = RANDOM.nextFloat();
+        if (counter >= 600) { // 100 ticks = 5 seconds at 20 TPS
+            counter = -RANDOM.nextInt(1200);
+            if (r <= 0.2f) {
+                lastPlayed = NEUTRAL_ANIMATIONS[RANDOM.nextInt(NEUTRAL_ANIMATIONS.length-1)];
+                twitchTicksRemaining = (int)lastPlayed.lengthInSeconds()*20; // convert last-played animation to ticks
+
+                return lastPlayed;
+            }
+        }
+        counter++;
+        return BLANK;
     }
 }

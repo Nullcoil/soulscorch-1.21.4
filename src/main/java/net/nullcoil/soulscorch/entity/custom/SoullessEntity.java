@@ -2,31 +2,51 @@ package net.nullcoil.soulscorch.entity.custom;
 
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.AnimationState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.World;
+import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessActivity;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessAnimations;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
 import java.util.Random;
+import java.util.UUID;
 
-public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implements Monster (redundant)
+public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
+    @Nullable
+    private UUID angryAt;
+    private int angerTime;
+    private static final UniformIntProvider ANGER_TIME_RANGE;
+
+
 
     private static final TrackedData<Integer> ACTIVITY =
             DataTracker.registerData(SoullessEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -64,6 +84,22 @@ public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implemen
 
     public void setActivity(@NotNull SoullessActivity activity) {
         this.dataTracker.set(ACTIVITY, activity.getId());
+        this.goalSelector.clear(goal -> true);
+        this.targetSelector.clear(goal -> true);
+
+        switch (activity) {
+            case PASSIVE -> {}
+            case NEUTRAL -> {
+                this.targetSelector.add(7, new ActiveTargetGoal(this, PlayerEntity.class,true));
+            }
+            case HOSTILE -> {
+                this.goalSelector.add(2, new ZombieAttackGoal(this, (double)1.0F, false));
+                this.goalSelector.add(6, new MoveThroughVillageGoal(this, (double)1.0F, true, 4, this::canBreakDoors));
+                this.goalSelector.add(7, new WanderAroundFarGoal(this, (double)1.0F));
+                this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[]{ZombifiedPiglinEntity.class}));
+                this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, true));
+            }
+        }
     }
 
     public void raiseActivity() {
@@ -109,73 +145,80 @@ public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implemen
         }
     }
 
+    public boolean tryAttack(ServerWorld world, Entity target) {
+        boolean bl = super.tryAttack(world, target);
+        if (bl && target instanceof LivingEntity) {
+            float f = this.getWorld().getLocalDifficulty(this.getBlockPos()).getLocalDifficulty();
+            ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600 * (int)f), this);
+        }
+
+        return bl;
+    }
+
+    @Override
+    public boolean damage(ServerWorld world, DamageSource source, float amount) {
+        // Call the parent method first to actually apply damage
+        boolean wasDamaged = super.damage(world, source, amount);
+
+        if (wasDamaged && getActivity() != SoullessActivity.HOSTILE) {
+            // Optional: Ignore certain damage types (like environmental)
+            if (source.getAttacker() instanceof PlayerEntity) {
+                this.setActivity(SoullessActivity.HOSTILE);
+            }
+        }
+
+        return wasDamaged;
+    }
+
     public Animation getCurrentAnimation() {
         return this.currentAnimation;
     }
 
     @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new LookAtTargetGoal(this) {
-            @Override
-            public boolean canStart() {
-                return getActivity() != SoullessActivity.PASSIVE && getTarget() != null;
-            }
-        });
-        this.goalSelector.add(2, new ZombieAttackGoal(this, 1.0F, false) {
-            @Override
-            public boolean canStart() {
-                return getActivity() == SoullessActivity.HOSTILE;
-            }
-        });
-        this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0F) {
-            @Override
-            public boolean canStart() {
-                return getActivity() == SoullessActivity.HOSTILE;
-            }
-        });
-        this.targetSelector.add(1, (new SoullessRevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
-        this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt) {
-            @Override
-            public boolean canStart() {
-                return getActivity() == SoullessActivity.HOSTILE;
-            }
-        });
+    public boolean isFireImmune() {
+        return true;
     }
 
-    static class LookAtTargetGoal extends Goal {
-        private final SoullessEntity soulless;
-
-        public LookAtTargetGoal(SoullessEntity soulless) {
-            this.soulless = soulless;
-            this.setControls(EnumSet.of(Control.LOOK));
-        }
-
-        @Override
-        public boolean canStart() {
-            return true;
-        }
-
-        @Override
-        public boolean shouldRunEveryTick() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            if (this.soulless.getTarget() == null) {
-                Vec3d vec3d = this.soulless.getVelocity();
-                this.soulless.setYaw(-((float) MathHelper.atan2(vec3d.x, vec3d.z)) * (180F / (float) Math.PI));
-                this.soulless.bodyYaw = this.soulless.getYaw();
-            } else {
-                LivingEntity livingEntity = this.soulless.getTarget();
-                if (livingEntity.squaredDistanceTo(this.soulless) < 4096.0D) {
-                    double e = livingEntity.getX() - this.soulless.getX();
-                    double f = livingEntity.getZ() - this.soulless.getZ();
-                    this.soulless.setYaw(-((float) MathHelper.atan2(e, f)) * (180F / (float) Math.PI));
-                    this.soulless.bodyYaw = this.soulless.getYaw();
-                }
+    @Override
+    protected void initGoals() {
+        switch(this.getActivity()) {
+            case PASSIVE -> {}
+            case NEUTRAL -> {
+                this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
+            }
+            case HOSTILE -> {
+                this.goalSelector.add(2, new ZombieAttackGoal(this, 1.0F, false));
+                this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0F));
+                this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
             }
         }
+        this.targetSelector.add(1, (new SoullessRevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
+        this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
+    }
+
+    @Override
+    public int getAngerTime() {
+        return 0;
+    }
+
+    @Override
+    public void setAngerTime(int angerTime) {
+        ANGER_TIME_RANGE.get(this.random);
+    }
+
+    @Override
+    public @Nullable UUID getAngryAt() {
+        return null;
+    }
+
+    @Override
+    public void setAngryAt(@Nullable UUID angryAt) {
+        this.angryAt = angryAt;
+    }
+
+    @Override
+    public void chooseRandomAngerTime() {
+        this.setAngerTime(ANGER_TIME_RANGE.get(this.random));
     }
 
     static class SoullessRevengeGoal extends RevengeGoal {
@@ -204,5 +247,40 @@ public class SoullessEntity extends ZombifiedPiglinEntity { // Removed: implemen
             case HOSTILE -> { return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_ANGRY; }
         }
         return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
+    }
+
+    @Override
+    protected void initEquipment(net.minecraft.util.math.random.Random random, LocalDifficulty localDifficulty) {}
+
+    static class LookAtTargetGoal extends ZombieAttackGoal {
+        public LookAtTargetGoal(SoullessEntity soulless, double speed) {
+            super(soulless, speed, false);
+            this.setControls(EnumSet.of(Control.LOOK));
+        }
+
+        @Override
+        public boolean canStart() {
+            return true; // always run
+        }
+
+        @Override
+        public void tick() {
+            LivingEntity target = this.mob.getTarget();
+            if (target != null && target.squaredDistanceTo(this.mob) < 4096.0D) {
+                this.mob.getLookControl().lookAt(
+                        target.getX(),
+                        target.getEyeY(),
+                        target.getZ(),
+                        360.0F,
+                        360.0F
+                );
+            }
+            // do not call super.tick() if you don't want attacks
+        }
+    }
+
+
+    static {
+        ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
     }
 }

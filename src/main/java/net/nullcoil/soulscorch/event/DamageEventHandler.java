@@ -29,7 +29,7 @@ public class DamageEventHandler {
                         ModEffects.SOULSCORCH,
                         600, // Duration in ticks (30 seconds)
                         0,   // Amplifier
-                        true, // Show particles
+                        false, // Show particles
                         true, // Show icon
                         false // Can be removed by milk
                 ));

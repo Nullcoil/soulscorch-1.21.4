@@ -13,9 +13,13 @@ import net.nullcoil.soulscorch.entity.ModEntities;
 public class ModEntitySpawns {
     public static void addSpawns() {
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
-                SpawnGroup.MONSTER, ModEntities.BLAZT, 1, 1, 1);
-
+                SpawnGroup.MONSTER, ModEntities.BLAZT, 30, 1, 1);
         SpawnRestriction.register(ModEntities.BLAZT, SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canMobSpawn);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
+                SpawnGroup.MONSTER, ModEntities.SOULLESS, 50, 2, 8);
+        SpawnRestriction.register(ModEntities.SOULLESS,SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
     }
 }

@@ -1,10 +1,7 @@
 package net.nullcoil.soulscorch.entity.custom;
 
 import net.minecraft.client.render.entity.animation.Animation;
-import net.minecraft.entity.AnimationState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -29,6 +26,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessActivity;
@@ -46,14 +44,25 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     private int angerTime;
     private static final UniformIntProvider ANGER_TIME_RANGE;
 
-
-
     private static final TrackedData<Integer> ACTIVITY =
             DataTracker.registerData(SoullessEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public final AnimationState passiveAnimationState = new AnimationState();
     public final AnimationState neutralAnimationState = new AnimationState();
     public final AnimationState hostileAnimationState = new AnimationState();
+
+    @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
+                                 @Nullable EntityData entityData) {
+        EntityData data = super.initialize(world,difficulty,spawnReason, entityData);
+
+        float yaw = this.random.nextFloat() * 360f - 180f;
+        this.setYaw(yaw);
+        this.setHeadYaw(yaw);
+        this.setBodyYaw(yaw);
+
+        return data;
+    }
 
     private Animation currentAnimation;
     private int ticksUntilNext = 0;
@@ -90,6 +99,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         switch (activity) {
             case PASSIVE -> {}
             case NEUTRAL -> {
+                this.goalSelector.add(7, new LookAtTargetGoal(this, 0));
                 this.targetSelector.add(7, new ActiveTargetGoal(this, PlayerEntity.class,true));
             }
             case HOSTILE -> {
@@ -149,7 +159,14 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         boolean bl = super.tryAttack(world, target);
         if (bl && target instanceof LivingEntity) {
             float f = this.getWorld().getLocalDifficulty(this.getBlockPos()).getLocalDifficulty();
-            ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600 * (int)f), this);
+            ((LivingEntity)target).addStatusEffect(new StatusEffectInstance(
+                    ModEffects.SOULSCORCH,
+                    600, // Duration in ticks (30 seconds)
+                    0,   // Amplifier
+                    false, // Show particles
+                    true,  // Show icon
+                    false
+            ));
         }
 
         return bl;

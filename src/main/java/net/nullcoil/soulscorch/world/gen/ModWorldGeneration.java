@@ -3,12 +3,9 @@ package net.nullcoil.soulscorch.world.gen;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.biome.SpawnSettings;
 
 public class ModWorldGeneration {
     private static final Identifier ID = Identifier.of("soulscorch", "ghast_spawn_tweak");

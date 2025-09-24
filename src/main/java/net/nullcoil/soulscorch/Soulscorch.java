@@ -1,14 +1,11 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.item.Items;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.tag.EntityTypeTags;
-import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.entity.ModEntities;
@@ -16,6 +13,7 @@ import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
+import net.nullcoil.soulscorch.event.SoulCampfireDetector;
 import net.nullcoil.soulscorch.event.SoulbreakEventHandler;
 import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.potion.ModPotions;

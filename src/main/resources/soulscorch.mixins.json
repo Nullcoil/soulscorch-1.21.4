@@ -3,7 +3,7 @@
 	"package": "net.nullcoil.soulscorch.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ExampleMixin"
+		"PiglinBrainMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

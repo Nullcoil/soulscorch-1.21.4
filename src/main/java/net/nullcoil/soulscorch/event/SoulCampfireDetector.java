@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch;
+package net.nullcoil.soulscorch.event;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.block.CampfireBlock;
@@ -8,6 +8,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TypeFilter;
+import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.util.BlockUtils;
 import java.util.List;
@@ -37,7 +38,7 @@ public class SoulCampfireDetector {
                                 ModEffects.SOULSCORCH,
                                 600, // Duration in ticks (30 seconds)
                                 0,   // Amplifier
-                                true, // Show particles
+                                false, // Show particles
                                 true,  // Show icon
                                 false   // Can be removed by milk
                         ));

@@ -17,6 +17,7 @@ public class ModItems {
     public static final Item SOUL_CHARGE = registerItem("soul_charge",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, "soul_charge")))));
 
 
+
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(Soulscorch.MOD_ID, name), item);
     }

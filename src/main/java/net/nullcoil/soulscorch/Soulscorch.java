@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.tag.EntityTypeTags;
+import net.nullcoil.soulscorch.block.ModBlocks;
+import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.entity.ModEntities;
@@ -30,13 +32,15 @@ public class Soulscorch implements ModInitializer {
     @Override
     public void onInitialize() {
         ModItems.register();
-        ModEffects.registerEffects();
+        ModEffects.register();
         DamageEventHandler.register();
         SleepHealthResetHandler.register();
         SoulCampfireDetector.register();
         ModPotions.register();
         ModEntities.register();
         ModSounds.register();
+        ModBlocks.register();
+        ModBlockEntities.register();
 
         SoulbreakEventHandler.register();
 

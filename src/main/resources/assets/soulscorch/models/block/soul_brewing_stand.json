@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/brewing_stand",
+  "textures": {
+    "all": "soulscorch:block/soul_brewing_stand"
+  }
+}

@@ -19,7 +19,7 @@ public class ModEffects {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);
     }
 
-    public static void registerEffects() {
+    public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Effects for " + Soulscorch.MOD_ID);
     }
 }

@@ -1,0 +1,32 @@
+|----BLOCKS----|
+ - Added Soul Brewing Stand
+
+|----EFFECTS----|
+ - Added Soulscorch Effect.
+ - - When affected by Soulscorch, every instance of damage decreases your max health by 1 (half a heart)
+ - - This can be reversed by sleeping in the Overworld.
+ - Added Soul Render Effect.
+ - - Instantly increases your maximum health back to 20.
+
+|----ENTITIES----|
+ - Added the Blazt, which shoots Soul Charges that burst into clouds that deal Instant Damage and
+   apply the Soulscorch Effect. Spawns in the Soul Sand Valley. Uses custom sounds.
+ - Added the Soulless. Breaking any soul-based block near a Soulless will wake it up to watch you. That's your first
+   and only warning. Spawns in the Soul Sand Valley. Listen for their whispers when stagnant. Piglins are scared of
+   Soulless.
+
+|----ITEMS----|
+ - Added Blazt Rod
+ - Added Blazt Powder, 2 are crafted from 1 Blazt Rod
+ - Added Soul Cream, crafted from Blazt Powder + Slime Ball
+ - Added Soul Charge. Unachievable in Survival Mode.
+ - Added Potions and Tipped Arrow of Soul Render, made by brewing Soul Cream into Awkward Potion.
+
+|----TAGS----|
+ - The following blocks count as "#soulbased_blocks" and will trigger Soulless in the area when broken:
+ - - Soul Campfire
+ - - Soul Fire
+ - - Soul Lantern
+ - - Soul Sand
+ - - Soul Soil
+ - - Soul Torch

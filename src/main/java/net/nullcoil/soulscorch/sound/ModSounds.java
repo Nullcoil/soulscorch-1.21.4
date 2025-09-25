@@ -15,6 +15,8 @@ public class ModSounds {
     public static final SoundEvent BLAZT_BREATHE_IN = registerSoundEvent("blazt_breathe_in");
     public static final SoundEvent BLAZT_BREATHE_OUT = registerSoundEvent("blazt_breathe_out");
 
+    public static final SoundEvent SOULLESS_WAKE = registerSoundEvent("soulless_wake");
+
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = Identifier.of(Soulscorch.MOD_ID, name);

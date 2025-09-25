@@ -33,13 +33,6 @@ public class SoulbreakEventHandler {
 
         if (!state.isIn(SOULBASED_BLOCKS)) return;
 
-        System.out.println("=== SOULBREAK EVENT TRIGGERED ===");
-        System.out.println("Player: " + player.getName().getString());
-        System.out.println("Block: " + state.getBlock());
-        System.out.println("Position: " + pos);
-        System.out.println("World: SERVER");
-        System.out.println("================================");
-
         // BFS to find all Soulless in chain
         Set<SoullessEntity> visited = new HashSet<>();
         Queue<SoullessEntity> queue = new LinkedList<>();
@@ -72,7 +65,5 @@ public class SoulbreakEventHandler {
             world.getEntitiesByClass(SoullessEntity.class, chainBox, e -> !visited.contains(e))
                     .forEach(queue::add);
         }
-
-        System.out.println("Soulless alerted: " + visited.size());
     }
 }

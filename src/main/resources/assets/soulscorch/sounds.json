@@ -34,6 +34,16 @@
     "sounds": [
       "soulscorch:blazt_breathe_out"
     ]
+  },
+  "soulless_wake": {
+    "subtitle": "sounds.soulscorch.soulless_wake",
+    "sounds": [
+      "soulscorch:soulless_wake0",
+      "soulscorch:soulless_wake1",
+      "soulscorch:soulless_wake2",
+      "soulscorch:soulless_wake3",
+      "soulscorch:soulless_wake4"
+    ]
   }
 
 }

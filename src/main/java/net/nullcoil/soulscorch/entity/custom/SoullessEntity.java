@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Activity;
@@ -31,6 +32,7 @@ import net.minecraft.world.World;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessActivity;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessAnimations;
+import net.nullcoil.soulscorch.sound.ModSounds;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +54,16 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     public final AnimationState hostileAnimationState = new AnimationState();
 
     @Override
+    protected float getVelocityMultiplier() {
+        var blockState = this.getWorld().getBlockState(this.getVelocityAffectingPos());
+        if (blockState.isOf(Blocks.SOUL_SAND) || blockState.isOf(Blocks.SOUL_SOIL)) {
+            return 1.2F;
+        }
+        return super.getVelocityMultiplier();
+    }
+
+
+    @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
                                  @Nullable EntityData entityData) {
         EntityData data = super.initialize(world,difficulty,spawnReason, entityData);
@@ -60,10 +72,10 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         this.setYaw(yaw);
         this.setHeadYaw(yaw);
         this.setBodyYaw(yaw);
+        this.setBaby(false);
 
         return data;
     }
-
     private Animation currentAnimation;
     private int ticksUntilNext = 0;
     private int twitchDuration = 0;
@@ -114,8 +126,14 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
 
     public void raiseActivity() {
         switch (getActivity()) {
-            case PASSIVE -> setActivity(SoullessActivity.NEUTRAL);
-            case NEUTRAL -> setActivity(SoullessActivity.HOSTILE);
+            case PASSIVE -> {
+                playSound(ModSounds.SOULLESS_WAKE);
+                setActivity(SoullessActivity.NEUTRAL);
+            }
+            case NEUTRAL -> {
+                playSound(ModSounds.SOULLESS_WAKE);
+                setActivity(SoullessActivity.HOSTILE);
+            }
             case HOSTILE -> {}
         }
     }
@@ -183,7 +201,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
                 this.setActivity(SoullessActivity.HOSTILE);
             }
         }
-
         return wasDamaged;
     }
 

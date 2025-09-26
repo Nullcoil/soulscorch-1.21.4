@@ -7,8 +7,9 @@ import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 
 public class SoullessRenderer extends BipedEntityRenderer<SoullessEntity, SoullessRenderState, SoullessModel> {
-    private static final Identifier TEXTURE =
-            Identifier.of(Soulscorch.MOD_ID, "textures/entity/soulless.png");
+    private static final Identifier TEXTURE = Identifier.of(Soulscorch.MOD_ID, "textures/entity/soulless/soulless.png");
+    private static final Identifier AWAKENED =
+            Identifier.of(Soulscorch.MOD_ID, "textures/entity/soulless/awakened.png");
 
     public SoullessRenderer(EntityRendererFactory.Context context) {
         super(context, new SoullessModel(context.getPart(SoullessModel.SOULLESS)),1.5f);
@@ -22,6 +23,7 @@ public class SoullessRenderer extends BipedEntityRenderer<SoullessEntity, Soulle
     public void updateRenderState(SoullessEntity entity, SoullessRenderState state, float tickDelta) {
         super.updateRenderState(entity, state, tickDelta);
         state.currentActivity = entity.getActivity();
+        state.active = entity.getActivity() != SoullessActivity.PASSIVE;
 
         // Copy all animation states from entity to render state
         state.passiveAnimationState.copyFrom(entity.passiveAnimationState);
@@ -31,6 +33,7 @@ public class SoullessRenderer extends BipedEntityRenderer<SoullessEntity, Soulle
 
     @Override
     public Identifier getTexture(SoullessRenderState state) {
-        return TEXTURE;
+
+        return state.active ? AWAKENED : TEXTURE;
     }
 }

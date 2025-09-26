@@ -64,6 +64,13 @@ public class SoullessModel extends PiglinBaseEntityModel<SoullessRenderState> {
                 this.leftLeg.pivotZ += 3;
                 this.rightLeg.pivotZ += 3;
 
+                this.leftLeg.pitch = (float)Math.toRadians(10);
+                this.leftLeg.roll = (float)Math.toRadians(-5);
+
+                this.rightLeg.pitch = (float)Math.toRadians(-10);
+                this.rightLeg.yaw = (float)Math.toRadians(-7);
+                this.rightLeg.roll = (float)Math.toRadians(5);
+
                 this.head.pitch = (float)Math.toRadians(14.6599);
                 this.head.yaw = (float)Math.toRadians(3.2113);
                 this.head.roll = (float)Math.toRadians(-12.0868);

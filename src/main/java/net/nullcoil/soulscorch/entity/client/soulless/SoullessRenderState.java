@@ -9,6 +9,7 @@ import net.minecraft.entity.AnimationState;
 public class SoullessRenderState extends BipedEntityRenderState {
     /** Determines the state of the Soulless */
     public SoullessActivity currentActivity;
+    public boolean active;
 
     public final AnimationState passiveAnimationState = new AnimationState();
     public final AnimationState neutralAnimationState = new AnimationState();

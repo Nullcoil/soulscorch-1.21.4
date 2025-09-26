@@ -44,7 +44,7 @@ public class Soulscorch implements ModInitializer {
 
         SoulbreakEventHandler.register();
 
-        ModWorldGeneration.generateModWorldGen();
+        ModWorldGeneration.register();
 
         FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());

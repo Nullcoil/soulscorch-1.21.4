@@ -51,8 +51,8 @@ public class SoulscorchFireballEntity extends ExplosiveProjectileEntity implemen
                 areaEffectCloudEntity.setRadius(3.0F);
                 areaEffectCloudEntity.setDuration(600);
                 areaEffectCloudEntity.setRadiusGrowth((7.0F - areaEffectCloudEntity.getRadius()) / (float)areaEffectCloudEntity.getDuration());
-                areaEffectCloudEntity.addEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600, 0));
-                areaEffectCloudEntity.addEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 0));
+                areaEffectCloudEntity.addEffect(new StatusEffectInstance(ModEffects.SOULSCORCH, 600, 0, false, false, true));
+                areaEffectCloudEntity.addEffect(new StatusEffectInstance(StatusEffects.INSTANT_DAMAGE, 1, 0, false, false, true));
                 if (!list.isEmpty()) {
                     for(LivingEntity livingEntity : list) {
                         double d = this.squaredDistanceTo(livingEntity);

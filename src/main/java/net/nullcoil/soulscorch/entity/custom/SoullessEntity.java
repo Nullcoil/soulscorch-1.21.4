@@ -217,9 +217,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     protected void initGoals() {
         switch(this.getActivity()) {
             case PASSIVE -> {}
-            case NEUTRAL -> {
-                this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
-            }
+            case NEUTRAL -> this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
             case HOSTILE -> {
                 this.goalSelector.add(2, new ZombieAttackGoal(this, 1.0F, false));
                 this.goalSelector.add(7, new WanderAroundFarGoal(this, 1.0F));
@@ -228,6 +226,12 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         }
         this.targetSelector.add(1, (new SoullessRevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
         this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
+    }
+
+    @Override
+    public boolean canTarget(LivingEntity target) {
+        if(this.getActivity() == SoullessActivity.PASSIVE) return false;
+        return super.canTarget(target);
     }
 
     @Override

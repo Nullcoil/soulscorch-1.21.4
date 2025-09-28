@@ -15,6 +15,7 @@ public class PiglinBrainMixin {
     private static void isZombified(EntityType<?> entityType, CallbackInfoReturnable<Boolean> cir) {
         if (entityType == ModEntities.SOULLESS) {
             cir.setReturnValue(true);
+            cir.cancel();
         }
     }
 }

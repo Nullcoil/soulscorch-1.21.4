@@ -12,7 +12,7 @@ public class SoullessRenderer extends BipedEntityRenderer<SoullessEntity, Soulle
             Identifier.of(Soulscorch.MOD_ID, "textures/entity/soulless/awakened.png");
 
     public SoullessRenderer(EntityRendererFactory.Context context) {
-        super(context, new SoullessModel(context.getPart(SoullessModel.SOULLESS)),1.5f);
+        super(context, new SoullessModel(context.getPart(SoullessModel.SOULLESS)),0f);
     }
 
     @Override

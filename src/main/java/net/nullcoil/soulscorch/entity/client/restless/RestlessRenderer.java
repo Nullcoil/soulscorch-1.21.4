@@ -25,18 +25,19 @@ public class RestlessRenderer extends MobEntityRenderer<RestlessEntity, Restless
     private static final Identifier AWAKENED =
             Identifier.of("soulscorch", "textures/entity/restless/restless_awakened.png");
 
-    public RestlessRenderer(EntityRendererFactory.Context context, RestlessModel entityModel, float f) {
-        super(context, entityModel, f);
-    }
-
-
-    @Override
-    public Identifier getTexture(RestlessRenderState state) {
-        return state.awakened ? AWAKENED : TEXTURE;
+    public RestlessRenderer(EntityRendererFactory.Context context) {
+        super(context, new RestlessModel(context.getPart(RestlessModel.RESTLESS)), 0.7f);
     }
 
     @Override
-    public RestlessRenderState createRenderState() {
-        return new RestlessRenderState();
+    public void updateRenderState(RestlessEntity entity, RestlessRenderState state, float tickDelta) {
+        super.updateRenderState(entity, state, tickDelta);
+        state.awakened = entity.getAwakened();
     }
+
+    @Override
+    public Identifier getTexture(RestlessRenderState state) { return state.awakened ? AWAKENED : TEXTURE; }
+
+    @Override
+    public RestlessRenderState createRenderState() { return new RestlessRenderState(); }
 }

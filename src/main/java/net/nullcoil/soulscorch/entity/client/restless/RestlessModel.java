@@ -3,12 +3,16 @@ package net.nullcoil.soulscorch.entity.client.restless;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.entity.model.BabyModelTransformer;
 import net.minecraft.client.render.entity.model.EntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.ModelTransformer;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
+import net.nullcoil.soulscorch.Soulscorch;
 
 import java.util.Set;
 
 public class RestlessModel extends EntityModel<RestlessRenderState> {
+    public static final EntityModelLayer RESTLESS = new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "restless"), "main");
     public static final ModelTransformer BABY_TRANSFORMER = new BabyModelTransformer(true, 8.0F, 6.0F, 1.9F, 2.0F, 24.0F, Set.of("head"));
     private static final float HEAD_PITCH_START = 0.87266463F;
     private static final float HEAD_PITCH_END = -0.34906584F;

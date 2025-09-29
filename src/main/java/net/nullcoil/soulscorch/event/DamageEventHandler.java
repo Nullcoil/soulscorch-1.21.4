@@ -4,21 +4,50 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.Box;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
 import net.nullcoil.soulscorch.util.BlockUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DamageEventHandler {
     public static void register() {
         ServerLivingEntityEvents.AFTER_DAMAGE.register((LivingEntity entity,
-                                                        DamageSource source,
+                                                        net.minecraft.entity.damage.DamageSource source,
                                                         float baseDamage,
                                                         float damageTaken,
                                                         boolean blocked) -> {
+            // Awaken nearby Restless entities
+            if (entity.getWorld() instanceof ServerWorld serverWorld) {
+                Box searchBox = new Box(
+                        entity.getX() - 24, entity.getY() - 24, entity.getZ() - 24,
+                        entity.getX() + 24, entity.getY() + 24, entity.getZ() + 24
+                );
+
+                List<RestlessEntity> candidates = serverWorld.getEntitiesByClass(RestlessEntity.class, searchBox, r -> !r.getAwakened());
+
+                List<RestlessEntity> allRestless = serverWorld.getEntitiesByClass(
+                        RestlessEntity.class, searchBox, r -> true
+                );
+                System.out.println("[DEBUG] All nearby Restless: " + allRestless.size());
+                for (RestlessEntity r : allRestless) {
+                    System.out.println("[DEBUG] Restless at " + r.getBlockPos() + " awakened=" + r.getAwakened());
+                }
+
+                if (!candidates.isEmpty()) {
+                    RestlessEntity toAwaken = candidates.get(serverWorld.random.nextInt(candidates.size()));
+                    toAwaken.setAwakened(true);
+                    System.out.println("[DEBUG] Awakened Restless: " + toAwaken.getName().getString());
+                }
+            }
             // Only proc if entity has Soulscorch AND actually took damage
+            System.out.println("[DEBUG] Entity " + entity.getName().getString() + " took damage: " + damageTaken);
             if (!entity.hasStatusEffect(ModEffects.SOULSCORCH) || damageTaken <= 0.0f) {
                 return;
             }
@@ -30,24 +59,22 @@ public class DamageEventHandler {
                         600, // Duration in ticks (30 seconds)
                         0,   // Amplifier
                         false, // Show particles
-                        true, // Show icon
-                        false // Can be removed by milk
+                        true,  // Show icon
+                        false  // Can be removed by milk
                 ));
             }
 
+            // Reduce max health
             EntityAttributeInstance maxHealthAttr = entity.getAttributeInstance(EntityAttributes.MAX_HEALTH);
-            if (maxHealthAttr == null) return;
+            if (maxHealthAttr != null) {
+                double currentMax = maxHealthAttr.getBaseValue();
+                double newMax = Math.max(1.0, currentMax - 1.0); // Reduce by 1 health point
 
-            double currentMax = maxHealthAttr.getBaseValue();
-            // Reduce max health by half a heart (1.0 health point), min 0.5 hearts (1.0 health)
-            double newMax = Math.max(1.0, currentMax - 1.0);
-
-            if (newMax < currentMax) {
-                maxHealthAttr.setBaseValue(newMax);
-
-                // Clamp current health to the new max if necessary
-                if (entity.getHealth() > (float)newMax) {
-                    entity.setHealth((float)newMax);
+                if (newMax < currentMax) {
+                    maxHealthAttr.setBaseValue(newMax);
+                    if (entity.getHealth() > (float)newMax) {
+                        entity.setHealth((float)newMax);
+                    }
                 }
             }
         });

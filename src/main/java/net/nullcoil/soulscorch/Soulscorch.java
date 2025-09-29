@@ -12,6 +12,7 @@ import net.nullcoil.soulscorch.effect.ModEffects;
 import net.minecraft.entity.LivingEntity;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
+import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 import net.nullcoil.soulscorch.event.DamageEventHandler;
 import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
@@ -33,9 +34,6 @@ public class Soulscorch implements ModInitializer {
     public void onInitialize() {
         ModItems.register();
         ModEffects.register();
-        DamageEventHandler.register();
-        SleepHealthResetHandler.register();
-        SoulCampfireDetector.register();
         ModPotions.register();
         ModEntities.register();
         ModSounds.register();
@@ -43,11 +41,19 @@ public class Soulscorch implements ModInitializer {
         ModBlockEntities.register();
 
         SoulbreakEventHandler.register();
+        DamageEventHandler.register();
+        SleepHealthResetHandler.register();
+        SoulCampfireDetector.register();
 
         ModWorldGeneration.register();
 
         FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.RESTLESS, RestlessEntity.createAttributes());
+
+        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
+            builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, ModPotions.SOUL_RENDER_POTION);
+        });
 
 
         // Re-registering Soul Fire'd's Soul Fire to be used in this mod
@@ -74,9 +80,5 @@ public class Soulscorch implements ModInitializer {
                         )
                         .build()
         );
-
-        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
-            builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, ModPotions.SOUL_RENDER_POTION);
-        });
     }
 }

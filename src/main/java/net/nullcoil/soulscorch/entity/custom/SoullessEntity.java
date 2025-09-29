@@ -45,13 +45,16 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     private UUID angryAt;
     private int angerTime;
     private static final UniformIntProvider ANGER_TIME_RANGE;
-
-    private static final TrackedData<Integer> ACTIVITY =
-            DataTracker.registerData(SoullessEntity.class, TrackedDataHandlerRegistry.INTEGER);
-
+    private Animation currentAnimation;
+    private int ticksUntilNext = 0;
+    private int twitchDuration = 0;
+    private static final Random RANDOM = new Random();
     public final AnimationState passiveAnimationState = new AnimationState();
     public final AnimationState neutralAnimationState = new AnimationState();
     public final AnimationState hostileAnimationState = new AnimationState();
+
+    private static final TrackedData<Integer> ACTIVITY =
+            DataTracker.registerData(SoullessEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     @Override
     protected float getVelocityMultiplier() {
@@ -61,7 +64,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         }
         return super.getVelocityMultiplier();
     }
-
 
     @Override
     public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
@@ -76,10 +78,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
 
         return data;
     }
-    private Animation currentAnimation;
-    private int ticksUntilNext = 0;
-    private int twitchDuration = 0;
-    private static final Random RANDOM = new Random();
 
     public SoullessEntity(EntityType<? extends ZombifiedPiglinEntity> entityType, World world) {
         super(entityType, world);
@@ -235,29 +233,19 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     }
 
     @Override
-    public int getAngerTime() {
-        return 0;
-    }
+    public int getAngerTime() { return 0; }
 
     @Override
-    public void setAngerTime(int angerTime) {
-        ANGER_TIME_RANGE.get(this.random);
-    }
+    public void setAngerTime(int angerTime) { ANGER_TIME_RANGE.get(this.random); }
 
     @Override
-    public @Nullable UUID getAngryAt() {
-        return null;
-    }
+    public @Nullable UUID getAngryAt() { return null; }
 
     @Override
-    public void setAngryAt(@Nullable UUID angryAt) {
-        this.angryAt = angryAt;
-    }
+    public void setAngryAt(@Nullable UUID angryAt) { this.angryAt = angryAt; }
 
     @Override
-    public void chooseRandomAngerTime() {
-        this.setAngerTime(ANGER_TIME_RANGE.get(this.random));
-    }
+    public void chooseRandomAngerTime() { this.setAngerTime(ANGER_TIME_RANGE.get(this.random)); }
 
     static class SoullessRevengeGoal extends RevengeGoal {
         public SoullessRevengeGoal(SoullessEntity mob, Class<?>... noRevengeTypes) {
@@ -274,9 +262,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     }
 
     @Override
-    public SoundCategory getSoundCategory() {
-        return SoundCategory.NEUTRAL;
-    }
+    public SoundCategory getSoundCategory() { return SoundCategory.NEUTRAL; }
 
     @Override
     public SoundEvent getAmbientSound() {
@@ -316,7 +302,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
             // do not call super.tick() if you don't want attacks
         }
     }
-
 
     static {
         ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);

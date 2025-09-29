@@ -43,7 +43,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     private static final TrackedData<Boolean> SHOOTING;
     private int fireballStrength = 1;
 
-    // Animation states
     public final AnimationState idleAnimationState = new AnimationState();
     public final AnimationState shootAnimationState = new AnimationState();
 
@@ -90,9 +89,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     }
 
     // === Shooting tracker ===
-    public boolean isShooting() {
-        return this.dataTracker.get(SHOOTING);
-    }
+    public boolean isShooting() { return this.dataTracker.get(SHOOTING); }
 
     public void setShooting(boolean shooting) {
         this.dataTracker.set(SHOOTING, shooting);
@@ -152,34 +149,22 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     }
 
     @Override
-    public SoundCategory getSoundCategory() {
-        return SoundCategory.HOSTILE;
-    }
+    public SoundCategory getSoundCategory() { return SoundCategory.HOSTILE; }
 
     @Override
-    protected SoundEvent getAmbientSound() {
-        return ModSounds.BLAZT_AMBIENT;
-    }
+    protected SoundEvent getAmbientSound() { return ModSounds.BLAZT_AMBIENT; }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return ModSounds.BLAZT_HURT;
-    }
+    protected SoundEvent getHurtSound(DamageSource source) { return ModSounds.BLAZT_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound() {
-        return ModSounds.BLAZT_DEATH;
-    }
+    protected SoundEvent getDeathSound() { return ModSounds.BLAZT_DEATH; }
 
     @Override
-    protected float getSoundVolume() {
-        return 5.0F;
-    }
+    protected float getSoundVolume() { return 5.0F; }
 
     @Override
-    public int getLimitPerChunk() {
-        return 1;
-    }
+    public int getLimitPerChunk() { return 1; }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -195,11 +180,6 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         }
     }
 
-    static {
-        SHOOTING = DataTracker.registerData(BlaztEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    }
-
-    // === Custom movement/AI ===
     static class BlaztMoveControl extends MoveControl {
         private final BlaztEntity blazt;
         private int collisionCheckCooldown;
@@ -433,29 +413,19 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         private final BlaztEntity blazt;
         public int cooldown;
 
-        public ShootFireballGoal(BlaztEntity blazt) {
-            this.blazt = blazt;
-        }
+        public ShootFireballGoal(BlaztEntity blazt) { this.blazt = blazt; }
 
         @Override
-        public boolean canStart() {
-            return this.blazt.getTarget() != null;
-        }
+        public boolean canStart() { return this.blazt.getTarget() != null; }
 
         @Override
-        public void start() {
-            this.cooldown = 0;
-        }
+        public void start() { this.cooldown = 0; }
 
         @Override
-        public void stop() {
-            this.blazt.setShooting(false);
-        }
+        public void stop() { this.blazt.setShooting(false); }
 
         @Override
-        public boolean shouldRunEveryTick() {
-            return true;
-        }
+        public boolean shouldRunEveryTick() { return true; }
 
         @Override
         public void tick() {
@@ -540,8 +510,9 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
 
     }
+
+    static {
+        SHOOTING = DataTracker.registerData(BlaztEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    }
+
 }
-
-
-
-

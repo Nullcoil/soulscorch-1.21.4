@@ -7,6 +7,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Box;
 import net.nullcoil.soulscorch.effect.ModEffects;
@@ -14,7 +15,6 @@ import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
 import net.nullcoil.soulscorch.util.BlockUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DamageEventHandler {
     public static void register() {
@@ -24,7 +24,7 @@ public class DamageEventHandler {
                                                         float damageTaken,
                                                         boolean blocked) -> {
             // Awaken nearby Restless entities
-            if (entity.getWorld() instanceof ServerWorld serverWorld) {
+            if (entity.getWorld() instanceof ServerWorld serverWorld && entity instanceof PlayerEntity) {
                 Box searchBox = new Box(
                         entity.getX() - 24, entity.getY() - 24, entity.getZ() - 24,
                         entity.getX() + 24, entity.getY() + 24, entity.getZ() + 24
@@ -47,7 +47,6 @@ public class DamageEventHandler {
                 }
             }
             // Only proc if entity has Soulscorch AND actually took damage
-            System.out.println("[DEBUG] Entity " + entity.getName().getString() + " took damage: " + damageTaken);
             if (!entity.hasStatusEffect(ModEffects.SOULSCORCH) || damageTaken <= 0.0f) {
                 return;
             }

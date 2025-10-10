@@ -23,5 +23,10 @@ public class ModEntitySpawns {
                 SpawnGroup.MONSTER, ModEntities.SOULLESS, 100, 2, 8);
         SpawnRestriction.register(ModEntities.SOULLESS,SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
+                SpawnGroup.MONSTER, ModEntities.RESTLESS, 20, 1, 1);
+        SpawnRestriction.register(ModEntities.RESTLESS, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
     }
 }

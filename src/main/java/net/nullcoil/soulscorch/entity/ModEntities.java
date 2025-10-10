@@ -36,7 +36,7 @@ public class ModEntities {
 
     public static final EntityType<RestlessEntity> RESTLESS = Registry.register(Registries.ENTITY_TYPE,
             RESTLESS_ID, EntityType.Builder.create(RestlessEntity::new, SpawnGroup.MONSTER)
-                    .dimensions(2f,3f)
+                    .dimensions(1.6f,1.4f)
                     .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, RESTLESS_ID)));
 
     public static void register() {

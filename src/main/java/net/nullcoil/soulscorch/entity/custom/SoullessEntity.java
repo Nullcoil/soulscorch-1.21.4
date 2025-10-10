@@ -3,7 +3,6 @@ package net.nullcoil.soulscorch.entity.custom;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -12,10 +11,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -23,8 +19,6 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.TimeHelper;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -59,9 +53,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     @Override
     protected float getVelocityMultiplier() {
         var blockState = this.getWorld().getBlockState(this.getVelocityAffectingPos());
-        if (blockState.isOf(Blocks.SOUL_SAND) || blockState.isOf(Blocks.SOUL_SOIL)) {
-            return 1.2F;
-        }
+        if (blockState.isOf(Blocks.SOUL_SAND) || blockState.isOf(Blocks.SOUL_SOIL)) { return 1.2F; }
         return super.getVelocityMultiplier();
     }
 
@@ -179,9 +171,9 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
                     ModEffects.SOULSCORCH,
                     600, // Duration in ticks (30 seconds)
                     0,   // Amplifier
-                    false, // Show particles
-                    true,  // Show icon
-                    false
+                    false, // Show ambient
+                    false,  // Show particles
+                    true   // Show icon
             ));
         }
 

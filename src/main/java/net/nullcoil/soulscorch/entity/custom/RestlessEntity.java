@@ -1,7 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -9,19 +8,43 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.nullcoil.soulscorch.sound.ModSounds;
+import net.nullcoil.soulscorch.effect.ModEffects;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
 
 public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     private static final TrackedData<Boolean> AWAKENED;
+    private static Boolean aiming = false;
+    private Vec3d chargeDirection;
     public RestlessEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
+    }
+
+    @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
+                                 @Nullable EntityData entityData) {
+        EntityData data = super.initialize(world,difficulty,spawnReason, entityData);
+
+        float yaw = this.random.nextFloat() * 360f - 180f;
+        this.setYaw(yaw);
+        this.setHeadYaw(yaw);
+        this.setBodyYaw(yaw);
+        this.setBaby(false);
+
+        return data;
     }
 
     @Override
@@ -33,11 +56,13 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     public static DefaultAttributeContainer.Builder createAttributes() {
         return ZoglinEntity.createZoglinAttributes()
                 .add(EntityAttributes.ATTACK_DAMAGE, 7.0f)
-                .add(EntityAttributes.STEP_HEIGHT, 1f);
+                .add(EntityAttributes.STEP_HEIGHT, 1f)
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.6);
     }
 
     @Override
     protected void initGoals() {
+        this.goalSelector.add(7, new LookAtTargetGoal(this));
         this.goalSelector.add(0, new BullrushGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
@@ -124,6 +149,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
         public void tick() {
             switch (state) {
                 case WAITING:
+                    aiming = true;
                     mob.getNavigation().stop();
                     timer--;
                     if (timer <= 0) {
@@ -135,50 +161,69 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                                 playerVel,
                                 0.35 // charge speed, blocks per tick
                         );
-                        timer = 100; // 5 seconds charge
+                        timer = 60; // 3 seconds charge
                         state = State.CHARGING;
                     }
                     break;
 
                 case CHARGING:
-                    if (interceptPoint != null) {
-                        Vec3d dir = interceptPoint.subtract(mob.getPos()).normalize();
-                        mob.setVelocity(dir.multiply(0.35)); // constant velocity
-                        mob.velocityModified = true;
-
-                        // Knockback logic: anyone collided gets yeeted
-                        mob.getWorld().getOtherEntities(mob, mob.getBoundingBox().expand(0.5),
-                                e -> e instanceof LivingEntity && e != mob).forEach(e -> {
-                            if (e instanceof LivingEntity living) {
-                                // Knockback strength
-                                float strength = 3.0f;
-
-                                // Direction away from the Restless
-                                double dx = e.getX() - mob.getX();
-                                double dz = e.getZ() - mob.getZ();
-                                double dist = Math.sqrt(dx * dx + dz * dz);
-                                if (dist != 0) {
-                                    dx /= dist;
-                                    dz /= dist;
-
-                                    // Apply knockback directly
-                                    living.addVelocity(dx * strength, 0.4, dz * strength);
-                                    living.velocityModified = true;
-                                }
-                            }
-
-                        });
+                    aiming = false;
+                    if (chargeDirection == null) {
+                        chargeDirection = mob.getRotationVec(1.0F).normalize();
                     }
 
+                    mob.move(MovementType.SELF, chargeDirection.multiply(mob.getAttributeValue(EntityAttributes.MOVEMENT_SPEED)));
+                    mob.velocityModified = true;
+
+                    mob.setYaw((float) Math.toDegrees(Math.atan2(-chargeDirection.x, chargeDirection.z)));
+                    mob.setBodyYaw(mob.getYaw());
+                    mob.setHeadYaw(mob.getYaw());
+
+                    mob.getNavigation().stop();
+                    mob.setTarget(null);
+
+                    mob.getWorld().getOtherEntities(mob, mob.getBoundingBox().expand(0.5),
+                            e -> e instanceof LivingEntity && e != mob).forEach(e -> {
+                        LivingEntity living = (LivingEntity) e;
+                        float strength = 1.5f;
+                        double dx = living.getX() - mob.getX();
+                        double dz = living.getZ() - mob.getZ();
+                        double dist = Math.sqrt(dx * dx + dz * dz);
+                        if (dist != 0) {
+                            dx /= dist;
+                            dz /= dist;
+
+                            living.addVelocity(dx * strength, 0.4 * strength, dz * strength);
+                            living.velocityModified = true;
+                            living.damage(
+                                    (ServerWorld) mob.getWorld(),
+                                    mob.getDamageSources().mobAttack(mob),
+                                    (float) mob.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
+                            );
+                            living.addStatusEffect(new StatusEffectInstance(
+                                    ModEffects.SOULSCORCH,
+                                    600,
+                                    0,
+                                    false,
+                                    false,
+                                    true
+                            ));
+                        }
+                    });
+
+
+                // Reduce timer
                     timer--;
                     if (timer <= 0) {
                         state = State.DONE;
+                        mob.setAwakened(false);
+                        chargeDirection = null;
                     }
                     break;
 
                 case DONE:
                     mob.setAwakened(false);
-                    state = State.DONE;
+                    chargeDirection = null;
                     break;
             }
         }
@@ -189,5 +234,40 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
         }
     }
 
+    static class LookAtTargetGoal extends Goal {
+        private final RestlessEntity restless;
+
+        public LookAtTargetGoal(RestlessEntity restless) {
+            this.restless = restless;
+            this.setControls(EnumSet.of(Control.LOOK));
+        }
+
+        @Override
+        public boolean canStart() {
+            return restless.getAwakened() && aiming;
+        }
+
+        @Override
+        public boolean shouldRunEveryTick() {
+            return true;
+        }
+
+        @Override
+        public void tick() {
+            if (this.restless.getTarget() == null) {
+                Vec3d vec3d = this.restless.getVelocity();
+                this.restless.setYaw(-((float) MathHelper.atan2(vec3d.x, vec3d.z)) * (180F / (float) Math.PI));
+                this.restless.bodyYaw = this.restless.getYaw();
+            } else {
+                LivingEntity livingEntity = this.restless.getTarget();
+                if (livingEntity.squaredDistanceTo(this.restless) < 4096.0D) {
+                    double e = livingEntity.getX() - this.restless.getX();
+                    double f = livingEntity.getZ() - this.restless.getZ();
+                    this.restless.setYaw(-((float) MathHelper.atan2(e, f)) * (180F / (float) Math.PI));
+                    this.restless.bodyYaw = this.restless.getYaw();
+                }
+            }
+        }
+    }
 
 }

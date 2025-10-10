@@ -22,5 +22,7 @@
   "sounds.soulscorch.blazt_breathe_out": "Blazt recovers",
 
   "entity.soulscorch.soulless": "Soulless",
-  "sounds.soulscorch.soulless_wake": "Soulless wakes"
+  "sounds.soulscorch.soulless_wake": "Soulless wakes",
+
+  "entity.soulscorch.restless": "Restless"
 }

@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package net.nullcoil.soulscorch.block;
 
 import com.mojang.serialization.MapCodec;
@@ -27,38 +32,39 @@ import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 import net.nullcoil.soulscorch.block.entity.SoulBrewingStandBlockEntity;
 import org.jetbrains.annotations.Nullable;
 
-public class SoulBrewingStandBlock extends BrewingStandBlock {
+public class SoulBrewingStandBlock extends BlockWithEntity {
+    public static final MapCodec<SoulBrewingStandBlock> CODEC = createCodec(SoulBrewingStandBlock::new);
     public static final BooleanProperty[] BOTTLE_PROPERTIES;
     protected static final VoxelShape SHAPE;
+
+    public MapCodec<SoulBrewingStandBlock> getCodec() {
+        return CODEC;
+    }
 
     public SoulBrewingStandBlock(AbstractBlock.Settings settings) {
         super(settings);
         this.setDefaultState((BlockState)((BlockState)((BlockState)((BlockState)this.stateManager.getDefaultState()).with(BOTTLE_PROPERTIES[0], false)).with(BOTTLE_PROPERTIES[1], false)).with(BOTTLE_PROPERTIES[2], false));
     }
 
-    @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new SoulBrewingStandBlockEntity(pos, state);
     }
 
-    @Override
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return world.isClient ? null : validateTicker(type, ModBlockEntities.SOUL_BREWING_STAND, SoulBrewingStandBlockEntity::tick);
     }
 
-    @Override
     protected VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         return SHAPE;
     }
 
-    @Override
     protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             BlockEntity var7 = world.getBlockEntity(pos);
             if (var7 instanceof SoulBrewingStandBlockEntity) {
-                SoulBrewingStandBlockEntity soulBrewingStandBlockEntity = (SoulBrewingStandBlockEntity)var7;
-                player.openHandledScreen(soulBrewingStandBlockEntity);
+                SoulBrewingStandBlockEntity brewingStandBlockEntity = (SoulBrewingStandBlockEntity)var7;
+                player.openHandledScreen(brewingStandBlockEntity);
                 player.incrementStat(Stats.INTERACT_WITH_BREWINGSTAND);
             }
         }
@@ -66,15 +72,13 @@ public class SoulBrewingStandBlock extends BrewingStandBlock {
         return ActionResult.SUCCESS;
     }
 
-    @Override
     public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
         double d = (double)pos.getX() + 0.4 + (double)random.nextFloat() * 0.2;
         double e = (double)pos.getY() + 0.7 + (double)random.nextFloat() * 0.3;
         double f = (double)pos.getZ() + 0.4 + (double)random.nextFloat() * 0.2;
-        world.addParticle(ParticleTypes.SOUL, d, e, f, (double)0.0F, (double)0.0F, (double)0.0F);
+        world.addParticle(ParticleTypes.SMOKE, d, e, f, (double)0.0F, (double)0.0F, (double)0.0F);
     }
 
-    @Override
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         ItemScatterer.onStateReplaced(state, newState, world, pos);
         super.onStateReplaced(state, world, pos, newState, moved);
@@ -88,7 +92,6 @@ public class SoulBrewingStandBlock extends BrewingStandBlock {
         return ScreenHandler.calculateComparatorOutput(world.getBlockEntity(pos));
     }
 
-    @Override
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(new Property[]{BOTTLE_PROPERTIES[0], BOTTLE_PROPERTIES[1], BOTTLE_PROPERTIES[2]});
     }

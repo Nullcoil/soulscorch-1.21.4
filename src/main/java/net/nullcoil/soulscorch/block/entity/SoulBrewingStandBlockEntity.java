@@ -1,17 +1,17 @@
 package net.nullcoil.soulscorch.block.entity;
 
+import java.util.Arrays;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BrewingStandBlock;
-import net.minecraft.block.entity.BrewingStandBlockEntity;
+import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.screen.BrewingStandScreenHandler;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -21,11 +21,11 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import net.nullcoil.soulscorch.block.SoulBrewingStandBlock;
+import net.nullcoil.soulscorch.item.ModItems;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-
-public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
+public class SoulBrewingStandBlockEntity extends LockableContainerBlockEntity implements SidedInventory {
     private static final int INPUT_SLOT_INDEX = 3;
     private static final int FUEL_SLOT_INDEX = 4;
     private static final int[] TOP_SLOTS = new int[]{3};
@@ -43,7 +43,7 @@ public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
     protected final PropertyDelegate propertyDelegate;
 
     public SoulBrewingStandBlockEntity(BlockPos pos, BlockState state) {
-        super(pos, state);
+        super(ModBlockEntities.SOUL_BREWING_STAND, pos, state);
         this.inventory = DefaultedList.ofSize(5, ItemStack.EMPTY);
         this.propertyDelegate = new PropertyDelegate() {
             public int get(int index) {
@@ -89,7 +89,7 @@ public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
 
     public static void tick(World world, BlockPos pos, BlockState state, SoulBrewingStandBlockEntity blockEntity) {
         ItemStack itemStack = (ItemStack)blockEntity.inventory.get(4);
-        if (blockEntity.fuel <= 0 && itemStack.isIn(ItemTags.BREWING_FUEL)) {
+        if (blockEntity.fuel <= 0 && itemStack.isOf(ModItems.BLAZT_POWDER)) {
             blockEntity.fuel = 20;
             itemStack.decrement(1);
             markDirty(world, pos, state);
@@ -110,7 +110,7 @@ public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
             markDirty(world, pos, state);
         } else if (bl && blockEntity.fuel > 0) {
             --blockEntity.fuel;
-            blockEntity.brewTime = 400;
+            blockEntity.brewTime = 200;
             blockEntity.itemBrewing = itemStack2.getItem();
             markDirty(world, pos, state);
         }
@@ -119,12 +119,12 @@ public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
         if (!Arrays.equals(bls, blockEntity.slotsEmptyLastTick)) {
             blockEntity.slotsEmptyLastTick = bls;
             BlockState blockState = state;
-            if (!(state.getBlock() instanceof BrewingStandBlock)) {
+            if (!(state.getBlock() instanceof SoulBrewingStandBlock)) {
                 return;
             }
 
-            for(int i = 0; i < BrewingStandBlock.BOTTLE_PROPERTIES.length; ++i) {
-                blockState = (BlockState)blockState.with(BrewingStandBlock.BOTTLE_PROPERTIES[i], bls[i]);
+            for(int i = 0; i < SoulBrewingStandBlock.BOTTLE_PROPERTIES.length; ++i) {
+                blockState = (BlockState)blockState.with(SoulBrewingStandBlock.BOTTLE_PROPERTIES[i], bls[i]);
             }
 
             world.setBlockState(pos, blockState, 2);
@@ -208,7 +208,7 @@ public class SoulBrewingStandBlockEntity extends BrewingStandBlockEntity {
             BrewingRecipeRegistry brewingRecipeRegistry = this.world != null ? this.world.getBrewingRecipeRegistry() : BrewingRecipeRegistry.EMPTY;
             return brewingRecipeRegistry.isValidIngredient(stack);
         } else if (slot == 4) {
-            return stack.isIn(ItemTags.BREWING_FUEL);
+            return stack.isOf(ModItems.BLAZT_POWDER);
         } else {
             return (stack.isOf(Items.POTION) || stack.isOf(Items.SPLASH_POTION) || stack.isOf(Items.LINGERING_POTION) || stack.isOf(Items.GLASS_BOTTLE)) && this.getStack(slot).isEmpty();
         }

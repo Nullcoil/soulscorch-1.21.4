@@ -15,7 +15,7 @@ import net.nullcoil.soulscorch.Soulscorch;
 public class ModBlocks {
 
     public static final Block SOUL_BREWING_STAND = registerBlock("soul_brewing_stand",
-            new Block(AbstractBlock.Settings.create()
+            new SoulBrewingStandBlock(AbstractBlock.Settings.create()
                     .nonOpaque()
                     .mapColor(MapColor.IRON_GRAY)
                     .strength(0.5F)

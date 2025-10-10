@@ -1,9 +1,12 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
@@ -29,6 +32,8 @@ public class SoulscorchClient implements ClientModInitializer {
 
         EntityModelLayerRegistry.registerModelLayer(RestlessModel.RESTLESS, RestlessModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.RESTLESS, RestlessRenderer::new);
+
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_BREWING_STAND, RenderLayer.getCutout());
 
         System.out.println("SoulscorchClient initialization complete."); // Debug
     }

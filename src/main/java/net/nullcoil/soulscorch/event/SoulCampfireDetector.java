@@ -38,9 +38,9 @@ public class SoulCampfireDetector {
                                 ModEffects.SOULSCORCH,
                                 600, // Duration in ticks (30 seconds)
                                 0,   // Amplifier
-                                false, // Show particles
-                                true,  // Show icon
-                                false   // Can be removed by milk
+                                false, // is Ambient
+                                false,  // show Particles
+                                true   // show Icon
                         ));
                     }
                 }

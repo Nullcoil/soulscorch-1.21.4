@@ -3,15 +3,19 @@ package net.nullcoil.soulscorch.event;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.Box;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
+import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.util.BlockUtils;
 
 import java.util.List;
@@ -43,7 +47,6 @@ public class DamageEventHandler {
                 if (!candidates.isEmpty()) {
                     RestlessEntity toAwaken = candidates.get(serverWorld.random.nextInt(candidates.size()));
                     toAwaken.setAwakened(true);
-                    System.out.println("[DEBUG] Awakened Restless: " + toAwaken.getName().getString());
                 }
             }
             // Only proc if entity has Soulscorch AND actually took damage
@@ -51,28 +54,31 @@ public class DamageEventHandler {
                 return;
             }
 
-            // Check block under entity using BlockUtils
-            if (isTouchingSoulCampfire(entity)) {
-                entity.addStatusEffect(new StatusEffectInstance(
-                        ModEffects.SOULSCORCH,
-                        600, // Duration in ticks (30 seconds)
-                        0,   // Amplifier
-                        false, // Show particles
-                        true,  // Show icon
-                        false  // Can be removed by milk
-                ));
-            }
+            if ( entity instanceof PlayerEntity player) {
+                boolean totemFound = false;
 
-            // Reduce max health
-            EntityAttributeInstance maxHealthAttr = entity.getAttributeInstance(EntityAttributes.MAX_HEALTH);
-            if (maxHealthAttr != null) {
-                double currentMax = maxHealthAttr.getBaseValue();
-                double newMax = Math.max(1.0, currentMax - 1.0); // Reduce by 1 health point
+                for (Hand hand : Hand.values()) {
+                    ItemStack stack = player.getStackInHand(hand);
+                    if(stack.getItem() == ModItems.SOULWARD_TOTEM) {
+                        EquipmentSlot slot = hand == Hand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
+                        stack.damage(5,player, slot);
+                        totemFound = true;
+                        break;
+                    }
+                }
 
-                if (newMax < currentMax) {
-                    maxHealthAttr.setBaseValue(newMax);
-                    if (entity.getHealth() > (float)newMax) {
-                        entity.setHealth((float)newMax);
+                if (!totemFound) {
+                    EntityAttributeInstance maxHealthAttr = entity.getAttributeInstance(EntityAttributes.MAX_HEALTH);
+                    if (maxHealthAttr != null) {
+                        double currentMax = maxHealthAttr.getBaseValue();
+                        double newMax = Math.max(1.0, currentMax - 1.0); // Reduce by 1 health point
+
+                        if (newMax < currentMax) {
+                            maxHealthAttr.setBaseValue(newMax);
+                            if (entity.getHealth() > (float) newMax) {
+                                entity.setHealth((float) newMax);
+                            }
+                        }
                     }
                 }
             }

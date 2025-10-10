@@ -15,9 +15,8 @@ public class ModItems {
     public static final Item BLAZT_ROD = registerItem("blazt_rod",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"blazt_rod")))));
     public static final Item SOUL_CREAM = registerItem("soul_cream",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"soul_cream")))));
     public static final Item SOUL_CHARGE = registerItem("soul_charge",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, "soul_charge")))));
-
-
-
+    public static final Item SOUL_SHARD=registerItem("soul_shard", new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, "soul_shard")))));
+    public static final Item SOULWARD_TOTEM = registerItem("soulward_totem", new SoulwardTotemItem(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"soulward_totem")))));
 
     private static Item registerItem(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(Soulscorch.MOD_ID, name), item);
@@ -31,6 +30,8 @@ public class ModItems {
             entries.add(BLAZT_ROD);
             entries.add(SOUL_CREAM);
             entries.add(SOUL_CHARGE);
+            entries.add(SOUL_SHARD);
+            entries.add(SOULWARD_TOTEM);
         });
 
     }

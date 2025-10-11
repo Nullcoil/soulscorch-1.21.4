@@ -10,7 +10,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 public class SoulwardTotemItem extends Item {
 
     public SoulwardTotemItem(Settings settings) {
-        super(settings.maxDamage(100).repairable(ModItems.SOUL_SHARD).enchantable(1));
+        super(settings.maxDamage(100).repairable(ModItems.SOUL_SHARD));
     }
 
     @Override

@@ -70,9 +70,9 @@ public class Soulscorch implements ModInitializer {
                                                 ModEffects.SOULSCORCH,
                                                 600, // Duration in ticks (30 seconds)
                                                 0,   // Amplifier
-                                                true, // Show particles
-                                                true,  // Show icon
-                                                false   // Can be removed by milk
+                                                false, // is Ambient
+                                                false,  // Show Particles
+                                                true   // Show Icon
                                         ));
 
                                     }

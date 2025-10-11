@@ -20,6 +20,7 @@ import net.nullcoil.soulscorch.event.SoulCampfireDetector;
 import net.nullcoil.soulscorch.event.SoulbreakEventHandler;
 import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.potion.ModPotions;
+import net.nullcoil.soulscorch.screen.ModScreenHandlers;
 import net.nullcoil.soulscorch.sound.ModSounds;
 import net.nullcoil.soulscorch.world.gen.ModWorldGeneration;
 import org.slf4j.Logger;
@@ -39,6 +40,7 @@ public class Soulscorch implements ModInitializer {
         ModSounds.register();
         ModBlocks.register();
         ModBlockEntities.register();
+        ModScreenHandlers.register();
 
         SoulbreakEventHandler.register();
         DamageEventHandler.register();

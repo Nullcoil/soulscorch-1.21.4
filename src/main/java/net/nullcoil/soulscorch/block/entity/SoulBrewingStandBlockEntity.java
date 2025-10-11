@@ -12,7 +12,6 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.BrewingRecipeRegistry;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.screen.BrewingStandScreenHandler;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
@@ -23,6 +22,7 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.block.SoulBrewingStandBlock;
 import net.nullcoil.soulscorch.item.ModItems;
+import net.nullcoil.soulscorch.screen.SoulBrewingStandScreenHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class SoulBrewingStandBlockEntity extends LockableContainerBlockEntity implements SidedInventory {
@@ -72,7 +72,7 @@ public class SoulBrewingStandBlockEntity extends LockableContainerBlockEntity im
     }
 
     protected Text getContainerName() {
-        return Text.translatable("container.brewing");
+        return Text.translatable("container.soul_brewing_stand");
     }
 
     public int size() {
@@ -231,6 +231,6 @@ public class SoulBrewingStandBlockEntity extends LockableContainerBlockEntity im
     }
 
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new BrewingStandScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
+        return new SoulBrewingStandScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 }

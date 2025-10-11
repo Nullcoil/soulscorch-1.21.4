@@ -2,10 +2,13 @@ package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.item.Item;
 import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
@@ -14,6 +17,8 @@ import net.nullcoil.soulscorch.entity.client.restless.RestlessModel;
 import net.nullcoil.soulscorch.entity.client.restless.RestlessRenderer;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessModel;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessRenderer;
+import net.nullcoil.soulscorch.gui.screen.ingame.SoulBrewingStandScreen;
+import net.nullcoil.soulscorch.screen.ModScreenHandlers;
 
 public class SoulscorchClient implements ClientModInitializer {
     @Override
@@ -36,6 +41,6 @@ public class SoulscorchClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_BREWING_STAND, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_SLAG_BLOCK, RenderLayer.getCutout());
 
-        System.out.println("SoulscorchClient initialization complete."); // Debug
+        HandledScreens.register(ModScreenHandlers.SOUL_BREWING_STAND_SCREEN_HANDLER, SoulBrewingStandScreen::new);
     }
 }

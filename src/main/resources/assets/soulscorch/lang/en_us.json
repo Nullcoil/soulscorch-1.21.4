@@ -1,4 +1,6 @@
 {
+  "container.soul_brewing_stand": "Soul Brewing Stand",
+
   "block.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
   "item.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
   "block.soulscorch.soul_slag": "Soul Slag Block",
@@ -18,6 +20,10 @@
   "item.minecraft.splash_potion.effect.soul_render": "Splash Potion of Soul Rendering",
   "item.minecraft.lingering_potion.effect.soul_render": "Lingering Potion of Soul Rendering",
   "item.minecraft.tipped_arrow.effect.soul_render": "Arrow of Soul Rendering",
+
+  "item.soulscorch.blazt_spawn_egg": "Blazt Spawn Egg",
+  "item.soulscorch.soulless_spawn_egg": "Soulless Spawn Egg",
+  "item.soulscorch.restless_spawn_egg": "Restless Spawn Egg",
 
   "entity.soulscorch.blazt": "Blazt",
   "sounds.soulscorch.blazt_ambient": "Blazt bellows",

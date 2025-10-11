@@ -7,7 +7,6 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
@@ -39,10 +38,6 @@ public class DamageEventHandler {
                 List<RestlessEntity> allRestless = serverWorld.getEntitiesByClass(
                         RestlessEntity.class, searchBox, r -> true
                 );
-                System.out.println("[DEBUG] All nearby Restless: " + allRestless.size());
-                for (RestlessEntity r : allRestless) {
-                    System.out.println("[DEBUG] Restless at " + r.getBlockPos() + " awakened=" + r.getAwakened());
-                }
 
                 if (!candidates.isEmpty()) {
                     RestlessEntity toAwaken = candidates.get(serverWorld.random.nextInt(candidates.size()));
@@ -83,10 +78,5 @@ public class DamageEventHandler {
                 }
             }
         });
-    }
-
-    private static boolean isTouchingSoulCampfire(LivingEntity entity) {
-        BlockState standingOn = BlockUtils.getBlockUnderEntity(entity);
-        return standingOn != null && standingOn.isOf(Blocks.SOUL_CAMPFIRE);
     }
 }

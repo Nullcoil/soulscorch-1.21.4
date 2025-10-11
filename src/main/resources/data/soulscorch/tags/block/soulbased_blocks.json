@@ -5,6 +5,7 @@
     "minecraft:soul_lantern",
     "minecraft:soul_sand",
     "minecraft:soul_soil",
-    "minecraft:soul_torch"
+    "minecraft:soul_torch",
+    "soulscorch:soul_slag"
   ]
 }

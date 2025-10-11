@@ -34,6 +34,7 @@ public class SoulscorchClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.RESTLESS, RestlessRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_BREWING_STAND, RenderLayer.getCutout());
+        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_SLAG_BLOCK, RenderLayer.getCutout());
 
         System.out.println("SoulscorchClient initialization complete."); // Debug
     }

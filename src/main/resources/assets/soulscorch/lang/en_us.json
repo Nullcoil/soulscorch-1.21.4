@@ -1,12 +1,16 @@
 {
   "block.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
+  "item.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
+  "block.soulscorch.soul_slag": "Soul Slag Block",
+  "item.soulscorch.soul_slag": "Soul Slag Block",
+
   "effect.soulscorch.soulscorch": "Soulscorched",
   "effect.soulscorch.soul_render": "Soul Rendering",
+
   "item.soulscorch.blazt_powder": "Blazt Powder",
   "item.soulscorch.blazt_rod": "Blazt Rod",
   "item.soulscorch.soul_cream": "Soul Cream",
   "item.soulscorch.soul_charge": "Soul Charge",
-  "item.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
   "item.soulscorch.soulward_totem": "Soulward Totem",
   "item.soulscorch.soul_shard": "Soul Shard",
 

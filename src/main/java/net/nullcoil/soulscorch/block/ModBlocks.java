@@ -2,6 +2,7 @@ package net.nullcoil.soulscorch.block;
 
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.block.*;
+import net.minecraft.block.enums.NoteBlockInstrument;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
@@ -21,6 +22,20 @@ public class ModBlocks {
                     .strength(0.5F)
                     .luminance(state -> 1)
                     .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_brewing_stand")))));
+    public static final Block SOUL_SLAG_BLOCK = registerBlock(
+            "soul_slag",
+            new SoulSlagBlock(
+            AbstractBlock.Settings.create()
+                    .mapColor(MapColor.CYAN)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresTool()
+                    .luminance((state) -> 2)
+                    .strength(0.5F)
+                    .allowsSpawning((state, world, pos, entityType) -> entityType
+                            .isFireImmune())
+                    .postProcess(Blocks::always)
+                    .emissiveLighting(Blocks::always)
+                    .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_slag")))));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
@@ -39,6 +54,9 @@ public class ModBlocks {
         // Add to item group
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             entries.add(SOUL_BREWING_STAND);
+        });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
+            entries.add(SOUL_SLAG_BLOCK);
         });
     }
 }

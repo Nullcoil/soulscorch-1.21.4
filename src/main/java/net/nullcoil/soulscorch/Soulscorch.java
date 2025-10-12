@@ -57,7 +57,6 @@ public class Soulscorch implements ModInitializer {
             builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, ModPotions.SOUL_RENDER_POTION);
         });
 
-
         // Re-registering Soul Fire'd's Soul Fire to be used in this mod
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);
         FireManager.registerFire(
@@ -76,7 +75,6 @@ public class Soulscorch implements ModInitializer {
                                                 false,  // Show Particles
                                                 true   // Show Icon
                                         ));
-
                                     }
                                 }
                         )

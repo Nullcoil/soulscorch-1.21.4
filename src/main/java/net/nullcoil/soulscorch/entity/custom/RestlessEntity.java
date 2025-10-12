@@ -21,6 +21,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -193,21 +194,25 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                             dx /= dist;
                             dz /= dist;
 
-                            living.addVelocity(dx * strength, 0.4 * strength, dz * strength);
-                            living.velocityModified = true;
-                            living.damage(
-                                    (ServerWorld) mob.getWorld(),
-                                    mob.getDamageSources().mobAttack(mob),
-                                    (float) mob.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
-                            );
-                            living.addStatusEffect(new StatusEffectInstance(
-                                    ModEffects.SOULSCORCH,
-                                    600,
-                                    0,
-                                    false,
-                                    false,
-                                    true
-                            ));
+                            if (!living.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES)) {
+                                living.addVelocity(dx * strength, 0.4 * strength, dz * strength);
+                                living.velocityModified = true;
+                                living.damage(
+                                        (ServerWorld) mob.getWorld(),
+                                        mob.getDamageSources().mobAttack(mob),
+                                        (float) mob.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
+                                );
+                                living.addStatusEffect(new StatusEffectInstance(
+                                        ModEffects.SOULSCORCH,
+                                        600,
+                                        0,
+                                        false,
+                                        false,
+                                        true
+                                ));
+                            }
+
+
                         }
                     });
 

@@ -11,6 +11,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
 
@@ -22,7 +23,7 @@ public class ModItems {
     public static final Item SOUL_CREAM = registerItem("soul_cream",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"soul_cream")))));
     public static final Item SOUL_CHARGE = registerItem("soul_charge",new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, "soul_charge")))));
     public static final Item SOUL_SHARD=registerItem("soul_shard", new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, "soul_shard")))));
-    public static final Item SOULWARD_TOTEM = registerItem("soulward_totem", new SoulwardTotemItem(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"soulward_totem")))));
+    public static final Item SOULWARD_TOTEM = registerItem("soulward_totem", new SoulwardTotemItem(new Item.Settings().rarity(Rarity.UNCOMMON).registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,"soulward_totem")))));
     public static final Item BLAZT_SPAWN_EGG = registerItem(
             "blazt_spawn_egg", new SpawnEggItem(ModEntities.BLAZT,
             new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID,
@@ -51,9 +52,16 @@ public class ModItems {
             entries.add(SOUL_CHARGE);
             entries.add(SOUL_SHARD);
             entries.add(SOULWARD_TOTEM);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(entries -> {
             entries.add(BLAZT_SPAWN_EGG);
             entries.add(SOULLESS_SPAWN_EGG);
             entries.add(RESTLESS_SPAWN_EGG);
+        });
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {
+            entries.add(SOULWARD_TOTEM);
         });
 
     }

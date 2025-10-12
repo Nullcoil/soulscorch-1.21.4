@@ -76,7 +76,7 @@ public class SoulBrewingStandBlock extends BlockWithEntity {
         double d = (double)pos.getX() + 0.4 + (double)random.nextFloat() * 0.2;
         double e = (double)pos.getY() + 0.7 + (double)random.nextFloat() * 0.3;
         double f = (double)pos.getZ() + 0.4 + (double)random.nextFloat() * 0.2;
-        world.addParticle(ParticleTypes.SMOKE, d, e, f, (double)0.0F, (double)0.0F, (double)0.0F);
+        world.addParticle(ParticleTypes.SOUL_FIRE_FLAME, d, e, f, (double)0.0F, (double)0.0F, (double)0.0F);
     }
 
     protected void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {

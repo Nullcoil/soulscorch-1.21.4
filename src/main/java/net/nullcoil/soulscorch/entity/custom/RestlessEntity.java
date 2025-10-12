@@ -5,6 +5,7 @@ import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -79,7 +80,21 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     public SoundCategory getSoundCategory() { return SoundCategory.HOSTILE; }
 
     @Override
-    protected SoundEvent getAmbientSound() { return SoundEvents.PARTICLE_SOUL_ESCAPE.value(); }
+    protected SoundEvent getAmbientSound() {
+        if(getAwakened()) return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
+
+        return SoundEvents.BLOCK_FIRE_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        if( getAwakened() ) return SoundEvents.ENTITY_ZOGLIN_HURT;
+
+        return SoundEvents.ENTITY_PLAYER_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_ZOGLIN_DEATH; }
 
     static { AWAKENED = DataTracker.registerData(RestlessEntity.class, TrackedDataHandlerRegistry.BOOLEAN); }
 

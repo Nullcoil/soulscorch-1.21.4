@@ -29,6 +29,7 @@ public class ModTags {
 
     public static class Entities {
         public static final TagKey<EntityType<?>> SOULSCORCH_ENTITIES = createTag("soulscorch_entities");
+        public static final TagKey<EntityType<?>> PHOBIAS_OF_PIGLINS = createTag("phobias_of_piglins");
 
         private static TagKey<EntityType<?>> createTag(String name) {
             return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(Soulscorch.MOD_ID, name));

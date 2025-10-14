@@ -10,8 +10,11 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
+
+import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
 
 public class ModBlocks {
 
@@ -37,6 +40,17 @@ public class ModBlocks {
                     .emissiveLighting(Blocks::always)
                     .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_slag")))));
 
+    public static final Block IRON_BULB_BLOCK = registerBlock(
+            "iron_bulb",
+            new IronBulbBlock(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.IRON_BLOCK.getDefaultMapColor())
+                    .strength(3.0F, 6.0F)
+                    .sounds(BlockSoundGroup.COPPER_BULB)
+                    .requiresTool()
+                    .solidBlock(Blocks::never)
+                    .luminance(createLightLevelFromLitBlockState(10))
+                    .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "iron_bulb")))));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -57,6 +71,9 @@ public class ModBlocks {
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {
             entries.add(SOUL_SLAG_BLOCK);
+        });
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
+            entries.add(IRON_BULB_BLOCK);
         });
     }
 }

@@ -104,7 +104,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
         return 0;
     }
 
-    public class InterceptHelper {
+    public static class InterceptHelper {
         public static Vec3d computeIntercept(Vec3d r0, Vec3d p0, Vec3d v, double s) {
             Vec3d d = p0.subtract(r0);
             double dv = d.dotProduct(v);

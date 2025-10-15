@@ -35,7 +35,6 @@ public class SoulbreakEventHandler {
 
         // BFS to find all Soulless in chain
         Set<SoullessEntity> visited = new HashSet<>();
-        Queue<SoullessEntity> queue = new LinkedList<>();
 
         // Step 1: find initial Soulless within LISTENING_RANGE of broken block
         Vec3d center = Vec3d.of(pos);
@@ -44,8 +43,7 @@ public class SoulbreakEventHandler {
                 center.add(LISTENING_RANGE,LISTENING_RANGE,LISTENING_RANGE)
         );
 
-        world.getEntitiesByClass(SoullessEntity.class, initialBox, e -> true)
-                .forEach(queue::add);
+        Queue<SoullessEntity> queue = new LinkedList<>(world.getEntitiesByClass(SoullessEntity.class, initialBox, e -> true));
 
         // Step 2: BFS chain
         while (!queue.isEmpty()) {
@@ -62,8 +60,7 @@ public class SoulbreakEventHandler {
                     soullessCenter.add(CHAIN_RANGE,CHAIN_RANGE,CHAIN_RANGE)
             );
 
-            world.getEntitiesByClass(SoullessEntity.class, chainBox, e -> !visited.contains(e))
-                    .forEach(queue::add);
+            queue.addAll(world.getEntitiesByClass(SoullessEntity.class, chainBox, e -> !visited.contains(e)));
         }
     }
 }

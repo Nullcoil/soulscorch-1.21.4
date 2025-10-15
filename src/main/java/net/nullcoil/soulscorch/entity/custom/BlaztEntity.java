@@ -105,9 +105,8 @@ public class BlaztEntity extends FlyingEntity implements Monster {
     }
 
     private static boolean isFireballFromPlayer(DamageSource damageSource) {
-        boolean result = damageSource.getSource() instanceof FireballEntity && damageSource.getAttacker() instanceof PlayerEntity;
 
-        return result;
+        return damageSource.getSource() instanceof FireballEntity && damageSource.getAttacker() instanceof PlayerEntity;
     }
 
     @Override
@@ -132,7 +131,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
             super.damage(world, source, 0.0F);
             return true;
         } else {
-            return this.isInvulnerableTo(world, source) ? false : super.damage(world, source, amount);
+            return !this.isInvulnerableTo(world, source) && super.damage(world, source, amount);
         }
     }
 
@@ -293,7 +292,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         }
     }
 
-    class BlaztBullrushGoal extends Goal {
+    static class BlaztBullrushGoal extends Goal {
         private final BlaztEntity blazt;
         private int cooldown = 0;
         private int rushTicks = 0;
@@ -314,8 +313,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
                 cooldown--;
             }
 
-            boolean canStart = blazt.getTarget() != null && cooldown <= 0;
-            return canStart;
+            return blazt.getTarget() != null && cooldown <= 0;
         }
 
         @Override
@@ -344,8 +342,7 @@ public class BlaztEntity extends FlyingEntity implements Monster {
 
         @Override
         public boolean shouldContinue() {
-            boolean continueRush = rushTicks > 0;
-            return continueRush;
+            return rushTicks > 0;
         }
 
         @Override

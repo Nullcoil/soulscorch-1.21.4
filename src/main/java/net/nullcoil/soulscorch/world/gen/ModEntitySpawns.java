@@ -14,6 +14,7 @@ import net.nullcoil.soulscorch.entity.ModEntities;
 public class ModEntitySpawns {
     public static void addSpawns() {
         Soulscorch.LOGGER.info("Adding Mod Entity Spawns for " + Soulscorch.MOD_ID);
+
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
                 SpawnGroup.MONSTER, ModEntities.BLAZT, 8, 1, 1);
         SpawnRestriction.register(ModEntities.BLAZT, SpawnLocationTypes.ON_GROUND,

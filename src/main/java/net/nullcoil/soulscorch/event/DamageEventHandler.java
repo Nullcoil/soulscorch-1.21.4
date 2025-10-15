@@ -1,8 +1,6 @@
 package net.nullcoil.soulscorch.event;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -15,7 +13,6 @@ import net.minecraft.util.math.Box;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
 import net.nullcoil.soulscorch.item.ModItems;
-import net.nullcoil.soulscorch.util.BlockUtils;
 
 import java.util.List;
 

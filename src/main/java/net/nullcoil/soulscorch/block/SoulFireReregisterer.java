@@ -7,7 +7,7 @@ import net.minecraft.registry.tag.EntityTypeTags;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.effect.ModEffects;
 
-public class SoulFireTweak {
+public class SoulFireReregisterer {
 
     public static void register() {
         Soulscorch.LOGGER.info("Re-registering Soul Fire for " + Soulscorch.MOD_ID);

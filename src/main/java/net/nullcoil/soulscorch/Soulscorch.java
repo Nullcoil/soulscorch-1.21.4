@@ -14,10 +14,7 @@ import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.custom.BlaztEntity;
 import net.nullcoil.soulscorch.entity.custom.RestlessEntity;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
-import net.nullcoil.soulscorch.event.DamageEventHandler;
-import net.nullcoil.soulscorch.event.SleepHealthResetHandler;
-import net.nullcoil.soulscorch.event.SoulCampfireDetector;
-import net.nullcoil.soulscorch.event.SoulbreakEventHandler;
+import net.nullcoil.soulscorch.event.*;
 import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.potion.ModPotions;
 import net.nullcoil.soulscorch.screen.ModScreenHandlers;
@@ -33,29 +30,19 @@ public class Soulscorch implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModItems.register();
-        ModEffects.register();
-        ModPotions.register();
-        ModEntities.register();
-        ModSounds.register();
         ModBlocks.register();
-        ModBlockEntities.register();
-        ModScreenHandlers.register();
+        ModEffects.register();
+        ModEntities.register();
+        ModEvents.register();
 
-        SoulbreakEventHandler.register();
-        DamageEventHandler.register();
-        SleepHealthResetHandler.register();
-        SoulCampfireDetector.register();
+        ModItems.register();
+        ModPotions.register();
+        ModScreenHandlers.register();
+        ModSounds.register();
 
         ModWorldGeneration.register();
 
-        FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
-        FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
-        FabricDefaultAttributeRegistry.register(ModEntities.RESTLESS, RestlessEntity.createAttributes());
 
-        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
-            builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, ModPotions.SOUL_RENDER_POTION);
-        });
 
         // Re-registering Soul Fire'd's Soul Fire to be used in this mod
         FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);

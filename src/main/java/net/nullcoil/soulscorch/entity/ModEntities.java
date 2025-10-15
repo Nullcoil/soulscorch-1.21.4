@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -41,5 +42,9 @@ public class ModEntities {
 
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Entities for " + Soulscorch.MOD_ID);
+
+        FabricDefaultAttributeRegistry.register(ModEntities.BLAZT, BlaztEntity.createBlaztAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.SOULLESS, SoullessEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.RESTLESS, RestlessEntity.createAttributes());;
     }
 }

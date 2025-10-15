@@ -13,6 +13,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
+import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 
 import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
 
@@ -65,6 +66,7 @@ public class ModBlocks {
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Blocks for " + Soulscorch.MOD_ID);
 
+        ModBlockEntities.register();
         // Add to item group
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             entries.add(SOUL_BREWING_STAND);

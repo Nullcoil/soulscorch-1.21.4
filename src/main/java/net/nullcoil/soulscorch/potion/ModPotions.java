@@ -1,13 +1,16 @@
 package net.nullcoil.soulscorch.potion;
 
+import net.fabricmc.fabric.api.registry.FabricBrewingRecipeRegistryBuilder;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.item.ModItems;
 
 public class ModPotions {
     public static final RegistryEntry<Potion> SOUL_RENDER_POTION = registerPotion("soul_render_potion",
@@ -20,5 +23,9 @@ public class ModPotions {
 
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Potions for " + Soulscorch.MOD_ID);
+
+        FabricBrewingRecipeRegistryBuilder.BUILD.register(builder -> {
+            builder.registerPotionRecipe(Potions.AWKWARD, ModItems.SOUL_CREAM, SOUL_RENDER_POTION);
+        });
     }
 }

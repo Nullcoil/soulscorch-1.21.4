@@ -3,7 +3,8 @@
   "package": "net.nullcoil.soulscorch.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PiglinBrainMixin"
+    "PiglinBrainMixin",
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

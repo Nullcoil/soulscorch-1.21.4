@@ -10,10 +10,10 @@ import net.nullcoil.soulscorch.Soulscorch;
 
 public class ModEffects {
     public static final RegistryEntry<StatusEffect> SOUL_RENDER = registerStatusEffect("soul_render",
-            new SoulRenderEffect(StatusEffectCategory.BENEFICIAL, 0x880000));
+            new SoulRenderEffect(StatusEffectCategory.BENEFICIAL, 0x00ff88));
 
     public static final RegistryEntry<StatusEffect> SOULSCORCH = registerStatusEffect("soulscorch",
-            new SoulscorchEffect(StatusEffectCategory.HARMFUL, 0x34ebd5));
+            new SoulscorchEffect(StatusEffectCategory.HARMFUL, 0x00ffff));
 
     private static RegistryEntry<StatusEffect> registerStatusEffect (String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);

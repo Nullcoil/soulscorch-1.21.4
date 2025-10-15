@@ -67,6 +67,8 @@ public class ModBlocks {
         Soulscorch.LOGGER.info("Registering Mod Blocks for " + Soulscorch.MOD_ID);
 
         ModBlockEntities.register();
+        SoulFireTweak.register();
+
         // Add to item group
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(entries -> {
             entries.add(SOUL_BREWING_STAND);

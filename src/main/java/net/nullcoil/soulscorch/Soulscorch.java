@@ -41,31 +41,5 @@ public class Soulscorch implements ModInitializer {
         ModSounds.register();
 
         ModWorldGeneration.register();
-
-
-
-        // Re-registering Soul Fire'd's Soul Fire to be used in this mod
-        FireManager.unregisterFire(FireManager.SOUL_FIRE_TYPE);
-        FireManager.registerFire(
-                FireManager.fireBuilder(FireManager.SOUL_FIRE_TYPE)
-                        .setLight(10)
-                        .setDamage(2)
-                        .setBehavior(entity -> {
-                                    if (entity.isOnFire()
-                                            && !entity.getType().isIn(EntityTypeTags.UNDEAD)
-                                            && entity instanceof LivingEntity livingEntity) {
-                                        livingEntity.addStatusEffect(new StatusEffectInstance(
-                                                ModEffects.SOULSCORCH,
-                                                600, // Duration in ticks (30 seconds)
-                                                0,   // Amplifier
-                                                false, // is Ambient
-                                                false,  // Show Particles
-                                                true   // Show Icon
-                                        ));
-                                    }
-                                }
-                        )
-                        .build()
-        );
     }
 }

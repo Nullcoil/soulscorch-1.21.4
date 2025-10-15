@@ -31,6 +31,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     private static final TrackedData<Boolean> AWAKENED;
     private static Boolean aiming = false;
     private Vec3d chargeDirection;
+
     public RestlessEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -81,7 +82,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        if(getAwakened()) return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
+        if(!getAwakened()) return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
 
         return SoundEvents.BLOCK_FIRE_AMBIENT;
     }

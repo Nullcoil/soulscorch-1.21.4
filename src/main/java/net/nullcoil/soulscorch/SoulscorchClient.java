@@ -21,7 +21,7 @@ import net.nullcoil.soulscorch.screen.ModScreenHandlers;
 public class SoulscorchClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        System.out.println("SoulscorchClient initializing..."); // Debug
+        Soulscorch.LOGGER.info("Soulscorch Clientside features initializing..."); // Debug
 
         // Register Soul Charge projectile
         EntityRendererRegistry.register(ModEntities.SOUL_CHARGE, FlyingItemEntityRenderer::new);

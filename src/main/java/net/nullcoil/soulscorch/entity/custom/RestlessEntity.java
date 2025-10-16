@@ -168,9 +168,20 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                 case WAITING:
                     aiming = true;
                     mob.getNavigation().stop();
+
+                    // Face the target during the aiming phase
+                    if (target != null && !target.isRemoved()) {
+                        double dx = target.getX() - mob.getX();
+                        double dz = target.getZ() - mob.getZ();
+                        float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                        mob.setYaw(yaw);
+                        mob.setBodyYaw(yaw);
+                        mob.setHeadYaw(yaw);
+                    }
+
                     timer--;
                     if (timer <= 0) {
-                        // Lock onto intercept position
+                        // Lock onto intercept position and calculate charge direction
                         Vec3d playerVel = target.getVelocity();
                         interceptPoint = InterceptHelper.computeIntercept(
                                 mob.getPos(),
@@ -178,6 +189,10 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                                 playerVel,
                                 0.35 // charge speed, blocks per tick
                         );
+                        // Calculate charge direction from current position to intercept point
+                        Vec3d chargeDir = interceptPoint.subtract(mob.getPos()).normalize();
+                        chargeDirection = chargeDir;
+
                         timer = 60; // 3 seconds charge
                         state = State.CHARGING;
                     }
@@ -185,9 +200,6 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
 
                 case CHARGING:
                     aiming = false;
-                    if (chargeDirection == null) {
-                        chargeDirection = mob.getRotationVec(1.0F).normalize();
-                    }
 
                     mob.move(MovementType.SELF, chargeDirection.multiply(mob.getAttributeValue(EntityAttributes.MOVEMENT_SPEED)));
                     mob.velocityModified = true;
@@ -227,13 +239,9 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                                         true
                                 ));
                             }
-
-
                         }
                     });
 
-
-                // Reduce timer
                     timer--;
                     if (timer <= 0) {
                         state = State.DONE;

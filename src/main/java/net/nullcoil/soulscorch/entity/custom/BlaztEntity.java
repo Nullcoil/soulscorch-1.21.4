@@ -3,9 +3,7 @@ package net.nullcoil.soulscorch.entity.custom;
 import java.util.EnumSet;
 
 import net.minecraft.advancement.AdvancementEntry;
-import net.minecraft.entity.AnimationState;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
@@ -34,10 +32,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.sound.ModSounds;
+import org.jetbrains.annotations.Nullable;
 
 public class BlaztEntity extends FlyingEntity implements Monster {
     private static final TrackedData<Boolean> SHOOTING;
@@ -50,6 +51,20 @@ public class BlaztEntity extends FlyingEntity implements Monster {
         super(entityType, world);
         this.experiencePoints = 5;
         this.moveControl = new BlaztMoveControl(this);
+    }
+
+    @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
+                                 @Nullable EntityData entityData) {
+        EntityData data = super.initialize(world,difficulty,spawnReason, entityData);
+
+        float yaw = this.random.nextFloat() * 360f - 180f;
+        this.setYaw(yaw);
+        this.setHeadYaw(yaw);
+        this.setBodyYaw(yaw);
+        this.setBaby(false);
+
+        return data;
     }
 
     @Override

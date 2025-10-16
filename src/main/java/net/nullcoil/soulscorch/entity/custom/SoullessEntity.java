@@ -259,10 +259,20 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     @Override
     public SoundEvent getAmbientSound() {
         switch(getActivity()) {
-            case NEUTRAL -> { return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_AMBIENT; }
-            case HOSTILE -> { return SoundEvents.ENTITY_ZOMBIFIED_PIGLIN_ANGRY; }
+            case NEUTRAL -> { return ModSounds.SOULLESS_AMBIENT; }
+            case HOSTILE -> { return ModSounds.SOULLESS_ANGRY; }
         }
         return SoundEvents.PARTICLE_SOUL_ESCAPE.value();
+    }
+
+    @Override
+    public SoundEvent getHurtSound(DamageSource source) {
+        return ModSounds.SOULLESS_HURT;
+    }
+
+    @Override
+    public SoundEvent getDeathSound() {
+        return ModSounds.SOULLESS_DEATH;
     }
 
     @Override

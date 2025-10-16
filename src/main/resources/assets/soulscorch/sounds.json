@@ -35,6 +35,34 @@
       "soulscorch:blazt_breathe_out"
     ]
   },
+  "soulless_ambient": {
+    "subtitle": "sounds.soulscorch.soulless_ambient",
+    "sounds": [
+      "soulscorch:soulless_ambient0",
+      "soulscorch:soulless_ambient1"
+    ]
+  },
+  "soulless_angry": {
+    "subtitle": "sounds.soulscorch.soulless_angry",
+    "sounds": [
+      "soulscorch:soulless_angry0",
+      "soulscorch:soulless_angry1",
+      "soulscorch:soulless_angry2",
+      "soulscorch:soulless_angry3"
+    ]
+  },
+  "soulless_death": {
+    "subtitle": "sounds.soulscorch.soulless_death",
+    "sounds": ["soulscorch:soulless_death"]
+  },
+  "soulless_hurt": {
+    "subtitle": "sounds.soulscorch.soulless_hurt",
+    "sounds": [
+      "soulscorch:soulless_hurt0",
+      "soulscorch:soulless_hurt1",
+      "soulscorch:soulless_hurt2"
+    ]
+  },
   "soulless_wake": {
     "subtitle": "sounds.soulscorch.soulless_wake",
     "sounds": [
@@ -45,5 +73,4 @@
       "soulscorch:soulless_wake4"
     ]
   }
-
 }

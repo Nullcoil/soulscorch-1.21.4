@@ -38,7 +38,6 @@ public class ModBlocks {
                     .allowsSpawning((state, world, pos, entityType) -> entityType
                             .isFireImmune())
                     .postProcess(Blocks::always)
-                    .emissiveLighting(Blocks::always)
                     .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_slag")))));
 
     public static final Block IRON_BULB_BLOCK = registerBlock(

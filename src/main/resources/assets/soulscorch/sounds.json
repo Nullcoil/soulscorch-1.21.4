@@ -72,5 +72,30 @@
       "soulscorch:soulless_wake3",
       "soulscorch:soulless_wake4"
     ]
+  },
+
+  "restless_anger": {
+    "subtitle": "sounds.soulscorch.restless_anger",
+    "sounds": [
+      "soulscorch:restless_anger0",
+      "soulscorch:restless_anger1"
+    ]
+  },
+
+  "restless_death": {
+    "subtitle": "sounds.soulscorch.restless_death",
+    "sounds": [
+      "soulscorch:restless_death0",
+      "soulscorch:restless_death1",
+      "soulscorch:restless_death2"
+    ]
+  },
+  "restless_hurt": {
+    "subtitle": "sounds.soulscorch.restless_hurt",
+    "sounds": [
+      "soulscorch:restless_hurt0",
+      "soulscorch:restless_hurt1",
+      "soulscorch:restless_hurt2"
+    ]
   }
 }

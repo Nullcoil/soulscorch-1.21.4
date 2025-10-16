@@ -21,12 +21,9 @@ public class ModSounds {
     public static final SoundEvent SOULLESS_HURT = registerSoundEvent("soulless_hurt");
     public static final SoundEvent SOULLESS_WAKE = registerSoundEvent("soulless_wake");
 
-    /*
-    public static final SoundEvent RESTLESS_ACTIVE = registerSoundEvent("restless_active");
+    public static final SoundEvent RESTLESS_ANGER = registerSoundEvent("restless_anger");
     public static final SoundEvent RESTLESS_DEATH = registerSoundEvent("restless_death");
     public static final SoundEvent RESTLESS_HURT = registerSoundEvent("restless_hurt");
-
-     */
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = Identifier.of(Soulscorch.MOD_ID, name);

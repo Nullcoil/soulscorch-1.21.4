@@ -37,7 +37,14 @@
   "sounds.soulscorch.blazt_breathe_out": "Blazt recovers",
 
   "entity.soulscorch.soulless": "Soulless",
+  "sounds.soulscorch.soulless_ambient": "Soulless groans",
+  "sounds.soulscorch.soulless_angry": "Soulless groans angrily",
+  "sounds.soulscorch.soulless_hurt": "Soulless hurts",
+  "sounds.soulscorch.soulless_death": "Soulless dies",
   "sounds.soulscorch.soulless_wake": "Soulless wakes",
 
-  "entity.soulscorch.restless": "Restless"
+  "entity.soulscorch.restless": "Restless",
+  "sounds.soulscorch.restless_anger": "Restless angers",
+  "sounds.soulscorch.restless_hurt": "Restless hurts",
+  "sounds.soulscorch.restless_death": "Restless dies"
 }

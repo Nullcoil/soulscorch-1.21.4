@@ -22,6 +22,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.sound.ModSounds;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,7 +73,10 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
 
     public boolean getAwakened() { return this.dataTracker.get(AWAKENED); }
 
-    public void setAwakened(Boolean awakened) { this.dataTracker.set(AWAKENED, awakened); }
+    public void setAwakened(Boolean awakened) {
+        this.dataTracker.set(AWAKENED, awakened);
+        if(awakened) playSound(ModSounds.RESTLESS_ANGER);
+    }
 
     @Override
     public boolean isFireImmune() { return true; }
@@ -88,14 +92,10 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     }
 
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        if( getAwakened() ) return SoundEvents.ENTITY_ZOGLIN_HURT;
-
-        return SoundEvents.ENTITY_PLAYER_HURT;
-    }
+    protected SoundEvent getHurtSound(DamageSource source) { return ModSounds.SOULLESS_HURT; }
 
     @Override
-    protected SoundEvent getDeathSound() { return SoundEvents.ENTITY_ZOGLIN_DEATH; }
+    protected SoundEvent getDeathSound() { return ModSounds.RESTLESS_DEATH; }
 
     static { AWAKENED = DataTracker.registerData(RestlessEntity.class, TrackedDataHandlerRegistry.BOOLEAN); }
 

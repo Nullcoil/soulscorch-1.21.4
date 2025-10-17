@@ -6,13 +6,15 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.Item;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.biome.Biome;
 import net.nullcoil.soulscorch.Soulscorch;
 
 public class ModTags {
     public static class Blocks {
-        public static final TagKey<Block> SOULBASED_BLOCKS = createTag("soulbased_blocks");
+        public static final TagKey<Block> SOULBASED_BLOCKS = createTag("soulstuff");
 
         private static TagKey<Block> createTag(String name) {
             return TagKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, name));
@@ -20,7 +22,7 @@ public class ModTags {
     }
 
     public static class Items {
-        public static final TagKey<Item> SOULBASED_ITEMS = createTag("soulbased_items");
+        public static final TagKey<Item> SOULBASED_ITEMS = createTag("soulstuff");
 
         private static TagKey<Item> createTag(String name) {
             return TagKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, name));
@@ -33,6 +35,14 @@ public class ModTags {
 
         private static TagKey<EntityType<?>> createTag(String name) {
             return TagKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(Soulscorch.MOD_ID, name));
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> SOUL_BIOMES = createTag("soul_biomes");
+
+        private static TagKey<Biome> createTag(String name) {
+            return TagKey.of(RegistryKeys.BIOME, Identifier.of(Soulscorch.MOD_ID, name));
         }
     }
 }

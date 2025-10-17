@@ -19,13 +19,15 @@ import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
 
 public class ModBlocks {
 
-    public static final Block SOUL_BREWING_STAND = registerBlock("soul_brewing_stand",
+    public static final Block SOUL_BREWING_STAND = registerBlock(
+            "soul_brewing_stand",
             new SoulBrewingStandBlock(AbstractBlock.Settings.create()
                     .nonOpaque()
                     .mapColor(MapColor.IRON_GRAY)
                     .strength(0.5F)
                     .luminance(state -> 1)
-                    .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_brewing_stand")))));
+                    .registryKey(Key("soul_brewing_stand"))));
+
     public static final Block SOUL_SLAG_BLOCK = registerBlock(
             "soul_slag",
             new SoulSlagBlock(
@@ -35,10 +37,10 @@ public class ModBlocks {
                     .requiresTool()
                     .luminance((state) -> 2)
                     .strength(0.5F)
-                    .allowsSpawning((state, world, pos, entityType) -> entityType
-                            .isFireImmune())
+                    .allowsSpawning((state, world, pos, entityType) ->
+                            entityType.isFireImmune())
                     .postProcess(Blocks::always)
-                    .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "soul_slag")))));
+                    .registryKey(Key("soul_slag"))));
 
     public static final Block IRON_BULB_BLOCK = registerBlock(
             "iron_bulb",
@@ -49,7 +51,7 @@ public class ModBlocks {
                     .requiresTool()
                     .solidBlock(Blocks::never)
                     .luminance(createLightLevelFromLitBlockState(10))
-                    .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, "iron_bulb")))));
+                    .registryKey(Key("iron_bulb"))));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
@@ -60,6 +62,10 @@ public class ModBlocks {
         Registry.register(Registries.ITEM, Identifier.of(Soulscorch.MOD_ID, name),
                 new BlockItem(block, new Item.Settings()
                         .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Soulscorch.MOD_ID, name)))));
+    }
+
+    private static RegistryKey<Block> Key(String path) {
+        return RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Soulscorch.MOD_ID, path));
     }
 
     public static void register() {

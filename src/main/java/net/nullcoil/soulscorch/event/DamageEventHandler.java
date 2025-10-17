@@ -42,8 +42,11 @@ public class DamageEventHandler {
                 }
             }
             // Only proc if entity has Soulscorch AND actually took damage
-            if (!entity.hasStatusEffect(ModEffects.SOULSCORCH) || damageTaken <= 0.0f) {
-                return;
+            if (
+                    !entity.hasStatusEffect(ModEffects.SOULSCORCH) ||
+                    entity.hasStatusEffect(ModEffects.CAT_BUFF) ||
+                    damageTaken <= 0.0f) {
+                return; // ignore the Soulscorch penalty
             }
 
             if ( entity instanceof PlayerEntity player) {

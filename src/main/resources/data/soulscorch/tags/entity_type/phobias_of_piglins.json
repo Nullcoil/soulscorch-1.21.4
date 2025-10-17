@@ -7,6 +7,7 @@
     "minecraft:drowned",
     "minecraft:zombie_horse",
     "soulscorch:soulless",
-    "soulscorch:restless"
+    "soulscorch:restless",
+    "soulscorch:soulborne_cat"
   ]
 }

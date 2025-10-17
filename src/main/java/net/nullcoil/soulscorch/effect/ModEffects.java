@@ -15,6 +15,9 @@ public class ModEffects {
     public static final RegistryEntry<StatusEffect> SOULSCORCH = registerStatusEffect("soulscorch",
             new SoulscorchEffect(StatusEffectCategory.HARMFUL, 0x00ffff));
 
+    public static final RegistryEntry<StatusEffect> CAT_BUFF = registerStatusEffect("cat_buff",
+            new CatBuffEffect(StatusEffectCategory.BENEFICIAL, 0x000000));
+
     private static RegistryEntry<StatusEffect> registerStatusEffect (String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);
     }

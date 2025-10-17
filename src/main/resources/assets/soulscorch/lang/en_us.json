@@ -10,6 +10,7 @@
 
   "effect.soulscorch.soulscorch": "Soulscorched",
   "effect.soulscorch.soul_render": "Soul Rendering",
+  "effect.soulscorch.cat_buff": "Cat Buff",
 
   "item.soulscorch.blazt_powder": "Blazt Powder",
   "item.soulscorch.blazt_rod": "Blazt Rod",
@@ -46,5 +47,12 @@
   "entity.soulscorch.restless": "Restless",
   "sounds.soulscorch.restless_anger": "Restless angers",
   "sounds.soulscorch.restless_hurt": "Restless hurts",
-  "sounds.soulscorch.restless_death": "Restless dies"
+  "sounds.soulscorch.restless_death": "Restless dies",
+
+  "entity.soulscorch.soulborne_cat": "Soulborne Cat",
+
+  "tag.block.soulscorch.soulstuff": "Soulstuff",
+  "tag.entity_type.soulscorch.phobias_of_piglins": "Phobias of Piglins",
+  "tag.entity_type.soulscorch.soulscorch_entities": "Soulscorch Entities",
+  "tag.item.soulscorch.soulstuff": "Soulstuff"
 }

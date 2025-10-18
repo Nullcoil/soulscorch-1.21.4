@@ -27,6 +27,7 @@ import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessActivity;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessAnimations;
 import net.nullcoil.soulscorch.sound.ModSounds;
+import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +54,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     @Override
     protected float getVelocityMultiplier() {
         var blockState = this.getWorld().getBlockState(this.getVelocityAffectingPos());
-        if (blockState.isOf(Blocks.SOUL_SAND) || blockState.isOf(Blocks.SOUL_SOIL)) { return 1.2F; }
+        if (blockState.isIn(ModTags.Blocks.SOULBASED_BLOCKS)) { return 1.2F; }
         return super.getVelocityMultiplier();
     }
 

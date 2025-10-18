@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.Goal;
@@ -69,6 +70,13 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
         this.goalSelector.add(7, new LookAtTargetGoal(this));
         this.goalSelector.add(0, new BullrushGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
+    @Override
+    protected float getVelocityMultiplier() {
+        var blockState = this.getWorld().getBlockState(this.getVelocityAffectingPos());
+        if (blockState.isIn(ModTags.Blocks.SOULBASED_BLOCKS)) { return 1.2F; }
+        return super.getVelocityMultiplier();
     }
 
     public boolean getAwakened() { return this.dataTracker.get(AWAKENED); }

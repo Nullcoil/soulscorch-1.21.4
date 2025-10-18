@@ -65,6 +65,7 @@ public class ModItems {
             entries.add(BLAZT_SPAWN_EGG);
             entries.add(SOULLESS_SPAWN_EGG);
             entries.add(RESTLESS_SPAWN_EGG);
+            entries.add(SOULBORNE_CAT_SPAWN_EGG);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {

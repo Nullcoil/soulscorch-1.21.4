@@ -16,7 +16,7 @@ public class ModEntities {
     private static final Identifier BLAZT_ID = ID("blazt");
     private static final Identifier SOULLESS_ID = ID("soulless");
     private static final Identifier RESTLESS_ID = ID("restless");
-    private static final Identifier SOULCAT_ID = ID("souborne_cat");
+    private static final Identifier SOULCAT_ID = ID("soulborne_cat");
 
     public static final EntityType<SoulscorchFireballEntity> SOUL_CHARGE = Registry.register(Registries.ENTITY_TYPE,
             SOUL_CHARGE_ID, EntityType.Builder.<SoulscorchFireballEntity>create(SoulscorchFireballEntity::new, SpawnGroup.MISC)

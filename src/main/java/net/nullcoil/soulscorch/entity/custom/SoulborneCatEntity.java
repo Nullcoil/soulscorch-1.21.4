@@ -32,6 +32,7 @@ public class SoulborneCatEntity extends CatEntity {
                     false,
                     false,
                     true));
+            if(player.hasStatusEffect(ModEffects.SOULSCORCH)) player.removeStatusEffect(ModEffects.SOULSCORCH);
         }
     }
 

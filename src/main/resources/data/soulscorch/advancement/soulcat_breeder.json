@@ -1,0 +1,25 @@
+{
+  "parent": "minecraft:nether/root",
+  "display": {
+    "icon": {
+      "count": 1,
+      "id": "minecraft:string"
+    },
+    "title": {
+      "text": "oo ee a e",
+      "color": "blue"
+    },
+    "description": {
+      "text": "Bring two cats to the Soul Sand Valley and breed them."
+    },
+    "frame": "challenge"
+  },
+  "criteria": {
+    "soulcat_breed": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    ["soulcat_breed"]
+  ]
+}

@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;
@@ -34,6 +35,13 @@ public class SoulborneCatEntity extends CatEntity {
         builder.add(IN_SLEEPING_POSE, false);
         builder.add(HEAD_DOWN, false);
         builder.add(COLLAR_COLOR, DyeColor.RED.getId());
+    }
+
+    @Override
+    protected float getVelocityMultiplier() {
+        var blockState = this.getWorld().getBlockState(this.getVelocityAffectingPos());
+        if (blockState.isIn(ModTags.Blocks.SOULBASED_BLOCKS)) { return 1.2F; }
+        return super.getVelocityMultiplier();
     }
 
     @Override

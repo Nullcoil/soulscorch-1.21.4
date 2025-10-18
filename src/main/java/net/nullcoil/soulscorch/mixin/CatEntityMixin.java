@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.mixin;
 
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.CatEntity;
@@ -7,9 +8,12 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.tag.BiomeTags;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeKeys;
+import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.custom.SoulborneCatEntity;
 import net.nullcoil.soulscorch.util.ModTags;
@@ -42,6 +46,14 @@ public abstract class CatEntityMixin extends TameableEntity {
             if(soulCat != null) {
                 soulCat.setTamed(true, true);
                 soulCat.setOwnerUuid(this.getOwnerUuid());
+
+                if (soulCat.getOwner() instanceof ServerPlayerEntity owner) {
+                    AdvancementEntry advancement = world.getServer().getAdvancementLoader()
+                            .get(Identifier.of(Soulscorch.MOD_ID, "soulcat_breeder"));
+                    if (advancement != null) {
+                        owner.getAdvancementTracker().grantCriterion(advancement, "soulcat_breed");
+                    }
+                }
                 cir.setReturnValue(soulCat);
                 cir.cancel();
             }

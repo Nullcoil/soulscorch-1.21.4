@@ -9,6 +9,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.util.math.Box;
 
+import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
 
 import java.util.HashSet;
@@ -32,6 +33,8 @@ public class SoulbreakEventHandler {
         if (world.isClient) return; // server-only logic
 
         if (!state.isIn(SOULBASED_BLOCKS)) return;
+
+        if(player.hasStatusEffect(ModEffects.CAT_BUFF)) return;
 
         // BFS to find all Soulless in chain
         Set<SoullessEntity> visited = new HashSet<>();

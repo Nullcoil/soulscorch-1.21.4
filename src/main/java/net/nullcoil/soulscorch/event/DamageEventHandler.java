@@ -17,29 +17,32 @@ import net.nullcoil.soulscorch.item.ModItems;
 import java.util.List;
 
 public class DamageEventHandler {
+    public static RestlessEntity chooseRestless(LivingEntity entity) {
+        if(entity.getWorld() instanceof ServerWorld world && entity instanceof PlayerEntity) {
+            Box searchBox = new Box(
+                    entity.getX() - 24, entity.getY() - 24, entity.getZ() - 24,
+                    entity.getX() + 24, entity.getY() + 24, entity.getZ() + 24
+            );
+
+            List<RestlessEntity> awakenedRestless = world.getEntitiesByClass(RestlessEntity.class, searchBox, r-> r.getAwakened());
+            List<RestlessEntity> candidates = world.getEntitiesByClass(RestlessEntity.class, searchBox, r -> !r.getAwakened());
+
+            if(awakenedRestless.isEmpty() && !candidates.isEmpty()) {
+                return candidates.get(world.random.nextInt(candidates.size()));
+            }
+        }
+        return null;
+    }
+
     public static void register() {
         ServerLivingEntityEvents.AFTER_DAMAGE.register((LivingEntity entity,
                                                         net.minecraft.entity.damage.DamageSource source,
                                                         float baseDamage,
                                                         float damageTaken,
                                                         boolean blocked) -> {
-            // Awaken nearby Restless entities
-            if (entity.getWorld() instanceof ServerWorld serverWorld && entity instanceof PlayerEntity) {
-                Box searchBox = new Box(
-                        entity.getX() - 24, entity.getY() - 24, entity.getZ() - 24,
-                        entity.getX() + 24, entity.getY() + 24, entity.getZ() + 24
-                );
-
-                List<RestlessEntity> candidates = serverWorld.getEntitiesByClass(RestlessEntity.class, searchBox, r -> !r.getAwakened());
-
-                List<RestlessEntity> allRestless = serverWorld.getEntitiesByClass(
-                        RestlessEntity.class, searchBox, r -> true
-                );
-
-                if (!candidates.isEmpty()) {
-                    RestlessEntity toAwaken = candidates.get(serverWorld.random.nextInt(candidates.size()));
-                    toAwaken.setAwakened(true);
-                }
+            RestlessEntity toAwaken = chooseRestless(entity);
+            if(toAwaken != null) {
+                toAwaken.setAwakened(true);
             }
             // Only proc if entity has Soulscorch AND actually took damage
             if (

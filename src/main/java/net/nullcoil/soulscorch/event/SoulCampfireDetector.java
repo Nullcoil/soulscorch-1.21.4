@@ -33,15 +33,17 @@ public class SoulCampfireDetector {
 
                     // If it's a lit soul campfire, apply the Soulscorch effect
                     if (under.isOf(Blocks.SOUL_CAMPFIRE) && CampfireBlock.isLitCampfire(under)) {
-                        // Apply the exact StatusEffectInstance you requested
-                        livingEntity.addStatusEffect(new StatusEffectInstance(
-                                ModEffects.SOULSCORCH,
-                                600, // Duration in ticks (30 seconds)
-                                0,   // Amplifier
-                                false, // is Ambient
-                                false,  // show Particles
-                                true   // show Icon
-                        ));
+                        if(!livingEntity.hasStatusEffect(ModEffects.CAT_BUFF)) {
+                            // Apply the exact StatusEffectInstance you requested
+                            livingEntity.addStatusEffect(new StatusEffectInstance(
+                                    ModEffects.SOULSCORCH,
+                                    600, // Duration in ticks (30 seconds)
+                                    0,   // Amplifier
+                                    false, // is Ambient
+                                    false,  // show Particles
+                                    true   // show Icon
+                            ));
+                        }
                     }
                 }
             } catch (Throwable t) {

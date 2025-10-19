@@ -31,11 +31,11 @@
               "function": "minecraft:enchanted_count_increase"
             }
           ],
-          "name": "soulscorch:blazt_rod"
+          "name": "soulscorch:soul_shard"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "minecraft:entities/ghast"
+  "random_sequence": "minecraft:entities/cat"
 }

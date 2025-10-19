@@ -1,6 +1,5 @@
 package net.nullcoil.soulscorch.entity.custom;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;

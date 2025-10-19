@@ -1,6 +1,5 @@
 package net.nullcoil.soulscorch.entity.custom;
 
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.data.DataTracker;

@@ -6,13 +6,10 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeKeys;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.custom.SoulborneCatEntity;
@@ -57,7 +54,6 @@ public abstract class CatEntityMixin extends TameableEntity {
                 cir.setReturnValue(soulCat);
                 cir.cancel();
             }
-            if(soulCat == null) System.out.println("Failed to create Soulborne Cat");
         }
     }
 }

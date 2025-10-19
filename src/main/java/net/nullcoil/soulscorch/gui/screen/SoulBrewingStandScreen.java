@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package net.nullcoil.soulscorch.gui.screen.ingame;
+package net.nullcoil.soulscorch.gui.screen;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

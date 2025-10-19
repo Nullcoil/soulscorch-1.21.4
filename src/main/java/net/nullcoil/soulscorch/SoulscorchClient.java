@@ -22,7 +22,7 @@ import net.nullcoil.soulscorch.entity.client.restless.RestlessRenderer;
 import net.nullcoil.soulscorch.entity.client.soulcat.SoulborneCatRenderer;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessModel;
 import net.nullcoil.soulscorch.entity.client.soulless.SoullessRenderer;
-import net.nullcoil.soulscorch.gui.screen.ingame.SoulBrewingStandScreen;
+import net.nullcoil.soulscorch.gui.screen.SoulBrewingStandScreen;
 import net.nullcoil.soulscorch.screen.ModScreenHandlers;
 
 public class SoulscorchClient implements ClientModInitializer {

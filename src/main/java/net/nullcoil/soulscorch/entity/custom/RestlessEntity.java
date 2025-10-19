@@ -187,7 +187,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                     }
 
                     timer--;
-                    if (timer <= 0) {
+                    if (timer <= 0 && target != null) {
                         // Lock onto intercept position and calculate charge direction
                         Vec3d playerVel = target.getVelocity();
                         interceptPoint = InterceptHelper.computeIntercept(
@@ -197,8 +197,7 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
                                 0.35 // charge speed, blocks per tick
                         );
                         // Calculate charge direction from current position to intercept point
-                        Vec3d chargeDir = interceptPoint.subtract(mob.getPos()).normalize();
-                        chargeDirection = chargeDir;
+                        chargeDirection = interceptPoint.subtract(mob.getPos()).normalize();
 
                         timer = 60; // 3 seconds charge
                         state = State.CHARGING;

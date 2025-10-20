@@ -10,4 +10,5 @@ V1.1.0
 
 |----OTHER FEATURES----|
  - Soulless have acquired a lack of object permanence. Getting out of the line of sight of a Soulless in the Watching
-   State will put them back to sleep.
+   State will put them back to sleep. In the hostile state, they will remain aggroed for 1 minute (1200 game ticks),
+   which will refresh if it gets an attack in.

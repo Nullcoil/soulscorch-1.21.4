@@ -1,14 +1,8 @@
-V1.1.0
-
-|----ENTITIES----|
- - Added the Soulborne Cat. When you take two cats to the Soul Sand Valley, breed them, you get a Soulborne Cat.
-   When a tamed Soulborne Cat is following you, you gain the Cat Buff Status Effect, which clears you from the
-   Soulscorch effect, and Restless and Soulless will not aggro (if not already aggroed).
+v1.1.1
 
 |----BUG FIXES----|
- - Fixed Soulless head tracking. It's a lot creepier than I imagined it would turn out.
-
-|----OTHER FEATURES----|
- - Soulless have acquired a lack of object permanence. Getting out of the line of sight of a Soulless in the Watching
-   State will put them back to sleep. In the hostile state, they will remain aggroed for 1 minute (1200 game ticks),
-   which will refresh if it gets an attack in.
+ - Oops. Forgot the whole "block should be harvestable" bit. The following blocks were affected:
+   - Soul Slag
+   - Soul Brewing Stand
+   - Iron Bulb
+ - These items require a pickaxe.

@@ -53,6 +53,23 @@ public class ModBlocks {
                     .luminance(createLightLevelFromLitBlockState(10))
                     .registryKey(Key("iron_bulb"))));
 
+    //v2.0.0-----------------------------|
+    /*
+    public static final Block SOUL_STONE = registerBlock("soul_stone",
+            new Block(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_SAND.getDefaultMapColor())
+                    .strength(2,6)
+                    .sounds(BlockSoundGroup.STONE)
+                    .requiresTool()
+                    .registryKey(Key("soul_stone"))));
+
+    public static final Block SOUL_ZOL = registerBlock("soul_zol",
+            new Block(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_FIRE.getDefaultMapColor())
+                    .strength(2,6)
+                    .requiresTool()
+                    .registryKey(Key("soul_zol"))));
+    */
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -80,6 +97,11 @@ public class ModBlocks {
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.NATURAL).register(entries -> {
             entries.add(SOUL_SLAG_BLOCK);
+            /*
+            entries.add(SOUL_STONE);
+            entries.add(SOUL_ZOL);
+
+             */
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(IRON_BULB_BLOCK);

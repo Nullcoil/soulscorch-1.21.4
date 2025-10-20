@@ -44,8 +44,7 @@ public class IronBulbBlock extends BulbBlock {
         if (powered) {
             BlockState newState = state.with(LIT, !lit);
             world.setBlockState(pos, newState, 3);
-            world.playSound(
-                    (PlayerEntity) null,
+            world.playSound(null,
                     pos,
                     newState.get(LIT)
                             ? SoundEvents.BLOCK_COPPER_BULB_TURN_ON

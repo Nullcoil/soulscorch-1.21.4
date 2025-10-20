@@ -1,56 +1,13 @@
-V1.0.0
-
-|----BLOCKS----|
- - Added Soul Brewing Stand. Brews potions twice as fast, and uses Blazt Powder as fuel. Crafted with 1 Blazt Rod
-   and 3 Basalt.
- - Added Iron Bulb. Basically a Copper Bulb, but only has one state and has a 1 tick delay before turning on and off.
-   Same recipe shape as Copper Bulb, but with Iron Blocks (instead of copper) and a Blazt Rod (instead of a Blaze Rod).
- - Added a soul variant to Magma Blocks, called Soul Slag. It deals double damage and applies Soulscorch. Crafted with
-   4 Soul Cream.
- - Iron Bulb and Copper Bulb recipes are rotatable.
- - Piglins are scared of these blocks.
-
-|----EFFECTS----|
- - Added Soulscorch Effect.
- - - When affected by Soulscorch, every instance of damage decreases your max health by 1 (half a heart)
- - - This can be reversed by sleeping in the Overworld.
- - Added Soul Render Effect.
- - - Instantly increases your maximum health back to 20.
+V1.1.0
 
 |----ENTITIES----|
- - Added the Blazt, which shoots Soul Charges that burst into clouds that deal Instant Damage and
-   apply the Soulscorch Effect. Spawns in the Soul Sand Valley.
- - Added the Soulless. Breaking any soul-based block near a Soulless will wake it up to watch you. That's your first
-   and only warning. Spawns in the Soul Sand Valley. Listen for their whispers when stagnant. Piglins are scared of
-   Soulless.
- - Added the Restless. Any instance of damage will agitate the Restless, leading up to it charging once before going
-   back to sleep. Piglins are scared of Restless.
+ - Added the Soulborne Cat. When you take two cats to the Soul Sand Valley, breed them, you get a Soulborne Cat.
+   When a tamed Soulborne Cat is following you, you gain the Cat Buff Status Effect, which clears you from the
+   Soulscorch effect, and Restless and Soulless will not aggro (if not already aggroed).
 
-|----ITEMS----|
- - Added Blazt Rod
- - Added Blazt Powder, 2 of which are crafted from 1 Blazt Rod
- - Added Soul Cream, crafted from Blazt Powder + Slime Ball
- - Added Soul Charge. Unachievable in Survival Mode.
- - Added Soul Shard, dropped from Soulless and Restless.
- - Added Potions and Tipped Arrow of Soul Render, made by brewing Soul Cream into Awkward Potion.
- - Added Soulward Totem. Holding it while inflicted with Soulscorch sacrifices the totem's durability. In turn,
-   your max health will not decrease. Enchantable, via anvil, with Unbreaking and Mending.
+|----BUG FIXES----|
+ - Fixed Soulless head tracking. It's a lot creepier than I imagined it would turn out.
 
-|----TAGS----|
- - The following blocks count as "#soulbased_blocks" and will trigger Soulless in the area when broken or Soul
-   Speed when ran across:
- - - Soul Campfire
- - - Soul Fire
- - - Soul Lantern
- - - Soul Sand
- - - Soul Soil
- - - Soul Torch
- - - Soul Wall Torch
- - - Iron Bulb
- - - Soul Brewing Stand
- - - Soul Slag
-
- |----LANG----|
- - The subtitles for Copper Bulbs turning on and off were made a bit more broad for Iron Bulbs.
- - The "Soul Escape" sound subtitle (running on soul sand/soil with Soul Speed) is made more broad for
-   Restless and Soulless to use.
+|----OTHER FEATURES----|
+ - Soulless have acquired a lack of object permanence. Getting out of the line of sight of a Soulless in the Watching
+   State will put them back to sleep.

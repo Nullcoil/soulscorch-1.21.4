@@ -161,6 +161,10 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
                 case HOSTILE -> hostileAnimationState.startIfNotRunning(this.age);
             }
         }
+
+        if(this.getTarget() != null && !this.canSee(this.getTarget())) {
+            setActivity(SoullessActivity.PASSIVE);
+        }
     }
 
     public boolean tryAttack(ServerWorld world, Entity target) {
@@ -292,16 +296,16 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
         @Override
         public void tick() {
             LivingEntity target = this.mob.getTarget();
-            if (target != null && target.squaredDistanceTo(this.mob) < 4096.0D) {
-                this.mob.getLookControl().lookAt(
-                        target.getX(),
-                        target.getEyeY(),
-                        target.getZ(),
-                        360.0F,
-                        360.0F
-                );
+            mob.getNavigation().stop();
+
+            if (target != null && !target.isRemoved()) {
+                double dx = target.getX() - mob.getX();
+                double dz = target.getZ() - mob.getZ();
+                float yaw = (float) Math.toDegrees(Math.atan2(-dx, dz));
+                mob.setYaw(yaw);
+                mob.setBodyYaw(yaw);
+                mob.setHeadYaw(yaw);
             }
-            // do not call super.tick() if you don't want attacks
         }
     }
 

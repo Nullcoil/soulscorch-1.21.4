@@ -3,15 +3,11 @@ package net.nullcoil.soulscorch.entity.client.soulless;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.model.CrossbowPosing;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.PiglinBaseEntityModel;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
-import org.joml.Vector3f;
 
 
 public class SoullessModel extends PiglinBaseEntityModel<SoullessRenderState> {
@@ -61,6 +57,7 @@ public class SoullessModel extends PiglinBaseEntityModel<SoullessRenderState> {
                 this.animate(state.passiveAnimationState, SoullessAnimations.PASSIVE(),state.age);
             }
             case NEUTRAL -> {
+                super.setAngles(state);
                 this.leftLeg.pivotZ += 3;
                 this.rightLeg.pivotZ += 3;
 
@@ -71,9 +68,9 @@ public class SoullessModel extends PiglinBaseEntityModel<SoullessRenderState> {
                 this.rightLeg.yaw = (float)Math.toRadians(-7);
                 this.rightLeg.roll = (float)Math.toRadians(5);
 
-                this.head.pitch = (float)Math.toRadians(14.6599);
-                this.head.yaw = (float)Math.toRadians(3.2113);
-                this.head.roll = (float)Math.toRadians(-12.0868);
+                this.head.pitch += (float)Math.toRadians(14.6599);
+                this.head.yaw += (float)Math.toRadians(3.2113);
+                this.head.roll += (float)Math.toRadians(-12.0868);
 
                 this.body.pitch = (float)Math.toRadians(17.5);
 

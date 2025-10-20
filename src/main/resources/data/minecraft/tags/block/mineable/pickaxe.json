@@ -3,6 +3,9 @@
   "values": [
     "soulscorch:soul_slag",
     "soulscorch:iron_bulb",
-    "soulscorch:soul_brewing_stand"
+    "soulscorch:soul_brewing_stand",
+
+    "soulscorch:soul_stone",
+    "soulscorch:soul_zol"
   ]
 }

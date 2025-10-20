@@ -1,17 +1,15 @@
 {
   "container.soul_brewing_stand": "Soul Brewing Stand",
 
-  "block.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
-  "item.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
-  "block.soulscorch.soul_slag": "Soul Slag",
-  "item.soulscorch.soul_slag": "Soul Slag",
   "block.soulscorch.iron_bulb": "Iron Bulb",
+  "block.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
+  "block.soulscorch.soul_slag": "Soul Slag",
+  "block.soulscorch.soul_stone": "Soul Stone",
+  "block.soulscorch.soul_zol": "Soul Zol",
+
   "item.soulscorch.iron_bulb": "Iron Bulb",
-
-  "effect.soulscorch.soulscorch": "Soulscorched",
-  "effect.soulscorch.soul_render": "Soul Rendering",
-  "effect.soulscorch.cat_buff": "Cat Buff",
-
+  "item.soulscorch.soul_brewing_stand": "Soul Brewing Stand",
+  "item.soulscorch.soul_slag": "Soul Slag",
   "item.soulscorch.blazt_powder": "Blazt Powder",
   "item.soulscorch.blazt_rod": "Blazt Rod",
   "item.soulscorch.soul_cream": "Soul Cream",
@@ -19,38 +17,42 @@
   "item.soulscorch.soulward_totem": "Soulward Totem",
   "item.soulscorch.soul_shard": "Soul Shard",
 
+  "effect.soulscorch.cat_buff": "Cat Buff",
+  "effect.soulscorch.soul_render": "Soul Rendering",
+  "effect.soulscorch.soulscorch": "Soulscorched",
+
   "item.minecraft.potion.effect.soul_render": "Potion of Soul Rendering",
   "item.minecraft.splash_potion.effect.soul_render": "Splash Potion of Soul Rendering",
   "item.minecraft.lingering_potion.effect.soul_render": "Lingering Potion of Soul Rendering",
   "item.minecraft.tipped_arrow.effect.soul_render": "Arrow of Soul Rendering",
 
   "item.soulscorch.blazt_spawn_egg": "Blazt Spawn Egg",
-  "item.soulscorch.soulless_spawn_egg": "Soulless Spawn Egg",
   "item.soulscorch.restless_spawn_egg": "Restless Spawn Egg",
   "item.soulscorch.soulborne_cat_spawn_egg": "Soulborne Cat Spawn Egg",
+  "item.soulscorch.soulless_spawn_egg": "Soulless Spawn Egg",
 
   "entity.soulscorch.blazt": "Blazt",
+  "entity.soulscorch.restless": "Restless",
+  "entity.soulscorch.soulborne_cat": "Soulborne Cat",
+  "entity.soulscorch.soulless": "Soulless",
+
   "sounds.soulscorch.blazt_ambient": "Blazt bellows",
+  "sounds.soulscorch.blazt_breathe_in": "Blazt breathes",
+  "sounds.soulscorch.blazt_breathe_out": "Blazt recovers",
   "sounds.soulscorch.blazt_death": "Blazt dies",
   "sounds.soulscorch.blazt_hurt": "Blazt hurts",
   "sounds.soulscorch.blazt_shooting": "Blazt primes projectile",
   "sounds.soulscorch.blazt_soul_charge": "Blazt shoots",
-  "sounds.soulscorch.blazt_breathe_in": "Blazt breathes",
-  "sounds.soulscorch.blazt_breathe_out": "Blazt recovers",
 
-  "entity.soulscorch.soulless": "Soulless",
   "sounds.soulscorch.soulless_ambient": "Soulless groans",
   "sounds.soulscorch.soulless_angry": "Soulless groans angrily",
-  "sounds.soulscorch.soulless_hurt": "Soulless hurts",
   "sounds.soulscorch.soulless_death": "Soulless dies",
+  "sounds.soulscorch.soulless_hurt": "Soulless hurts",
   "sounds.soulscorch.soulless_wake": "Soulless wakes",
 
-  "entity.soulscorch.restless": "Restless",
   "sounds.soulscorch.restless_anger": "Restless angers",
-  "sounds.soulscorch.restless_hurt": "Restless hurts",
   "sounds.soulscorch.restless_death": "Restless dies",
-
-  "entity.soulscorch.soulborne_cat": "Soulborne Cat",
+  "sounds.soulscorch.restless_hurt": "Restless hurts",
 
   "tag.block.soulscorch.soulstuff": "Soulstuff",
   "tag.entity_type.soulscorch.phobias_of_piglins": "Phobias of Piglins",

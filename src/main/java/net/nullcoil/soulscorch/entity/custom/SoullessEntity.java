@@ -37,7 +37,7 @@ import java.util.UUID;
 public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     @Nullable
     private UUID angryAt;
-    private int angerTime;
+    private int angerTime = 1200;
     private static final UniformIntProvider ANGER_TIME_RANGE;
     private Animation currentAnimation;
     private int ticksUntilNext = 0;
@@ -159,11 +159,27 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
                 case PASSIVE -> passiveAnimationState.startIfNotRunning(this.age);
                 case NEUTRAL -> neutralAnimationState.startIfNotRunning(this.age);
                 case HOSTILE -> hostileAnimationState.startIfNotRunning(this.age);
+
             }
         }
 
-        if(this.getTarget() != null && !this.canSee(this.getTarget())) {
-            setActivity(SoullessActivity.PASSIVE);
+        if (this.getWorld() instanceof ServerWorld) {
+            switch(getActivity()) {
+                case NEUTRAL -> {
+                    if(this.getTarget() != null && !this.canSee(this.getTarget())) {
+                        setActivity(SoullessActivity.PASSIVE);
+                    }
+                }
+                case HOSTILE -> {
+                    if(angerTime > 0) {
+                        angerTime--;
+                    }
+                    if(angerTime <= 0) {
+                        setActivity(SoullessActivity.NEUTRAL);
+                        angerTime = 1200;
+                    }
+                }
+            }
         }
     }
 
@@ -179,6 +195,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
                     false,  // Show particles
                     true   // Show icon
             ));
+            this.angerTime = 1200;
         }
 
         return bl;

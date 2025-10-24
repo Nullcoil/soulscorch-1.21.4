@@ -39,6 +39,9 @@ public class ModItems {
     public static final Item SOULBORNE_CAT_SPAWN_EGG = registerItem(
             "soulborne_cat_spawn_egg", new SpawnEggItem(ModEntities.SOULBORNE_CAT,
                     new Item.Settings().registryKey(Key("soulborne_cat_spawn_egg"))));
+    public static final Item HYTODOM_SPAWN_EGG = registerItem(
+            "hytodom_spawn_egg", new SpawnEggItem(ModEntities.HYTODOM,
+                    new Item.Settings().registryKey(Key("hytodom_spawn_egg"))));
 
 
     private static Item registerItem(String name, Item item) {
@@ -66,6 +69,7 @@ public class ModItems {
             entries.add(SOULLESS_SPAWN_EGG);
             entries.add(RESTLESS_SPAWN_EGG);
             entries.add(SOULBORNE_CAT_SPAWN_EGG);
+            entries.add(HYTODOM_SPAWN_EGG);
         });
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> {

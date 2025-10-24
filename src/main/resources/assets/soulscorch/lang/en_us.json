@@ -30,11 +30,13 @@
   "item.soulscorch.restless_spawn_egg": "Restless Spawn Egg",
   "item.soulscorch.soulborne_cat_spawn_egg": "Soulborne Cat Spawn Egg",
   "item.soulscorch.soulless_spawn_egg": "Soulless Spawn Egg",
+  "item.soulscorch.hytodom_spawn_egg": "Hytodom Spawn Egg",
 
   "entity.soulscorch.blazt": "Blazt",
   "entity.soulscorch.restless": "Restless",
   "entity.soulscorch.soulborne_cat": "Soulborne Cat",
   "entity.soulscorch.soulless": "Soulless",
+  "entity.soulscorch.hytodom": "Hytodom",
 
   "sounds.soulscorch.blazt_ambient": "Blazt bellows",
   "sounds.soulscorch.blazt_breathe_in": "Blazt breathes",

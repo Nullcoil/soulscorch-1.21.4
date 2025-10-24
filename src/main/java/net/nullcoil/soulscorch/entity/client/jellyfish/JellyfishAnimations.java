@@ -1,11 +1,11 @@
-package net.nullcoil.soulscorch.entity.client.hytodom;
+package net.nullcoil.soulscorch.entity.client.jellyfish;
 
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.client.render.entity.animation.AnimationHelper;
 import net.minecraft.client.render.entity.animation.Keyframe;
 import net.minecraft.client.render.entity.animation.Transformation;
 
-public class HytodomAnimations {
+public class JellyfishAnimations {
 
 
     public static final Animation IDLE = Animation.Builder.create(3.5f).looping()

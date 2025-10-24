@@ -17,8 +17,8 @@ import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
-import net.nullcoil.soulscorch.entity.client.hytodom.HytodomModel;
-import net.nullcoil.soulscorch.entity.client.hytodom.HytodomRenderer;
+import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishModel;
+import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishRenderer;
 import net.nullcoil.soulscorch.entity.client.restless.RestlessModel;
 import net.nullcoil.soulscorch.entity.client.restless.RestlessRenderer;
 import net.nullcoil.soulscorch.entity.client.soulcat.SoulborneCatRenderer;
@@ -48,13 +48,15 @@ public class SoulscorchClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "soulborne_cat"), "main"), SoulscorchClient::getCatTexturedModelData);
         EntityRendererRegistry.register(ModEntities.SOULBORNE_CAT, SoulborneCatRenderer::new);
 
-        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "hytodom"), "main"), HytodomModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.HYTODOM, HytodomRenderer::new);
+        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "hytodom"), "main"), JellyfishModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntities.HYTODOM, JellyfishRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_BREWING_STAND, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_SLAG_BLOCK, RenderLayer.getCutout());
 
         HandledScreens.register(ModScreenHandlers.SOUL_BREWING_STAND_SCREEN_HANDLER, SoulBrewingStandScreen::new);
+
+
     }
 
     public static TexturedModelData getCatTexturedModelData() {

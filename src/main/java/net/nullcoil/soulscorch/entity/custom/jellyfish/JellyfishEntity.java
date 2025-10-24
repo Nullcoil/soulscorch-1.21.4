@@ -1,7 +1,5 @@
 package net.nullcoil.soulscorch.entity.custom.jellyfish;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -56,7 +54,7 @@ public class JellyfishEntity extends FlyingEntity {
     
     @Override
     public void initGoals() {
-        this.goalSelector.add(0, new JellyfishEntity.FlyRandomlyGoal(this, 32, 110));
+        this.goalSelector.add(0, new JellyfishEntity.FlyRandomlyGoal(this));
     }
 
     @Override
@@ -121,13 +119,9 @@ public class JellyfishEntity extends FlyingEntity {
 
     static class FlyRandomlyGoal extends Goal {
         private final JellyfishEntity jelly;
-        private final double minY;
-        private final double maxY;
 
-        public FlyRandomlyGoal(JellyfishEntity jelly, double minY, double maxY) {
+        public FlyRandomlyGoal(JellyfishEntity jelly) {
             this.jelly = jelly;
-            this.minY = minY;
-            this.maxY = maxY;
             this.setControls(EnumSet.of(Control.MOVE));
         }
 
@@ -154,13 +148,12 @@ public class JellyfishEntity extends FlyingEntity {
             Random random = this.jelly.getRandom();
             World world = this.jelly.getWorld();
 
-            for (int i = 0; i < 16; i++) { // try up to 16 random positions
+            for (int i = 0; i < 16; i++) {
+                // Random movement in all directions
                 double targetX = this.jelly.getX() + (random.nextDouble() * 2.0 - 1.0) * 16.0;
-                double targetY = MathHelper.clamp(
-                        this.jelly.getY() + (random.nextDouble() * 2.0 - 1.0) * 16.0,
-                        minY, maxY
-                );
+                double targetY = this.jelly.getY() + (random.nextDouble() * 2.0 - 1.0) * 16.0;
                 double targetZ = this.jelly.getZ() + (random.nextDouble() * 2.0 - 1.0) * 16.0;
+
                 BlockPos targetPos = BlockPos.ofFloored(targetX, targetY, targetZ);
 
                 // Must be surrounded by air

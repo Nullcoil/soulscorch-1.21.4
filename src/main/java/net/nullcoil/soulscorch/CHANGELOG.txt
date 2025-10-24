@@ -1,8 +1,4 @@
-v1.1.1
+v2.0.0
 
-|----BUG FIXES----|
- - Oops. Forgot the whole "block should be harvestable" bit. The following blocks were affected:
-   - Soul Slag
-   - Soul Brewing Stand
-   - Iron Bulb
- - These items require a pickaxe.
+|----ENTITIES----|
+ - Added Hytodom

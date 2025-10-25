@@ -1,15 +1,14 @@
 package net.nullcoil.soulscorch.entity.custom.jellyfish;
 
-import net.minecraft.entity.AnimationState;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -19,6 +18,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.nullcoil.soulscorch.effect.ModEffects;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -49,7 +49,8 @@ public class JellyfishEntity extends FlyingEntity {
     public static DefaultAttributeContainer.Builder createAttributes() {
         return MobEntity.createMobAttributes()
                 .add(EntityAttributes.MAX_HEALTH, 8.0D)
-                .add(EntityAttributes.MOVEMENT_SPEED, 0.025);
+                .add(EntityAttributes.MOVEMENT_SPEED, 0.025)
+                .add(EntityAttributes.ATTACK_DAMAGE, 2);
     }
     
     @Override
@@ -63,6 +64,34 @@ public class JellyfishEntity extends FlyingEntity {
 
         if(this.getWorld().isClient) {
             this.IDLE.startIfNotRunning(this.age);
+        }
+
+        if(!this.getWorld().isClient) {
+            this.getWorld().getOtherEntities(this, this.getBoundingBox(),
+                    e -> e instanceof LivingEntity && e != this).forEach(e -> {
+                LivingEntity living = (LivingEntity) e;
+                double dx = living.getX() - this.getX();
+                double dz = living.getZ() - this.getZ();
+                double dist = Math.sqrt(dx * dx + dz * dz);
+                if (dist != 0) {
+                    dx /= dist;
+                    dz /= dist;
+
+                    living.damage(
+                            (ServerWorld) this.getWorld(),
+                            this.getDamageSources().mobAttack(this),
+                            (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
+                    );
+                    living.addStatusEffect(new StatusEffectInstance(
+                            ModEffects.SOULSCORCH,
+                            600,
+                            0,
+                            false,
+                            false,
+                            true
+                    ));
+                }
+            });
         }
     }
 
@@ -177,11 +206,9 @@ public class JellyfishEntity extends FlyingEntity {
                     return;
                 }
             }
-            // no valid air target found, jelly will just idle and drift this tick
         }
 
         private boolean isAreaClear(World world, BlockPos pos) {
-            // Check that the candidate and surrounding blocks are all air
             return world.isAir(pos)
                     && world.isAir(pos.up())
                     && world.isAir(pos.down())

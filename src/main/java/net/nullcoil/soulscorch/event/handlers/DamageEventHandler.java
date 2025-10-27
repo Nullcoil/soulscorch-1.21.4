@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.event;
+package net.nullcoil.soulscorch.event.handlers;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.entity.EquipmentSlot;

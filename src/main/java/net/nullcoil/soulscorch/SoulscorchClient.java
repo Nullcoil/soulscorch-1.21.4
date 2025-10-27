@@ -15,6 +15,7 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.entity.ModEntities;
+import net.nullcoil.soulscorch.entity.client.RegisterClientEntity;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
 import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishModel;
@@ -32,27 +33,10 @@ public class SoulscorchClient implements ClientModInitializer {
     public void onInitializeClient() {
         Soulscorch.LOGGER.info("Soulscorch Clientside features initializing..."); // Debug
 
-        // Register Soul Charge projectile
-        EntityRendererRegistry.register(ModEntities.SOUL_CHARGE, FlyingItemEntityRenderer::new);
-
-        // Register Blazt Entity - Model layer first, then renderer
-        EntityModelLayerRegistry.registerModelLayer(BlaztModel.BLAZT, BlaztModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.BLAZT, BlaztRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(SoullessModel.SOULLESS, SoullessModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.SOULLESS, SoullessRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(RestlessModel.RESTLESS, RestlessModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.RESTLESS, RestlessRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "soulborne_cat"), "main"), SoulscorchClient::getCatTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.SOULBORNE_CAT, SoulborneCatRenderer::new);
-
-        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "hytodom"), "main"), JellyfishModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.HYTODOM, JellyfishRenderer::new);
+        RegisterClientEntity.register();
 
         BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_BREWING_STAND, RenderLayer.getCutout());
-        BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_SLAG_BLOCK, RenderLayer.getCutout());
+        // BlockRenderLayerMap.INSTANCE.putBlock(ModBlocks.SOUL_SLAG_BLOCK, RenderLayer.getCutout());
 
         HandledScreens.register(ModScreenHandlers.SOUL_BREWING_STAND_SCREEN_HANDLER, SoulBrewingStandScreen::new);
 

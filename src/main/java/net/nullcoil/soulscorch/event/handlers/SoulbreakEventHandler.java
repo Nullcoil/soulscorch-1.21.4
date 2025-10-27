@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.event;
+package net.nullcoil.soulscorch.event.handlers;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.block.BlockState;

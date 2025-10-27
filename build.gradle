@@ -1,3 +1,9 @@
+buildscript {
+    repositories {
+        maven { url = "https://maven.minecraftforge.net"}
+    }
+}
+
 plugins {
 	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
@@ -33,12 +39,13 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
 	// Soul Fire'd Fabric
 	modImplementation "it.crystalnest:soul-fire-d-fabric:$minecraft_version-$soul_fire_d_version"
 
     // Cobweb (dependency for Soul Fire'd)
     modImplementation "it.crystalnest:cobweb-fabric:$minecraft_version-$cobweb_version"
+
 }
 
 processResources {

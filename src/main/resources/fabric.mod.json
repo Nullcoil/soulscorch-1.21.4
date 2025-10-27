@@ -15,6 +15,9 @@
 	"icon": "assets/soulscorch/icon.png",
 	"environment": "*",
 	"entrypoints": {
+        "terrablender": [
+            "net.nullcoil.soulscorch.world.terrablender.ModBiomes"
+        ],
 		"main": [
 			"net.nullcoil.soulscorch.Soulscorch"
 		],

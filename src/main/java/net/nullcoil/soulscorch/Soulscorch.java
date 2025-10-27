@@ -1,6 +1,7 @@
 package net.nullcoil.soulscorch;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.effect.ModEffects;
 import net.nullcoil.soulscorch.entity.ModEntities;
@@ -28,7 +29,11 @@ public class Soulscorch implements ModInitializer {
         ModPotions.register();
         ModScreenHandlers.register();
         ModSounds.register();
-
         ModWorldGeneration.register();
+
+        if(FabricLoader.getInstance().isModLoaded("stylishstiles")) {
+            System.out.println("Mod detected."); // will be making adjustments to this
+                                                 // to add compatibility with other mods
+        }
     }
 }

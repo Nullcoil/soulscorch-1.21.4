@@ -89,6 +89,13 @@ public class RestlessEntity extends HostileEntity implements Monster, Hoglin {
     public boolean isFireImmune() { return true; }
 
     @Override
+    public boolean isPushable() {
+        if(!getAwakened()) return false;
+
+        return super.isPushable();
+    }
+
+    @Override
     public SoundCategory getSoundCategory() { return SoundCategory.HOSTILE; }
 
     @Override

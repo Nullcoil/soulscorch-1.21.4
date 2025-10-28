@@ -220,8 +220,13 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     }
 
     @Override
-    public boolean isFireImmune() {
-        return true;
+    public boolean isFireImmune() { return true; }
+
+    @Override
+    public boolean isPushable() {
+        if(this.getActivity() == SoullessActivity.PASSIVE) return false;
+
+        return super.isPushable();
     }
 
     @Override

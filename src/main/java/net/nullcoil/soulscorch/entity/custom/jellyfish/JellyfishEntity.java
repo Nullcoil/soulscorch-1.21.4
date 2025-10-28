@@ -18,6 +18,7 @@ import net.minecraft.world.RaycastContext;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
@@ -67,7 +68,7 @@ public class JellyfishEntity extends FlyingEntity {
 
         if(!this.getWorld().isClient) {
             this.getWorld().getOtherEntities(this, this.getBoundingBox(),
-                    e -> e instanceof LivingEntity && !(e instanceof JellyfishEntity)).forEach(e -> {
+                    e -> e instanceof LivingEntity && !e.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES)).forEach(e -> {
                 LivingEntity living = (LivingEntity) e;
                 double dx = living.getX() - this.getX();
                 double dz = living.getZ() - this.getZ();

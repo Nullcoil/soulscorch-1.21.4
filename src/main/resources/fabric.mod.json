@@ -16,7 +16,7 @@
 	"environment": "*",
 	"entrypoints": {
         "terrablender": [
-            "net.nullcoil.soulscorch.world.terrablender.ModBiomes"
+            "net.nullcoil.soulscorch.world.biome.ModTerrablenderAPI"
         ],
 		"main": [
 			"net.nullcoil.soulscorch.Soulscorch"

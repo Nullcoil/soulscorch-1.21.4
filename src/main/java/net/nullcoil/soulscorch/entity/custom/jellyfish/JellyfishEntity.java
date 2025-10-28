@@ -67,7 +67,7 @@ public class JellyfishEntity extends FlyingEntity {
 
         if(!this.getWorld().isClient) {
             this.getWorld().getOtherEntities(this, this.getBoundingBox(),
-                    e -> e instanceof LivingEntity && e != this).forEach(e -> {
+                    e -> e instanceof LivingEntity && !(e instanceof JellyfishEntity)).forEach(e -> {
                 LivingEntity living = (LivingEntity) e;
                 double dx = living.getX() - this.getX();
                 double dz = living.getZ() - this.getZ();

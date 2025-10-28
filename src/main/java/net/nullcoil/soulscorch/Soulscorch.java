@@ -30,8 +30,9 @@ public class Soulscorch implements ModInitializer {
         ModSounds.register();
 
         if(FabricLoader.getInstance().isModLoaded("stylishstiles")) {
-            System.out.println("Mod detected."); // will be making adjustments to this
-                                                 // to add compatibility with other mods
+            System.out.println("Mod detected.");
         }
+
+        LOGGER.info("Soulscorch initialized successfully!");
     }
 }

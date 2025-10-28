@@ -18,22 +18,22 @@ public class ModConfiguredFeatures {
             RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Identifier.of(Soulscorch.MOD_ID, "ore_soul_soil_blob"));
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
-        // Soul Sand blobs - generates in Soul Stone like Blackstone in Netherrack
+        // MASSIVE Soul Sand blobs - like ancient debris but bigger
         register(context, ORE_SOUL_SAND_BLOB, Feature.ORE,
                 new OreFeatureConfig(
-                        new BlockMatchRuleTest(ModBlocks.SOUL_STONE), // target block
-                        net.minecraft.block.Blocks.SOUL_SAND.getDefaultState(), // replacement
-                        20, // size of the vein
-                        0.5f // discard chance on air exposure
+                        new BlockMatchRuleTest(ModBlocks.SOUL_STONE),
+                        net.minecraft.block.Blocks.SOUL_SAND.getDefaultState(),
+                        64, // HUGE size - these will be massive veins
+                        0.1f // Very low discard chance for continuous veins
                 ));
 
-        // Soul Soil blobs
+        // MASSIVE Soul Soil blobs
         register(context, ORE_SOUL_SOIL_BLOB, Feature.ORE,
                 new OreFeatureConfig(
-                        new BlockMatchRuleTest(ModBlocks.SOUL_STONE), // target block
-                        net.minecraft.block.Blocks.SOUL_SOIL.getDefaultState(), // replacement
-                        16, // slightly smaller than soul sand
-                        0.4f // discard chance on air exposure
+                        new BlockMatchRuleTest(ModBlocks.SOUL_STONE),
+                        net.minecraft.block.Blocks.SOUL_SOIL.getDefaultState(),
+                        52, // HUGE size
+                        0.08f // Even lower discard chance
                 ));
     }
 

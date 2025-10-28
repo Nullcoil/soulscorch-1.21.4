@@ -6,7 +6,6 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.PlacedFeature;
-import net.minecraft.world.gen.feature.PlacedFeatures;
 import net.minecraft.world.gen.placementmodifier.*;
 import net.nullcoil.soulscorch.Soulscorch;
 
@@ -21,11 +20,11 @@ public class ModPlacedFeatures {
     public static void bootstrap(Registerable<PlacedFeature> context) {
         var configuredFeatureRegistryLookup = context.getRegistryLookup(RegistryKeys.CONFIGURED_FEATURE);
 
-        // Soul Sand blob placement - similar to Blackstone in Nether
+        // More frequent placement for the massive blobs
         register(context, ORE_SOUL_SAND_BLOB,
                 configuredFeatureRegistryLookup.getOrThrow(ModConfiguredFeatures.ORE_SOUL_SAND_BLOB),
                 List.of(
-                        CountPlacementModifier.of(10), // 10 blobs per chunk
+                        CountPlacementModifier.of(16), // More frequent placement
                         SquarePlacementModifier.of(),
                         HeightRangePlacementModifier.uniform(
                                 net.minecraft.world.gen.YOffset.getBottom(),
@@ -34,11 +33,11 @@ public class ModPlacedFeatures {
                         BiomePlacementModifier.of()
                 ));
 
-        // Soul Soil blob placement
+        // More frequent soul soil placement
         register(context, ORE_SOUL_SOIL_BLOB,
                 configuredFeatureRegistryLookup.getOrThrow(ModConfiguredFeatures.ORE_SOUL_SOIL_BLOB),
                 List.of(
-                        CountPlacementModifier.of(8), // 8 blobs per chunk
+                        CountPlacementModifier.of(12), // More frequent placement
                         SquarePlacementModifier.of(),
                         HeightRangePlacementModifier.uniform(
                                 net.minecraft.world.gen.YOffset.getBottom(),

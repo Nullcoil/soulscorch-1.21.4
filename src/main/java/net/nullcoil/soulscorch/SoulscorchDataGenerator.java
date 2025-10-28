@@ -8,6 +8,7 @@ import net.nullcoil.soulscorch.datagen.ModWorldGenerator;
 import net.nullcoil.soulscorch.world.biome.ModBiomes;
 import net.nullcoil.soulscorch.world.gen.feature.ModConfiguredFeatures;
 import net.nullcoil.soulscorch.world.gen.feature.ModPlacedFeatures;
+import net.nullcoil.soulscorch.world.biome.noise.ModNoiseBootstrap;
 
 public class SoulscorchDataGenerator implements DataGeneratorEntrypoint {
     @Override
@@ -19,7 +20,8 @@ public class SoulscorchDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
         registryBuilder.addRegistry(RegistryKeys.BIOME, ModBiomes::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
-        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap); // ADD THIS
+        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::bootstrap); // ADD THIS
+        registryBuilder.addRegistry(RegistryKeys.NOISE_PARAMETERS, ModNoiseBootstrap::bootstrap);
     }
 }

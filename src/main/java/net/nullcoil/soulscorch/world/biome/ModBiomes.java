@@ -10,6 +10,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.*;
 import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.carver.ConfiguredCarvers;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
@@ -30,10 +31,14 @@ public class ModBiomes {
                 new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE),
                         context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
 
+        // FIXED: Use the new carver API for 1.21.4
+        biomeBuilder.carver(ConfiguredCarvers.NETHER_CAVE);
+
         // Add your ore features
         biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.ORE_SOUL_SAND_BLOB);
         biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.ORE_SOUL_SOIL_BLOB);
 
+        // Add basic nether features but skip the large open cave generation
         DefaultBiomeFeatures.addNetherMineables(biomeBuilder);
         DefaultBiomeFeatures.addDefaultMushrooms(biomeBuilder);
 
@@ -46,7 +51,7 @@ public class ModBiomes {
                         .waterFogColor(329011)
                         .fogColor(2300955)
                         .skyColor(OverworldBiomeCreator.getSkyColor(2.0F))
-                        .particleConfig(new BiomeParticleConfig(ParticleTypes.ASH, 0.00625F))
+                        .particleConfig(new BiomeParticleConfig(ParticleTypes.ASH, 0.015F))
                         .loopSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_LOOP)
                         .moodSound(new BiomeMoodSound(SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD,
                                 6000, 8, 2.0F))

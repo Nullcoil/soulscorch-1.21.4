@@ -3,7 +3,8 @@ package net.nullcoil.soulscorch.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.minecraft.registry.RegistryWrapper;
-import net.nullcoil.soulscorch.Soulscorch;
+import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
+import net.nullcoil.soulscorch.world.gen.ModNoiseParameters;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -14,14 +15,20 @@ public class ModWorldGenerator extends FabricDynamicRegistryProvider {
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
-        // This will automatically add all entries from our bootstrap registries
-        // Add biomes
-        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.BIOME));
-        // Add configured features
-        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE));
-        // Add placed features
-        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.PLACED_FEATURE));
+    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, Entries entries) {
+        // Add all registered entries
+        entries.addAll(wrapperLookup.getOrThrow(net.minecraft.registry.RegistryKeys.BIOME));
+        entries.addAll(wrapperLookup.getOrThrow(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE));
+        entries.addAll(wrapperLookup.getOrThrow(net.minecraft.registry.RegistryKeys.PLACED_FEATURE));
+        entries.addAll(wrapperLookup.getOrThrow(net.minecraft.registry.RegistryKeys.CONFIGURED_CARVER)); // Make sure this is here
+
+        // Add noise parameters for dense terrain
+        entries.add(ModNoiseParameters.DENSE_TERRAIN,
+                new DoublePerlinNoiseSampler.NoiseParameters(-5, 1.5, 1.0));
+        entries.add(ModNoiseParameters.SOUL_SAND_BLOB,
+                new DoublePerlinNoiseSampler.NoiseParameters(-7, 1.0, 1.0));
+        entries.add(ModNoiseParameters.SOUL_SOIL_BLOB,
+                new DoublePerlinNoiseSampler.NoiseParameters(-7, 1.0, 1.0));
     }
 
     @Override

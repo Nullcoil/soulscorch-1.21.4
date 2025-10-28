@@ -1,2 +1,6 @@
 // 1.21.4	-999999999-01-01T00:00:00	Soulscorch/World Gen
-7898920ca8c7bff6aa389e041bca0d7ddcdd36ad data/soulscorch/worldgen/biome/soulvore_caverns.json
+d2d8a429cdd5b29dc54c35e3edb0dc35c1fba94b data/soulscorch/worldgen/biome/soulvore_caverns.json
+7868864ced9dc23674cd9450fa300649bf0d8ee9 data/soulscorch/worldgen/configured_feature/ore_soul_sand_blob.json
+d43a5e341906763f287e191303c06b26bf4f62ff data/soulscorch/worldgen/configured_feature/ore_soul_soil_blob.json
+64309531a4ac8547bb6f22f5ec3157945bff6b63 data/soulscorch/worldgen/placed_feature/ore_soul_sand_blob.json
+0c280bc4292ca2ffd8028992a6f1f5cb45cdecf8 data/soulscorch/worldgen/placed_feature/ore_soul_soil_blob.json

@@ -6,23 +6,20 @@ import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.nullcoil.soulscorch.datagen.ModWorldGenerator;
 import net.nullcoil.soulscorch.world.biome.ModBiomes;
-
-import java.io.IOException;
+import net.nullcoil.soulscorch.world.gen.feature.ModConfiguredFeatures;
+import net.nullcoil.soulscorch.world.gen.feature.ModPlacedFeatures;
 
 public class SoulscorchDataGenerator implements DataGeneratorEntrypoint {
     @Override
     public void onInitializeDataGenerator(FabricDataGenerator generator) {
         FabricDataGenerator.Pack pack = generator.createPack();
         pack.addProvider(ModWorldGenerator::new);
-        try {
-            generator.run();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
         registryBuilder.addRegistry(RegistryKeys.BIOME, ModBiomes::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap);
+        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::bootstrap);
     }
 }

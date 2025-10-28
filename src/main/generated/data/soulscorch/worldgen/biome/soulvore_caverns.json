@@ -43,7 +43,10 @@
     [],
     [],
     [],
-    [],
+    [
+      "soulscorch:ore_soul_sand_blob",
+      "soulscorch:ore_soul_soil_blob"
+    ],
     [
       "minecraft:ore_gravel_nether",
       "minecraft:ore_blackstone",
@@ -68,9 +71,9 @@
     "monster": [
       {
         "type": "soulscorch:hytodom",
-        "maxCount": 10,
-        "minCount": 5,
-        "weight": 10
+        "maxCount": 5,
+        "minCount": 1,
+        "weight": 1
       }
     ],
     "underground_water_creature": [],

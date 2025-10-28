@@ -2,10 +2,8 @@ package net.nullcoil.soulscorch.datagen;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.registry.RegistryWrapper.Impl;
-import net.minecraft.world.biome.Biome;
+import net.nullcoil.soulscorch.Soulscorch;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -16,12 +14,14 @@ public class ModWorldGenerator extends FabricDynamicRegistryProvider {
     }
 
     @Override
-    protected void configure(RegistryWrapper.WrapperLookup wrapperLookup, Entries entries) {
-        // Cast to Impl<T> to satisfy FabricDynamicRegistryProvider
-        Impl<Biome> biomeWrapper = wrapperLookup.getOrThrow(RegistryKeys.BIOME);
-
-        // Add all biomes to the datagen provider
-        entries.addAll(biomeWrapper);
+    protected void configure(RegistryWrapper.WrapperLookup registries, Entries entries) {
+        // This will automatically add all entries from our bootstrap registries
+        // Add biomes
+        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.BIOME));
+        // Add configured features
+        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.CONFIGURED_FEATURE));
+        // Add placed features
+        entries.addAll(registries.getOrThrow(net.minecraft.registry.RegistryKeys.PLACED_FEATURE));
     }
 
     @Override

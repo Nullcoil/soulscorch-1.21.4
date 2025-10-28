@@ -9,9 +9,11 @@ import net.minecraft.sound.MusicType;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.biome.*;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
+import net.nullcoil.soulscorch.world.gen.feature.ModPlacedFeatures;
 
 public class ModBiomes {
     public static final RegistryKey<Biome> SOULVORE_CAVERNS = RegistryKey.of(RegistryKeys.BIOME, Identifier.of(Soulscorch.MOD_ID, "soulvore_caverns"));
@@ -22,11 +24,15 @@ public class ModBiomes {
 
     public static Biome soulvoreCaverns(Registerable<Biome> context) {
         SpawnSettings.Builder spawnBuilder = new SpawnSettings.Builder();
-        spawnBuilder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModEntities.HYTODOM, 10, 5, 10));
+        spawnBuilder.spawn(SpawnGroup.MONSTER, new SpawnSettings.SpawnEntry(ModEntities.HYTODOM, 1, 1, 5));
 
         GenerationSettings.LookupBackedBuilder biomeBuilder =
                 new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE),
                         context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
+
+        // Add your ore features
+        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.ORE_SOUL_SAND_BLOB);
+        biomeBuilder.feature(GenerationStep.Feature.UNDERGROUND_ORES, ModPlacedFeatures.ORE_SOUL_SOIL_BLOB);
 
         DefaultBiomeFeatures.addNetherMineables(biomeBuilder);
         DefaultBiomeFeatures.addDefaultMushrooms(biomeBuilder);

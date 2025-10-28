@@ -10,6 +10,7 @@ import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.potion.ModPotions;
 import net.nullcoil.soulscorch.screen.ModScreenHandlers;
 import net.nullcoil.soulscorch.sound.ModSounds;
+import net.nullcoil.soulscorch.world.gen.ModWorldGeneration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,8 @@ public class Soulscorch implements ModInitializer {
         ModPotions.register();
         ModScreenHandlers.register();
         ModSounds.register();
+
+        ModWorldGeneration.register();
 
         if(FabricLoader.getInstance().isModLoaded("stylishstiles")) {
             System.out.println("Mod detected.");

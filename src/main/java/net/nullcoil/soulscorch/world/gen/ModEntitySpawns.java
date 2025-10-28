@@ -10,6 +10,7 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
+import net.nullcoil.soulscorch.world.biome.ModBiomes;
 
 public class ModEntitySpawns {
     public static void addSpawns() {
@@ -17,17 +18,31 @@ public class ModEntitySpawns {
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
                 SpawnGroup.MONSTER, ModEntities.BLAZT, 8, 1, 1);
-        SpawnRestriction.register(ModEntities.BLAZT, SpawnLocationTypes.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
                 SpawnGroup.MONSTER, ModEntities.SOULLESS, 100, 2, 8);
-        SpawnRestriction.register(ModEntities.SOULLESS,SpawnLocationTypes.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SOUL_SAND_VALLEY),
                 SpawnGroup.MONSTER, ModEntities.RESTLESS, 20, 1, 1);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
+                SpawnGroup.MONSTER, ModEntities.BLAZT, 1, 1, 1);
+        SpawnRestriction.register(ModEntities.BLAZT, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canMobSpawn);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
+                SpawnGroup.MONSTER, ModEntities.SOULLESS, 10, 2, 8);
+        SpawnRestriction.register(ModEntities.SOULLESS,SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
+                SpawnGroup.MONSTER, ModEntities.RESTLESS, 5, 1, 1);
         SpawnRestriction.register(ModEntities.RESTLESS, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
+
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
+                SpawnGroup.MONSTER, ModEntities.HYTODOM, 7, 1, 1);
+        SpawnRestriction.register(ModEntities.HYTODOM, SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
     }
 }

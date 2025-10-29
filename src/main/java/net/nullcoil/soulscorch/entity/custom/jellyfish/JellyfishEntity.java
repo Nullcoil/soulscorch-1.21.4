@@ -13,15 +13,14 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.RaycastContext;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.nullcoil.soulscorch.effect.ModEffects;
+import net.nullcoil.soulscorch.entity.custom.HytodomEntity;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public class JellyfishEntity extends FlyingEntity {
     public final AnimationState IDLE = new AnimationState();
@@ -217,5 +216,70 @@ public class JellyfishEntity extends FlyingEntity {
                     && world.isAir(pos.east())
                     && world.isAir(pos.west());
         }
+    }
+
+    @Override
+    public boolean canSpawn(WorldView world) {
+        // Allow both ground AND air spawning
+        return canSpawnOnGround(world) || canSpawnInAir(world);
+    }
+
+    private boolean canSpawnOnGround(WorldView world) {
+        BlockPos pos = this.getBlockPos();
+        BlockPos groundPos = pos.down();
+
+        // Standard ground spawn checks
+        return world.getBlockState(groundPos).isSolid()
+                && world.getBlockState(pos).isAir()
+                && world.getBaseLightLevel(pos, 0) <= 11
+                && !isTooDense(world, pos);
+    }
+
+    private boolean canSpawnInAir(WorldView world) {
+        BlockPos pos = this.getBlockPos();
+
+        // Air spawn checks - must have adequate air space
+        if (!world.getBlockState(pos).isAir()) {
+            return false;
+        }
+
+        // Check we have at least 2 blocks of air in all directions
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    BlockPos checkPos = pos.add(x, y, z);
+                    if (!world.getBlockState(checkPos).isAir()) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return world.getBaseLightLevel(pos, 0) <= 11
+                && !isTooDense(world, pos);
+    }
+
+    private boolean isTooDense(WorldView world, BlockPos pos) {
+        // Density check for both ground and air spawns
+        List<JellyfishEntity> nearbyJellyfish = this.getWorld().getEntitiesByClass(
+                JellyfishEntity.class,
+                this.getBoundingBox().expand(16),
+                entity -> true
+        );
+
+        // Allow up to 4 jellyfish in 16 block radius
+        return nearbyJellyfish.size() > 3;
+    }
+
+    // Static method for spawn restriction system
+    public static boolean canSpawn(EntityType<? extends JellyfishEntity> type, ServerWorldAccess world,
+                                   SpawnReason spawnReason, BlockPos pos, Random random) {
+        if (spawnReason == SpawnReason.NATURAL) {
+            // Create dummy entity to check spawn conditions
+            JellyfishEntity dummy = new JellyfishEntity(type, world.toServerWorld());
+            dummy.setPosition(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+            return dummy.canSpawn(world);
+        }
+        return true;
     }
 }

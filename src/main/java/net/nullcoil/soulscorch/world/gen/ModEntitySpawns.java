@@ -10,6 +10,8 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.BiomeKeys;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.ModEntities;
+import net.nullcoil.soulscorch.entity.custom.HytodomEntity;
+import net.nullcoil.soulscorch.entity.custom.jellyfish.JellyfishEntity;
 import net.nullcoil.soulscorch.world.biome.ModBiomes;
 
 public class ModEntitySpawns {
@@ -41,8 +43,8 @@ public class ModEntitySpawns {
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
-                SpawnGroup.MONSTER, ModEntities.HYTODOM, 100, 5, 10);
+                SpawnGroup.MONSTER, ModEntities.HYTODOM, 60, 2, 5);
         SpawnRestriction.register(ModEntities.HYTODOM, SpawnLocationTypes.UNRESTRICTED,
-                Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
+                Heightmap.Type.MOTION_BLOCKING, JellyfishEntity::canSpawn);
     }
 }

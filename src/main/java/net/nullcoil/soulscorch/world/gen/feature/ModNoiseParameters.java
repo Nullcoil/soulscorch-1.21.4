@@ -1,13 +1,10 @@
-package net.nullcoil.soulscorch.world.gen;
+package net.nullcoil.soulscorch.world.gen.feature;
 
-import net.minecraft.registry.Registerable;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.nullcoil.soulscorch.Soulscorch;
-
-import java.util.List;
 
 public class ModNoiseParameters {
     public static final RegistryKey<DoublePerlinNoiseSampler.NoiseParameters> SOUL_SAND_BLOB =

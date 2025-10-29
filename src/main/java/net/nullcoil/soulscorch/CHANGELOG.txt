@@ -1,4 +1,11 @@
 v2.0.0
 
+|----BLOCKS----|
+ - Added Soul Stone
+ - Added Soul Zol
+
 |----ENTITIES----|
  - Added Hytodom
+
+|----BIOMES----|
+ - Added Soulvore Caverns

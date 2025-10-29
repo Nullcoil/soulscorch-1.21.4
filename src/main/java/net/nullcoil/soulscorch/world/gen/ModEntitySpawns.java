@@ -31,18 +31,18 @@ public class ModEntitySpawns {
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
-                SpawnGroup.MONSTER, ModEntities.SOULLESS, 10, 2, 8);
+                SpawnGroup.MONSTER, ModEntities.SOULLESS, 50, 2, 8);
         SpawnRestriction.register(ModEntities.SOULLESS,SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
-                SpawnGroup.MONSTER, ModEntities.RESTLESS, 5, 1, 1);
+                SpawnGroup.MONSTER, ModEntities.RESTLESS, 10, 1, 1);
         SpawnRestriction.register(ModEntities.RESTLESS, SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
 
         BiomeModifications.addSpawn(BiomeSelectors.includeByKey(ModBiomes.SOULVORE_CAVERNS),
-                SpawnGroup.MONSTER, ModEntities.HYTODOM, 7, 1, 1);
-        SpawnRestriction.register(ModEntities.HYTODOM, SpawnLocationTypes.ON_GROUND,
+                SpawnGroup.MONSTER, ModEntities.HYTODOM, 100, 5, 10);
+        SpawnRestriction.register(ModEntities.HYTODOM, SpawnLocationTypes.UNRESTRICTED,
                 Heightmap.Type.MOTION_BLOCKING, MobEntity::canMobSpawn);
     }
 }

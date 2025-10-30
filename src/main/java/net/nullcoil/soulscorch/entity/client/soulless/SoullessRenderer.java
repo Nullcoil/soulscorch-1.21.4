@@ -2,6 +2,9 @@ package net.nullcoil.soulscorch.entity.client.soulless;
 
 import net.minecraft.client.render.entity.BipedEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
+import net.minecraft.client.render.entity.model.ArmorEntityModel;
+import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.entity.custom.SoullessEntity;
@@ -11,8 +14,9 @@ public class SoullessRenderer extends BipedEntityRenderer<SoullessEntity, Soulle
     private static final Identifier AWAKENED =
             Identifier.of(Soulscorch.MOD_ID, "textures/entity/soulless/awakened.png");
 
-    public SoullessRenderer(EntityRendererFactory.Context context) {
-        super(context, new SoullessModel(context.getPart(SoullessModel.SOULLESS)),0f);
+    public SoullessRenderer(EntityRendererFactory.Context context, EntityModelLayer mainLayer, EntityModelLayer armorInnerLayer, EntityModelLayer armorOuterLayer) {
+        super(context, new SoullessModel(context.getPart(mainLayer)),0f);
+        super.addFeature(new ArmorFeatureRenderer(this, new ArmorEntityModel(context.getPart(armorInnerLayer)), new ArmorEntityModel(context.getPart(armorOuterLayer)), context.getEquipmentRenderer()));
     }
 
     @Override

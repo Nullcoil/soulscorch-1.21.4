@@ -6,6 +6,7 @@ v2.0.0
 
 |----ENTITIES----|
  - Added Hytodom
+ - Soulless with armor now renders!
 
 |----BIOMES----|
  - Added Soulvore Caverns

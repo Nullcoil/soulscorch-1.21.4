@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
+import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.SoulscorchClient;
@@ -28,7 +29,10 @@ public class RegisterClientEntity {
         EntityRendererRegistry.register(ModEntities.BLAZT, BlaztRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(SoullessModel.SOULLESS, SoullessModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.SOULLESS, SoullessRenderer::new);
+        EntityRendererRegistry.register(ModEntities.SOULLESS, context ->
+                new SoullessRenderer(context, SoullessModel.SOULLESS,
+                        EntityModelLayers.PIGLIN_INNER_ARMOR,
+                        EntityModelLayers.PIGLIN_OUTER_ARMOR));
 
         EntityModelLayerRegistry.registerModelLayer(RestlessModel.RESTLESS, RestlessModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.RESTLESS, RestlessRenderer::new);

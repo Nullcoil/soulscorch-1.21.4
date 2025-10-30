@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -11,14 +12,19 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -31,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -38,6 +45,7 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     @Nullable
     private UUID angryAt;
     private int angerTime = 1200;
+    private static final List<EquipmentSlot> EQUIPMENT_INIT_ORDER;
     private static final UniformIntProvider ANGER_TIME_RANGE;
     private Animation currentAnimation;
     private int ticksUntilNext = 0;
@@ -302,7 +310,77 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
     }
 
     @Override
-    protected void initEquipment(net.minecraft.util.math.random.Random random, LocalDifficulty localDifficulty) {}
+    protected void initEquipment(net.minecraft.util.math.random.Random random, LocalDifficulty localDifficulty) {
+        // Tinkered MobEntity.initEquipment (super super super class)
+        if(random.nextFloat() < 0.15f * localDifficulty.getClampedLocalDifficulty()) {
+            float f = this.getWorld().getDifficulty() == Difficulty.HARD ? 0.1f : 0.25f;
+            boolean bool = true;
+
+            for(EquipmentSlot slot : EQUIPMENT_INIT_ORDER) {
+                // Each slot gets its own independent level
+                int level = random.nextInt(2);
+
+                // Each slot has independent chances to increase level
+                if(random.nextFloat() < 0.095f) ++level;
+                if(random.nextFloat() < 0.095f) ++level;
+                if(random.nextFloat() < 0.095f) ++level;
+
+                ItemStack itemStack = this.getEquippedStack(slot);
+                if(!bool && random.nextFloat() < f) break;
+                bool = false;
+
+                if(itemStack.isEmpty()) {
+                    Item item = getEquipment(slot, level);  // Pass just slot and level
+                    if(item != null) {
+                        this.equipStack(slot, new ItemStack(item));
+                    }
+                }
+            }
+        }
+
+        // Edited ZombieEntity.initEquipment ( super super class)
+        EquipmentSlot hand = EquipmentSlot.MAINHAND;
+        if (random.nextFloat() < (this.getWorld().getDifficulty() == Difficulty.HARD ? 0.05f : 0.01f)) {
+            int i = random.nextInt(3);
+            if(i == 0) {
+                this.equipStack(hand, new ItemStack(Items.IRON_SWORD));
+            } else {
+                switch(random.nextInt(4)) {
+                    case 0 -> this.equipStack(hand, new ItemStack(Items.IRON_AXE));
+                    case 1 -> this.equipStack(hand, new ItemStack(Items.IRON_PICKAXE));
+                    case 2 -> this.equipStack(hand, new ItemStack(Items.IRON_HOE));
+                    default -> this.equipStack(hand, new ItemStack(Items.IRON_SHOVEL));
+                }
+            }
+        }
+    }
+
+    @Nullable
+    public static Item getEquipment(EquipmentSlot slot, int level) {  // Only two parameters
+        switch(slot) {
+            case HEAD:
+                if(level == 0) return Items.CHAINMAIL_HELMET;
+                if(level == 1) return Items.IRON_HELMET;
+                if(level == 2) return Items.DIAMOND_HELMET;
+                break;
+            case CHEST:
+                if(level == 0) return Items.CHAINMAIL_CHESTPLATE;
+                if(level == 1) return Items.IRON_CHESTPLATE;
+                if(level == 2) return Items.DIAMOND_CHESTPLATE;
+                break;
+            case LEGS:
+                if(level == 0) return Items.CHAINMAIL_LEGGINGS;
+                if(level == 1) return Items.IRON_LEGGINGS;
+                if(level == 2) return Items.DIAMOND_LEGGINGS;
+                break;
+            case FEET:
+                if(level == 0) return Items.CHAINMAIL_BOOTS;
+                if(level == 1) return Items.IRON_BOOTS;
+                if(level == 2) return Items.DIAMOND_BOOTS;
+                break;
+        }
+        return null;
+    }
 
     static class LookAtTargetGoal extends ZombieAttackGoal {
         public LookAtTargetGoal(SoullessEntity soulless, double speed) {
@@ -333,5 +411,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
 
     static {
         ANGER_TIME_RANGE = TimeHelper.betweenSeconds(20, 39);
+        EQUIPMENT_INIT_ORDER = List.of(EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET);
     }
 }

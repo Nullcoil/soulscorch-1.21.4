@@ -2,7 +2,7 @@ package net.nullcoil.soulscorch.world.biome.noise;
 
 import net.minecraft.registry.Registerable;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
-import net.nullcoil.soulscorch.world.gen.ModNoiseParameters;
+import net.nullcoil.soulscorch.world.gen.feature.ModNoiseParameters;
 
 public class ModNoiseBootstrap {
     public static void bootstrap(Registerable<DoublePerlinNoiseSampler.NoiseParameters> context) {

@@ -64,10 +64,11 @@ public class ModBlocks {
                     .registryKey(Key("soul_stone"))));
 
     public static final Block SOUL_ZOL = registerBlock("soul_zol",
-            new Block(AbstractBlock.Settings.create()
+            new SoulZolBlock(AbstractBlock.Settings.create()
                     .mapColor(Blocks.SOUL_FIRE.getDefaultMapColor())
                     .strength(2,6)
                     .requiresTool()
+                    .ticksRandomly()
                     .registryKey(Key("soul_zol"))));
 
     private static Block registerBlock(String name, Block block) {

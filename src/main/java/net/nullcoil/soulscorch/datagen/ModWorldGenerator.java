@@ -5,7 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
-import net.nullcoil.soulscorch.world.gen.ModNoiseParameters;
+import net.nullcoil.soulscorch.world.gen.feature.ModNoiseParameters;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -30,11 +30,9 @@ public abstract class CatEntityMixin extends TameableEntity {
         this.onTamedChanged();
     }
 
-    @Inject(
-            method = "createChild(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/passive/PassiveEntity;)Lnet/minecraft/entity/passive/CatEntity;",
+    @Inject(method = "createChild(Lnet/minecraft/server/world/ServerWorld;Lnet/minecraft/entity/passive/PassiveEntity;)Lnet/minecraft/entity/passive/CatEntity;",
             at = @At("HEAD"),
-            cancellable = true
-    )
+            cancellable = true )
     private void soulscorch$replaceChild(ServerWorld world, PassiveEntity other, CallbackInfoReturnable<CatEntity> cir) {
         if(!(other instanceof CatEntity otherCat)) return;
 

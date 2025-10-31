@@ -9,15 +9,20 @@ import net.minecraft.structure.rule.BlockMatchRuleTest;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DataPool;
 import net.minecraft.world.gen.feature.*;
+import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.stateprovider.WeightedBlockStateProvider;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.block.ModBlocks;
+
+import java.util.List;
 
 public class ModConfiguredFeatures {
     public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_SOUL_SAND_BLOB =
             RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Identifier.of(Soulscorch.MOD_ID, "ore_soul_sand_blob"));
     public static final RegistryKey<ConfiguredFeature<?, ?>> ORE_SOUL_SOIL_BLOB =
             RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Identifier.of(Soulscorch.MOD_ID, "ore_soul_soil_blob"));
+    public static final RegistryKey<ConfiguredFeature<?, ?>> PATCH_SOUL_ZOL =
+            RegistryKey.of(RegistryKeys.CONFIGURED_FEATURE, Identifier.of(Soulscorch.MOD_ID, "patch_soul_zol"));
     public static final RegistryKey<ConfiguredFeature<?, ?>> SOULVORE_CAVERNS_VEGETATION_BONEMEAL = ConfiguredFeatures.of("soulvore_caverns_vegetation_bonemeal");
 
     public static void bootstrap(Registerable<ConfiguredFeature<?, ?>> context) {
@@ -39,6 +44,16 @@ public class ModConfiguredFeatures {
                         0.08f // Even lower discard chance
                 ));
 
+        // Soul Zol patches
+        register(context, PATCH_SOUL_ZOL, Feature.RANDOM_PATCH,
+                new RandomPatchFeatureConfig(
+                        64, // tries - how many times to try placing per chunk
+                        7,  // xzSpread - horizontal spread
+                        3,  // ySpread - vertical spread
+                        PlacedFeatures.createEntry(Feature.SIMPLE_BLOCK,
+                                new SimpleBlockFeatureConfig(BlockStateProvider.of(ModBlocks.SOUL_ZOL))
+                        )
+                ));
 
         WeightedBlockStateProvider weightedBlockStateProvider = new WeightedBlockStateProvider(DataPool.<BlockState>builder()
                 .add(Blocks.CRIMSON_ROOTS.getDefaultState(), 87)
@@ -48,7 +63,7 @@ public class ModConfiguredFeatures {
         ConfiguredFeatures.register(context, SOULVORE_CAVERNS_VEGETATION_BONEMEAL, Feature.NETHER_FOREST_VEGETATION, new NetherForestVegetationFeatureConfig(weightedBlockStateProvider, 3, 1));
     }
 
-    private static <FC extends OreFeatureConfig, F extends Feature<FC>> void register(
+    private static <FC extends FeatureConfig, F extends Feature<FC>> void register(
             Registerable<ConfiguredFeature<?, ?>> context,
             RegistryKey<ConfiguredFeature<?, ?>> key,
             F feature, FC configuration) {

@@ -2,7 +2,11 @@ package net.nullcoil.soulscorch.entity.client;
 
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.model.Dilation;
+import net.minecraft.client.model.ModelData;
+import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
+import net.minecraft.client.render.entity.model.CatEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
@@ -37,10 +41,15 @@ public class RegisterClientEntity {
         EntityModelLayerRegistry.registerModelLayer(RestlessModel.RESTLESS, RestlessModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.RESTLESS, RestlessRenderer::new);
 
-        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "soulborne_cat"), "main"), SoulscorchClient::getCatTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "soulborne_cat"), "main"), RegisterClientEntity::getCatTexturedModelData);
         EntityRendererRegistry.register(ModEntities.SOULBORNE_CAT, SoulborneCatRenderer::new);
 
         EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "hytodom"), "main"), JellyfishModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.HYTODOM, JellyfishRenderer::new);
+    }
+
+    public static TexturedModelData getCatTexturedModelData() {
+        ModelData modelData = CatEntityModel.getModelData(Dilation.NONE);
+        return TexturedModelData.of(modelData, 64, 32);
     }
 }

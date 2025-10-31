@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom.jellyfish;
 
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.Goal;
@@ -15,7 +16,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.*;
 import net.nullcoil.soulscorch.effect.ModEffects;
-import net.nullcoil.soulscorch.entity.custom.HytodomEntity;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +51,7 @@ public class JellyfishEntity extends FlyingEntity {
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.025)
                 .add(EntityAttributes.ATTACK_DAMAGE, 2);
     }
-    
+
     @Override
     public void initGoals() {
         this.goalSelector.add(0, new JellyfishEntity.FlyRandomlyGoal(this));
@@ -232,7 +232,8 @@ public class JellyfishEntity extends FlyingEntity {
         return world.getBlockState(groundPos).isSolid()
                 && world.getBlockState(pos).isAir()
                 && world.getBaseLightLevel(pos, 0) <= 11
-                && !isTooDense(world, pos);
+                && !isTooDense(world, pos)
+                && (world.getBlockState(groundPos) != Blocks.BEDROCK.getDefaultState());
     }
 
     private boolean canSpawnInAir(WorldView world) {
@@ -256,7 +257,8 @@ public class JellyfishEntity extends FlyingEntity {
         }
 
         return world.getBaseLightLevel(pos, 0) <= 11
-                && !isTooDense(world, pos);
+                && !isTooDense(world, pos)
+                && this.getBlockPos().getY() < 125;
     }
 
     private boolean isTooDense(WorldView world, BlockPos pos) {

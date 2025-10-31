@@ -3,14 +3,15 @@
   "package": "net.nullcoil.soulscorch.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "CatEntityMixin",
     "PiglinBrainMixin",
-    "PlayerEntityMixin",
-    "CatEntityMixin"
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "overwrites": {
     "requireAnnotations": true
-	}
+  },
+  "client": []
 }

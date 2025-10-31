@@ -31,6 +31,7 @@ public class ModBiomes {
                 new GenerationSettings.LookupBackedBuilder(context.getRegistryLookup(RegistryKeys.PLACED_FEATURE),
                         context.getRegistryLookup(RegistryKeys.CONFIGURED_CARVER));
 
+
         // FIXED: Use the new carver API for 1.21.4
         biomeBuilder.carver(ConfiguredCarvers.NETHER_CAVE);
 

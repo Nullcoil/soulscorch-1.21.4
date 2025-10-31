@@ -5,9 +5,9 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.entity.custom.HytodomEntity;
+import net.nullcoil.soulscorch.entity.custom.jellyfish.JellyfishEntity;
 
-public class JellyfishRenderer extends MobEntityRenderer<HytodomEntity, JellyfishRenderState, JellyfishModel> {
+public class JellyfishRenderer extends MobEntityRenderer<JellyfishEntity, JellyfishRenderState, JellyfishModel> {
     private static final Identifier TEXTURE =
             Identifier.of("soulscorch", "textures/entity/hytodom.png");
     private static final Identifier GLOWEY_BITS =
@@ -36,7 +36,7 @@ public class JellyfishRenderer extends MobEntityRenderer<HytodomEntity, Jellyfis
     }
 
     @Override
-    public void updateRenderState(HytodomEntity entity, JellyfishRenderState state, float tickDelta) {
+    public void updateRenderState(JellyfishEntity entity, JellyfishRenderState state, float tickDelta) {
         super.updateRenderState(entity, state, tickDelta);
         state.IDLE.copyFrom(entity.IDLE);
     }

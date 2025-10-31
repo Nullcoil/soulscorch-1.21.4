@@ -1,10 +1,6 @@
 package net.nullcoil.soulscorch.entity;
 
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
-import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
@@ -13,16 +9,6 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.SoulscorchClient;
-import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
-import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
-import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishModel;
-import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishRenderer;
-import net.nullcoil.soulscorch.entity.client.restless.RestlessModel;
-import net.nullcoil.soulscorch.entity.client.restless.RestlessRenderer;
-import net.nullcoil.soulscorch.entity.client.soulcat.SoulborneCatRenderer;
-import net.nullcoil.soulscorch.entity.client.soulless.SoullessModel;
-import net.nullcoil.soulscorch.entity.client.soulless.SoullessRenderer;
 import net.nullcoil.soulscorch.entity.custom.*;
 
 public class ModEntities {

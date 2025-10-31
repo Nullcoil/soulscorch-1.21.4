@@ -13,5 +13,7 @@
   "overwrites": {
     "requireAnnotations": true
   },
-  "client": []
+  "client": [
+    "EntityRenderDispatcherMixin"
+  ]
 }

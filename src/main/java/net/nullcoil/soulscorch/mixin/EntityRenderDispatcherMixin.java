@@ -5,7 +5,6 @@ import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.util.math.Vec3d;
 import net.nullcoil.soulscorch.entity.custom.jellyfish.JellyfishEntity;
 import org.joml.Vector3f;

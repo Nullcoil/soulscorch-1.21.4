@@ -184,8 +184,6 @@ public class JellyfishEntity extends FlyingEntity {
                 this.entity.setYaw(this.entity.getYaw());
                 this.entity.setPitch(this.entity.getPitch());
             } else {
-
-
                 // idle drifting slowdown
                 this.entity.setVelocity(
                         this.entity.getVelocity().multiply(HORIZONTAL_DAMPING, VERTICAL_DAMPING, HORIZONTAL_DAMPING)

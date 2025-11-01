@@ -28,35 +28,6 @@ import java.util.Objects;
 
 public class JellyfishEntity extends FlyingEntity {
     public final AnimationState IDLE = new AnimationState();
-    private static final TrackedData<BlockPos> TARGET_POS = DataTracker.registerData(JellyfishEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
-
-    @Override
-    protected void initDataTracker(DataTracker.Builder builder) {
-        super.initDataTracker(builder);
-        builder.add(TARGET_POS, BlockPos.ORIGIN);
-    }
-
-    public void updateClientTarget(double x, double y, double z) {
-        if(!this.getWorld().isClient()) {
-            this.dataTracker.set(TARGET_POS, BlockPos.ofFloored(x,y,z));
-        }
-    }
-
-    public BlockPos getClientTarget() {
-        return this.dataTracker.get(TARGET_POS);
-    }
-
-    public double getClientTargetX() {
-        return this.dataTracker.get(TARGET_POS).getX();
-    }
-
-    public double getClientTargetY() {
-        return this.dataTracker.get(TARGET_POS).getY();
-    }
-
-    public double getClientTargetZ() {
-        return this.dataTracker.get(TARGET_POS).getZ();
-    }
 
     public JellyfishEntity(EntityType<? extends JellyfishEntity> type, World world) {
         super(type, world);
@@ -140,14 +111,6 @@ public class JellyfishEntity extends FlyingEntity {
         }
 
         @Override
-        public void moveTo(double x, double y, double z, double speed) {
-            super.moveTo(x, y, z, speed);
-            if(this.jelly != null) {
-                this.jelly.updateClientTarget(x,y,z);
-            }
-        }
-
-        @Override
         public void tick() {
             if (this.isMoving()) {
                 double dx = this.targetX - this.entity.getX();
@@ -155,10 +118,6 @@ public class JellyfishEntity extends FlyingEntity {
                 double dz = this.targetZ - this.entity.getZ();
 
                 double distSq = dx * dx + dy * dy + dz * dz;
-
-                if(this.jelly != null && this.jelly.age%10==0) {
-                    this.jelly.updateClientTarget(this.targetX, this.targetY, this.targetZ);
-                }
 
                 if (distSq < REACHED_DESTINATION_DISTANCE_SQUARED) {
                     this.entity.setVelocity(this.entity.getVelocity().multiply(0.5));

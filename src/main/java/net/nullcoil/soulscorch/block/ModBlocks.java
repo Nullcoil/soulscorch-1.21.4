@@ -13,6 +13,10 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
+import net.nullcoil.soulscorch.block.custom.IronBulbBlock;
+import net.nullcoil.soulscorch.block.custom.SoulBrewingStandBlock;
+import net.nullcoil.soulscorch.block.custom.SoulSlagBlock;
+import net.nullcoil.soulscorch.block.custom.SoulZolBlock;
 import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 
 import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;

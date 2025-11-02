@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package net.nullcoil.soulscorch.block;
+package net.nullcoil.soulscorch.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.minecraft.block.*;

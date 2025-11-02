@@ -20,7 +20,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
-import net.nullcoil.soulscorch.block.SoulBrewingStandBlock;
+import net.nullcoil.soulscorch.block.custom.SoulBrewingStandBlock;
 import net.nullcoil.soulscorch.item.ModItems;
 import net.nullcoil.soulscorch.screen.SoulBrewingStandScreenHandler;
 import org.jetbrains.annotations.Nullable;

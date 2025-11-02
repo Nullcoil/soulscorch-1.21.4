@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.block;
+package net.nullcoil.soulscorch.block.custom;
 
 import net.minecraft.block.*;
 import net.minecraft.registry.Registry;
@@ -13,6 +13,7 @@ import net.minecraft.world.WorldView;
 import net.minecraft.world.chunk.light.ChunkLightProvider;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.nullcoil.soulscorch.block.ModBlocks;
 import net.nullcoil.soulscorch.world.gen.feature.ModConfiguredFeatures;
 
 public class SoulZolBlock extends Block implements Fertilizable {

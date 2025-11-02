@@ -13,10 +13,7 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.block.custom.IronBulbBlock;
-import net.nullcoil.soulscorch.block.custom.SoulBrewingStandBlock;
-import net.nullcoil.soulscorch.block.custom.SoulSlagBlock;
-import net.nullcoil.soulscorch.block.custom.SoulZolBlock;
+import net.nullcoil.soulscorch.block.custom.*;
 import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 
 import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
@@ -75,6 +72,16 @@ public class ModBlocks {
                     .ticksRandomly()
                     .registryKey(Key("soul_zol"))));
 
+    public static final Block SOUL_VENT = registerBlock("soul_vent",
+            new GeyserBlock(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_SAND.getDefaultMapColor())
+                    .strength(2, 6)
+                    .sounds(BlockSoundGroup.STONE)
+                    .requiresTool()
+                    .allowsSpawning((state, world, pos, type) -> false)
+                    .postProcess(Blocks::always)
+                    .registryKey(Key("soul_vent"))));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -104,6 +111,7 @@ public class ModBlocks {
             entries.add(SOUL_SLAG_BLOCK);
             entries.add(SOUL_STONE);
             entries.add(SOUL_ZOL);
+            entries.add(SOUL_VENT);
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(IRON_BULB_BLOCK);

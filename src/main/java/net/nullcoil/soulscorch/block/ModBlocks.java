@@ -82,6 +82,18 @@ public class ModBlocks {
                     .postProcess(Blocks::always)
                     .registryKey(Key("soul_vent"))));
 
+
+    /*
+    public static final Block RESONATING_HEART = registerBlock("resonating_heart",
+            new ResonatingHeartBlock(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_SOIL.getDefaultMapColor())
+                    .strength(2, 6)
+                    .sounds(BlockSoundGroup.CREAKING_HEART)
+                    .requiresTool()
+                    .allowsSpawning((state, world, pos, type) -> false)
+                    .registryKey(Key("resonating_heart"))));
+     */
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);

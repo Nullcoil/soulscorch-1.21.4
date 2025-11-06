@@ -12,7 +12,15 @@ public class ModBlockEntities {
     public static BlockEntityType<SoulBrewingStandBlockEntity> SOUL_BREWING_STAND = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             Identifier.of(Soulscorch.MOD_ID, "soul_brewing_stand"),
-            FabricBlockEntityTypeBuilder.create(SoulBrewingStandBlockEntity::new, ModBlocks.SOUL_BREWING_STAND).build());
+            FabricBlockEntityTypeBuilder.create(SoulBrewingStandBlockEntity::new,
+                                                ModBlocks.SOUL_BREWING_STAND).build());
+    /*
+    public static BlockEntityType<ResonatingHeartBlockEntity> RESONATING_HEART = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            Identifier.of(Soulscorch.MOD_ID, "resonating_heart"),
+            FabricBlockEntityTypeBuilder.create(ResonatingHeartBlockEntity::new,
+                                                ModBlocks.RESONATING_HEART).build());
+     */
 
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Block Entities for " + Soulscorch.MOD_ID);

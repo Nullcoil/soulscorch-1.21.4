@@ -11,12 +11,13 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.SoulscorchClient;
 import net.nullcoil.soulscorch.entity.ModEntities;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztModel;
 import net.nullcoil.soulscorch.entity.client.blazt.BlaztRenderer;
 import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishModel;
 import net.nullcoil.soulscorch.entity.client.jellyfish.JellyfishRenderer;
+import net.nullcoil.soulscorch.entity.client.resident.ResidentModel;
+import net.nullcoil.soulscorch.entity.client.resident.ResidentRenderer;
 import net.nullcoil.soulscorch.entity.client.restless.RestlessModel;
 import net.nullcoil.soulscorch.entity.client.restless.RestlessRenderer;
 import net.nullcoil.soulscorch.entity.client.soulcat.SoulborneCatRenderer;
@@ -46,6 +47,9 @@ public class RegisterClientEntity {
 
         EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "hytodom"), "main"), JellyfishModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.HYTODOM, JellyfishRenderer::new);
+
+        EntityModelLayerRegistry.registerModelLayer(new EntityModelLayer(Identifier.of(Soulscorch.MOD_ID, "the_resident"), "main"), ResidentModel::getTexturedModelData);
+        EntityRendererRegistry.register(ModEntities.THE_RESIDENT, ResidentRenderer::new);
     }
 
     public static TexturedModelData getCatTexturedModelData() {

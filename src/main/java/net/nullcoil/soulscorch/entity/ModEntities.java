@@ -18,6 +18,7 @@ public class ModEntities {
     private static final Identifier RESTLESS_ID = ID("restless");
     private static final Identifier SOULCAT_ID = ID("soulborne_cat");
     private static final Identifier HYTODOM_ID = ID("hytodom");
+    private static final Identifier RESIDENT_ID = ID("the_resident");
 
     public static final EntityType<SoulscorchFireballEntity> SOUL_CHARGE = Registry.register(Registries.ENTITY_TYPE,
             SOUL_CHARGE_ID, EntityType.Builder.<SoulscorchFireballEntity>create(SoulscorchFireballEntity::new, SpawnGroup.MISC)
@@ -49,6 +50,11 @@ public class ModEntities {
                     .dimensions(0.95f, 2.25f)
                     .build(Key(HYTODOM_ID)));
 
+    
+    public static final EntityType<ResidentEntity> THE_RESIDENT = Registry.register(Registries.ENTITY_TYPE,
+            RESIDENT_ID, EntityType.Builder.create(ResidentEntity::new, SpawnGroup.MONSTER)
+                    .dimensions(2.37f,3.95f)
+                    .build(Key(RESIDENT_ID)));
     private static Identifier ID(String path) {
         return Identifier.of(Soulscorch.MOD_ID, path);
     }
@@ -65,5 +71,6 @@ public class ModEntities {
         FabricDefaultAttributeRegistry.register(RESTLESS, RestlessEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SOULBORNE_CAT, SoulborneCatEntity.createCatAttributes());
         FabricDefaultAttributeRegistry.register(HYTODOM, HytodomEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(THE_RESIDENT, ResidentEntity.createAttributes());
     }
 }

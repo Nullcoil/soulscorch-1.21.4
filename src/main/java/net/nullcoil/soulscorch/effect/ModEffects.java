@@ -24,7 +24,7 @@ public class ModEffects {
     // v2.0 Effects
 
     public static final RegistryEntry<StatusEffect> MANIA = registerStatusEffect("mania",
-            new BlankStatusEffect(StatusEffectCategory.HARMFUL, 0x000000));
+            new BlankStatusEffect(StatusEffectCategory.HARMFUL, 0xff08ff));
 
     private static RegistryEntry<StatusEffect> registerStatusEffect (String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);

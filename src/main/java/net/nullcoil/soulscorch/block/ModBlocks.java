@@ -95,12 +95,13 @@ public class ModBlocks {
 
     public static final Block GLARYNX = registerBlock("glarynx",
             new GlarynxBlock(AbstractBlock.Settings.create()
-                    .mapColor(Blocks.SOUL_FIRE.getDefaultMapColor())
+                    .mapColor(Blocks.SCULK.getDefaultMapColor())
                     .strength(2,6)
                     .sounds(BlockSoundGroup.SCULK)
                     .requiresTool()
                     .allowsSpawning((state, world, pos, type) -> false)
                     .ticksRandomly()
+                    .nonOpaque()
                     .registryKey(Key("glarynx"))));
 
     private static Block registerBlock(String name, Block block) {

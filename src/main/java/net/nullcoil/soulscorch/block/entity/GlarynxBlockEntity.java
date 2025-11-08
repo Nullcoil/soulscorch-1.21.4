@@ -6,6 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -20,6 +21,9 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.event.BlockPositionSource;
 import net.minecraft.world.event.GameEvent;
@@ -32,6 +36,8 @@ import net.nullcoil.soulscorch.block.entity.glarynx.GlarynxState;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 public class GlarynxBlockEntity extends BlockEntity implements GameEventListener.Holder<Vibrations.VibrationListener>, Vibrations {
 
@@ -59,6 +65,12 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
 
     private void setState(GlarynxState newState) {
         if (this.currentState != newState) {
+            Direction facing = this.getCachedState().get(GlarynxBlock.FACING);
+            Vec3d facingVec = Vec3d.of(facing.getVector()).normalize();
+            Vec3d eyePos = Vec3d.ofCenter(pos);
+            LOGGER.info("[Glarynx placed] at {} facing {} → Eye position: {}", pos, facing, eyePos);
+
+            GlarynxState holdState = currentState;
             this.currentState = newState;
             LOGGER.info("Glarynx at {} changed state to {}", this.pos, newState);
 
@@ -71,10 +83,12 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
             switch(newState) {
                 case WATCHFUL -> {
                     assert this.getWorld() != null;
-                    this.getWorld().playSound(null,
-                                              this.getPos(),
-                                              SoundEvents.BLOCK_SCULK_SENSOR_CLICKING,
-                                              SoundCategory.BLOCKS);
+                    if(holdState==GlarynxState.SLEEPY) {
+                        this.getWorld().playSound(null,
+                                this.getPos(),
+                                SoundEvents.BLOCK_SCULK_SENSOR_CLICKING,
+                                SoundCategory.BLOCKS);
+                    }
                 }
             }
             this.markDirty();
@@ -101,7 +115,81 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
                 entity.setState(GlarynxState.SLEEPY);
                 entity.watchfulTicks = 0;
             }
+
+            final double detectionRange = 8;
+            Direction facing = state.get(GlarynxBlock.FACING);
+            Vec3d facingVec = Vec3d.of(facing.getVector()).normalize();
+            Vec3d eyePos = Vec3d.ofCenter(pos);
+
+            List<PlayerEntity> nearbyPlayers = world.getEntitiesByClass(PlayerEntity.class,
+                    new Box(pos).expand(detectionRange),
+                    player -> !player.isSpectator() && !player.isCreative() && player.isAlive() && !player.hasStatusEffect(StatusEffects.INVISIBILITY));
+
+            for(PlayerEntity player : nearbyPlayers) {
+                if(isPlayerInVisionCone(player, eyePos, facingVec, detectionRange)) {
+                    entity.setState(GlarynxState.SEEING);
+                    entity.watchfulTicks = 0;
+                    break;
+                }
+            }
         }
+
+        if(entity.currentState == GlarynxState.SEEING) {
+            boolean playerSeen = false;
+            final double visionRange = 8;
+            Direction facing = state.get(GlarynxBlock.FACING);
+            Vec3d facingVec = Vec3d.of(facing.getVector()).normalize();
+            Vec3d eyePos = Vec3d.ofCenter(pos);
+
+            for(PlayerEntity player : world.getEntitiesByClass(PlayerEntity.class,
+                    new Box(pos).expand(visionRange),
+                    p -> !p.isSpectator() && !p.isCreative() &&
+                            p.isAlive() &&
+                            !p.hasStatusEffect(StatusEffects.INVISIBILITY))) {
+                if(isPlayerInVisionCone(player, eyePos, facingVec, visionRange)) {
+                    playerSeen = true;
+                    break;
+                }
+            }
+
+            if(!playerSeen) entity.setState(GlarynxState.WATCHFUL);
+        }
+    }
+
+    private static boolean isPlayerInVisionCone(PlayerEntity player, Vec3d eyePos, Vec3d facingVec, double range) {
+        Box playerBox = player.getBoundingBox();
+
+        // Check multiple points of the player's bounding box
+        Vec3d[] checkPoints = {
+                new Vec3d(playerBox.minX, playerBox.minY, playerBox.minZ), // bottom NW
+                new Vec3d(playerBox.maxX, playerBox.minY, playerBox.minZ), // bottom NE
+                new Vec3d(playerBox.minX, playerBox.minY, playerBox.maxZ), // bottom SW
+                new Vec3d(playerBox.maxX, playerBox.minY, playerBox.maxZ), // bottom SE
+                new Vec3d(playerBox.minX, playerBox.maxY, playerBox.minZ), // top NW
+                new Vec3d(playerBox.maxX, playerBox.maxY, playerBox.minZ), // top NE
+                new Vec3d(playerBox.minX, playerBox.maxY, playerBox.maxZ), // top SW
+                new Vec3d(playerBox.maxX, playerBox.maxY, playerBox.maxZ), // top SE
+                player.getPos(), // center of player
+                new Vec3d(player.getX(), player.getY() + player.getEyeHeight(player.getPose()), player.getZ()) // eye position
+        };
+
+        for (Vec3d point : checkPoints) {
+            Vec3d toPoint = point.subtract(eyePos);
+            double distance = toPoint.length();
+
+            // Check if point is within range
+            if (distance <= range) {
+                toPoint = toPoint.normalize();
+                double dot = facingVec.dotProduct(toPoint);
+
+                // 30-degree cone (cos(30°) ≈ 0.866)
+                if (dot > Math.cos(Math.toRadians(55))) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public Vibrations.Callback createCallback() {

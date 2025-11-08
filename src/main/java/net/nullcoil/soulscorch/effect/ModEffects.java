@@ -9,14 +9,22 @@ import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 
 public class ModEffects {
+    // v1.0 Effects
     public static final RegistryEntry<StatusEffect> SOUL_RENDER = registerStatusEffect("soul_render",
             new SoulRenderEffect(StatusEffectCategory.BENEFICIAL, 0x00ff88));
 
     public static final RegistryEntry<StatusEffect> SOULSCORCH = registerStatusEffect("soulscorch",
             new SoulscorchEffect(StatusEffectCategory.HARMFUL, 0x00ffff));
 
+    // v1.1 Effects
+
     public static final RegistryEntry<StatusEffect> CAT_BUFF = registerStatusEffect("cat_buff",
-            new CatBuffEffect(StatusEffectCategory.BENEFICIAL, 0x000000));
+            new BlankStatusEffect(StatusEffectCategory.BENEFICIAL, 0x000000));
+
+    // v2.0 Effects
+
+    public static final RegistryEntry<StatusEffect> MANIA = registerStatusEffect("mania",
+            new BlankStatusEffect(StatusEffectCategory.HARMFUL, 0x000000));
 
     private static RegistryEntry<StatusEffect> registerStatusEffect (String name, StatusEffect statusEffect) {
         return Registry.registerReference(Registries.STATUS_EFFECT, Identifier.of(Soulscorch.MOD_ID, name), statusEffect);

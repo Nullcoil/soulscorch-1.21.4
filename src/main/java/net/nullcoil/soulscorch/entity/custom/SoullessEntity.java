@@ -1,5 +1,6 @@
 package net.nullcoil.soulscorch.entity.custom;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -11,6 +12,7 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.Angerable;
+import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -101,8 +103,23 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
 
     public void setActivity(@NotNull SoullessActivity activity) {
         this.dataTracker.set(ACTIVITY, activity.getId());
+        this.goalSelector.clear(goal -> true);
+        this.targetSelector.clear(goal -> true);
 
-        initGoals();
+        switch (activity) {
+            case PASSIVE -> {}
+            case NEUTRAL -> {
+                this.goalSelector.add(7, new LookAtTargetGoal(this, 0));
+                this.targetSelector.add(7, new ActiveTargetGoal(this, PlayerEntity.class,true));
+            }
+            case HOSTILE -> {
+                this.goalSelector.add(2, new ZombieAttackGoal(this, (double)1.0F, false));
+                this.goalSelector.add(6, new MoveThroughVillageGoal(this, (double)1.0F, true, 4, this::canBreakDoors));
+                this.goalSelector.add(7, new WanderAroundFarGoal(this, (double)1.0F));
+                this.targetSelector.add(1, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[]{ZombifiedPiglinEntity.class}));
+                this.targetSelector.add(2, new ActiveTargetGoal(this, PlayerEntity.class, true));
+            }
+        }
     }
 
     public void raiseActivity() {
@@ -222,10 +239,6 @@ public class SoullessEntity extends ZombifiedPiglinEntity implements Angerable {
 
     @Override
     protected void initGoals() {
-        super.initGoals();
-        this.goalSelector.clear(goal -> true);
-        this.targetSelector.clear(goal -> true);
-
         switch(this.getActivity()) {
             case PASSIVE -> {}
             case NEUTRAL -> this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));

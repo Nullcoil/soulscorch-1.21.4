@@ -6,9 +6,13 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryOps;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -25,6 +29,7 @@ import net.minecraft.world.event.listener.GameEventListener;
 import net.nullcoil.soulscorch.block.ModBlockEntities;
 import net.nullcoil.soulscorch.block.custom.GlarynxBlock;
 import net.nullcoil.soulscorch.block.entity.glarynx.GlarynxState;
+import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
@@ -58,7 +63,8 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
             LOGGER.info("Glarynx at {} changed state to {}", this.pos, newState);
 
             if(this.world != null && !this.world.isClient()) {
-                BlockState newBlockState = this.getCachedState().with(GlarynxBlock.STATE, newState);
+                BlockState currentState = this.getCachedState();
+                BlockState newBlockState = currentState.with(GlarynxBlock.STATE, newState);
                 this.world.setBlockState(this.pos, newBlockState, Block.NOTIFY_ALL);
             }
 
@@ -106,7 +112,33 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.readNbt(nbt, registries);
         this.lastVibrationFrequency = nbt.getInt("last_vibration_frequency");
-        this.currentState = GlarynxState.valueOf(nbt.getString("glarynx_state"));
+
+        if(nbt.contains("watchful_timer")) {
+            this.watchfulTicks = nbt.getInt("watchful_timer");
+        }
+
+        // Fix: Check if the state exists and is not empty
+        String stateName = nbt.getString("glarynx_state");
+        if (!stateName.isEmpty()) {
+            try {
+                this.currentState = GlarynxState.valueOf(stateName.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                this.currentState = GlarynxState.SLEEPY;
+                LOGGER.warn("Invalid glarynx state '{}' found in NBT, defaulting to SLEEPY", stateName);
+            }
+        } else {
+            // If no state is saved, use the block state or default
+            if (this.world != null && !this.world.isClient()) {
+                BlockState blockState = this.getCachedState();
+                if (blockState.contains(GlarynxBlock.STATE)) {
+                    this.currentState = blockState.get(GlarynxBlock.STATE);
+                } else {
+                    this.currentState = GlarynxState.SLEEPY;
+                }
+            } else {
+                this.currentState = GlarynxState.SLEEPY;
+            }
+        }
 
         RegistryOps<NbtElement> registryOps = registries.getOps(NbtOps.INSTANCE);
         if (nbt.contains("listener", 10)) {
@@ -120,11 +152,35 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
     protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         super.writeNbt(nbt, registries);
         nbt.putInt("last_vibration_frequency", this.lastVibrationFrequency);
-        nbt.putString("glarynx_state", this.currentState.name());
+
+        // Only write the state if it's not null
+        if (this.currentState != null) {
+            nbt.putString("glarynx_state", this.currentState.name().toUpperCase());
+        } else {
+            nbt.putString("glarynx_state", GlarynxState.SLEEPY.name().toUpperCase());
+        }
+
+        nbt.putInt("watchful_timer", this.watchfulTicks / 20);
+
         RegistryOps<NbtElement> registryOps = registries.getOps(NbtOps.INSTANCE);
         ListenerData.CODEC.encodeStart(registryOps, this.listenerData)
                 .resultOrPartial((string) -> LOGGER.error("Failed to encode vibration listener for Glarynx: '{}'", string))
                 .ifPresent((listenerNbt) -> nbt.put("listener", listenerNbt));
+    }
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        NbtCompound nbt = super.toInitialChunkDataNbt(registryLookup);
+
+        nbt.putInt("watchful_timer", this.watchfulTicks / 20);
+        nbt.putString("current_state", this.currentState.name());
+        return nbt;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
+        return BlockEntityUpdateS2CPacket.create(this);
     }
 
     public Vibrations.ListenerData getVibrationListenerData() {
@@ -174,8 +230,14 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
 
         @Override
         public boolean accepts(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, @Nullable GameEvent.Emitter emitter) {
-            // Only listen when idle
-            return GlarynxBlockEntity.this.currentState == GlarynxState.SLEEPY;
+
+            if (emitter != null &&
+                    emitter.sourceEntity() != null &&
+                    !(emitter.sourceEntity().getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES))) {
+                return true;
+            }
+
+            return false;
         }
 
         @Override

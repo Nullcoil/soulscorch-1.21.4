@@ -28,7 +28,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
+import net.nullcoil.soulscorch.block.ModBlockEntities;
 import net.nullcoil.soulscorch.block.entity.SoulBrewingStandBlockEntity;
 import org.jetbrains.annotations.Nullable;
 

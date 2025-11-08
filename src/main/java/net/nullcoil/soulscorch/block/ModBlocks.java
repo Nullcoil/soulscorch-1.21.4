@@ -14,7 +14,6 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.block.custom.*;
-import net.nullcoil.soulscorch.block.entity.ModBlockEntities;
 
 import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
 
@@ -94,6 +93,16 @@ public class ModBlocks {
                     .registryKey(Key("resonating_heart"))));
      */
 
+    public static final Block GLARYNX = registerBlock("glarynx",
+            new GlarynxBlock(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_FIRE.getDefaultMapColor())
+                    .strength(2,6)
+                    .sounds(BlockSoundGroup.SCULK)
+                    .requiresTool()
+                    .allowsSpawning((state, world, pos, type) -> false)
+                    .ticksRandomly()
+                    .registryKey(Key("glarynx"))));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -127,6 +136,7 @@ public class ModBlocks {
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(IRON_BULB_BLOCK);
+            entries.add(GLARYNX);
         });
     }
 }

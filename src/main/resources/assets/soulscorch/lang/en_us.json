@@ -65,5 +65,8 @@
   "tag.block.soulscorch.soulstuff": "Soulstuff",
   "tag.entity_type.soulscorch.phobias_of_piglins": "Phobias of Piglins",
   "tag.entity_type.soulscorch.soulscorch_entities": "Soulscorch Entities",
-  "tag.item.soulscorch.soulstuff": "Soulstuff"
+  "tag.item.soulscorch.soulstuff": "Soulstuff",
+
+  "death.attack.mania": "%1$s thought themselves to death",
+  "death.attack.mania.player": "%1$s thought themselves to while death trying to escape %2$s"
 }

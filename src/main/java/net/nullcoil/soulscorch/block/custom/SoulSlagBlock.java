@@ -27,16 +27,19 @@ public class SoulSlagBlock extends Block {
     }
 
     public void onSteppedOn(World world, BlockPos pos, BlockState state, Entity entity) {
-        if (!entity.bypassesSteppingEffects() && entity instanceof LivingEntity) {
+        if (!entity.bypassesSteppingEffects() &&
+             entity instanceof LivingEntity) {
             entity.serverDamage(world.getDamageSources().hotFloor(), 2.0F);
-            ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(
-                    ModEffects.SOULSCORCH,
-                    600, // Duration in ticks (30 seconds)
-                    0,   // Amplifier
-                    false, // Show ambient
-                    false,  // Show particles
-                    true   // Show icon
-            ));
+            if(!(((LivingEntity) entity).isInCreativeMode() || entity.isSpectator())) {
+                ((LivingEntity) entity).addStatusEffect(new StatusEffectInstance(
+                        ModEffects.SOULSCORCH,
+                        600, // Duration in ticks (30 seconds)
+                        0,   // Amplifier
+                        false, // Show ambient
+                        false,  // Show particles
+                        true   // Show icon
+                ));
+            }
         }
 
         super.onSteppedOn(world, pos, state, entity);

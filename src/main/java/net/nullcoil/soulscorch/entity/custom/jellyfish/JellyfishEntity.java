@@ -12,6 +12,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
@@ -71,7 +72,8 @@ public class JellyfishEntity extends FlyingEntity {
 
         if(!this.getWorld().isClient) {
             this.getWorld().getOtherEntities(this, this.getBoundingBox(),
-                    e -> e instanceof LivingEntity && !e.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES)).forEach(e -> {
+                    e -> e instanceof LivingEntity &&
+                              !e.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES)).forEach(e -> {
                 LivingEntity living = (LivingEntity) e;
                 double dx = living.getX() - this.getX();
                 double dz = living.getZ() - this.getZ();
@@ -80,19 +82,24 @@ public class JellyfishEntity extends FlyingEntity {
                     dx /= dist;
                     dz /= dist;
 
+                    if(living instanceof PlayerEntity p && (p.isCreative() || p.isSpectator())) return;
+
                     living.damage(
                             (ServerWorld) this.getWorld(),
                             this.getDamageSources().mobAttack(this),
                             (float) this.getAttributeValue(EntityAttributes.ATTACK_DAMAGE)
                     );
-                    living.addStatusEffect(new StatusEffectInstance(
-                            ModEffects.SOULSCORCH,
-                            600,
-                            0,
-                            false,
-                            false,
-                            true
-                    ));
+
+                    if(!living.hasStatusEffect(ModEffects.CAT_BUFF)) {
+                        living.addStatusEffect(new StatusEffectInstance(
+                                ModEffects.SOULSCORCH,
+                                600,
+                                0,
+                                false,
+                                false,
+                                true
+                        ));
+                    }
                 }
             });
         }

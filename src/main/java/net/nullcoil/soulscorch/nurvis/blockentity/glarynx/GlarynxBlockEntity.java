@@ -3,7 +3,6 @@ package net.nullcoil.soulscorch.nurvis.blockentity.glarynx;
 import com.mojang.logging.LogUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.StatusEffects;
@@ -33,7 +32,10 @@ import net.minecraft.world.event.listener.GameEventListener;
 import net.nullcoil.soulscorch.block.ModBlockEntities;
 import net.nullcoil.soulscorch.block.custom.GlarynxBlock;
 import net.nullcoil.soulscorch.enums.GlarynxState;
+import net.nullcoil.soulscorch.enums.NurvisPacketType;
 import net.nullcoil.soulscorch.nurvis.blockentity.NurvisPacketHolderBlockEntity;
+import net.nullcoil.soulscorch.nurvis.packet.PacketInstruction;
+import net.nullcoil.soulscorch.nurvis.packet.parent.NurvisPacketParent;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -49,6 +51,8 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
     private int lastVibrationFrequency;
     private GlarynxState currentState = GlarynxState.SLEEPY;
     private int watchfulTicks = 0;
+    private static final int MAX_COOLDOWN = 60;
+    private static int cooldown = MAX_COOLDOWN;
 
     private GlarynxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
@@ -136,6 +140,7 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
         }
 
         if(entity.currentState == GlarynxState.SEEING) {
+            cooldown--;
             boolean playerSeen = false;
             final double visionRange = 8;
             Direction facing = state.get(GlarynxBlock.FACING);
@@ -153,8 +158,24 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
                 }
             }
 
+            if (cooldown <= 0 && playerSeen) {
+                NurvisPacketParent packet = NurvisPacketType.ALERT
+                        .create(world)
+                        .overrideOnArrive(p -> new PacketInstruction(() -> System.out.println("Schmoinkamups"), 0))
+                        .build();
+                System.out.println("Built packet: " + packet);
+                boolean inserted = entity.insertPacket(packet);
+                System.out.println("Inserted? " + inserted);
+                System.out.println("Index 0: " + entity.getPacket(0));
+                System.out.println("Index 1: " + entity.getPacket(1));
+                System.out.println("Index 2: " + entity.getPacket(2));
+                cooldown = MAX_COOLDOWN;
+            }
+
             if(!playerSeen) entity.setState(GlarynxState.WATCHFUL);
         }
+
+        entity.pushPacket((ServerWorld) world);
     }
 
     private static boolean isPlayerInVisionCone(PlayerEntity player, Vec3d eyePos, Vec3d facingVec, double range) {

@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.block.entity.glarynx;
+package net.nullcoil.soulscorch.enums;
 
 import net.minecraft.util.StringIdentifiable;
 

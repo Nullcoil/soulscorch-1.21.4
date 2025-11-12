@@ -6,7 +6,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.block.entity.GlarynxBlockEntity;
+import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockEntity;
 import net.nullcoil.soulscorch.block.entity.SoulBrewingStandBlockEntity;
 
 public class ModBlockEntities {

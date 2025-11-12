@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.block.entity.glarynx;
+package net.nullcoil.soulscorch.nurvis.blockentity.glarynx;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.Direction;

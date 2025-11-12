@@ -1,6 +1,5 @@
 package net.nullcoil.soulscorch.entity.custom;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.entity.animation.Animation;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
@@ -12,7 +11,6 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.Angerable;
-import net.minecraft.entity.mob.ZombieEntity;
 import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;

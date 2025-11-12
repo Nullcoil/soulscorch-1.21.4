@@ -16,9 +16,9 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.block.ModBlockEntities;
-import net.nullcoil.soulscorch.block.entity.GlarynxBlockEntity;
-import net.nullcoil.soulscorch.block.entity.glarynx.GlarynxBlockShapes;
-import net.nullcoil.soulscorch.block.entity.glarynx.GlarynxState;
+import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockEntity;
+import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockShapes;
+import net.nullcoil.soulscorch.enums.GlarynxState;
 import org.jetbrains.annotations.Nullable;
 
 public class GlarynxBlock extends BlockWithEntity {

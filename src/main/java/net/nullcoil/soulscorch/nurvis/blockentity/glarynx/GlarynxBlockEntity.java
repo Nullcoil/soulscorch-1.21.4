@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.block.entity;
+package net.nullcoil.soulscorch.nurvis.blockentity.glarynx;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.block.Block;
@@ -32,14 +32,15 @@ import net.minecraft.world.event.Vibrations;
 import net.minecraft.world.event.listener.GameEventListener;
 import net.nullcoil.soulscorch.block.ModBlockEntities;
 import net.nullcoil.soulscorch.block.custom.GlarynxBlock;
-import net.nullcoil.soulscorch.block.entity.glarynx.GlarynxState;
+import net.nullcoil.soulscorch.enums.GlarynxState;
+import net.nullcoil.soulscorch.nurvis.blockentity.NurvisPacketHolderBlockEntity;
 import net.nullcoil.soulscorch.util.ModTags;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
 import java.util.List;
 
-public class GlarynxBlockEntity extends BlockEntity implements GameEventListener.Holder<Vibrations.VibrationListener>, Vibrations {
+public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements GameEventListener.Holder<Vibrations.VibrationListener>, Vibrations {
 
     private static final Logger LOGGER = LogUtils.getLogger();
     private Vibrations.ListenerData listenerData;
@@ -49,7 +50,7 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
     private GlarynxState currentState = GlarynxState.SLEEPY;
     private int watchfulTicks = 0;
 
-    protected GlarynxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
+    private GlarynxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.callback = this.createCallback();
         this.listenerData = new Vibrations.ListenerData();
@@ -68,11 +69,11 @@ public class GlarynxBlockEntity extends BlockEntity implements GameEventListener
             Direction facing = this.getCachedState().get(GlarynxBlock.FACING);
             Vec3d facingVec = Vec3d.of(facing.getVector()).normalize();
             Vec3d eyePos = Vec3d.ofCenter(pos);
-            LOGGER.info("[Glarynx placed] at {} facing {} → Eye position: {}", pos, facing, eyePos);
+            LOGGER.info("[Glarynx placed] at {} facing {} → Eye position: {}", pos, facing, eyePos); // debug
 
             GlarynxState holdState = currentState;
             this.currentState = newState;
-            LOGGER.info("Glarynx at {} changed state to {}", this.pos, newState);
+            LOGGER.info("Glarynx at {} changed state to {}", this.pos, newState); // debug
 
             if(this.world != null && !this.world.isClient()) {
                 BlockState currentState = this.getCachedState();

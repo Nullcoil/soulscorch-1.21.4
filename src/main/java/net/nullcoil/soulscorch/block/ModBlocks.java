@@ -14,6 +14,7 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
 import net.nullcoil.soulscorch.block.custom.*;
+import net.nullcoil.soulscorch.block.custom.GlarynxBlock;
 
 import static net.minecraft.block.Blocks.createLightLevelFromLitBlockState;
 

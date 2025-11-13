@@ -16,8 +16,8 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.nullcoil.soulscorch.block.ModBlockEntities;
-import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockEntity;
-import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockShapes;
+import net.nullcoil.soulscorch.nurvis.blockentity.organ.GlarynxBlockEntity;
+import net.nullcoil.soulscorch.nurvis.blockentity.organ.GlarynxBlockShapes;
 import net.nullcoil.soulscorch.enums.GlarynxState;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,7 +54,7 @@ public class GlarynxBlock extends BlockWithEntity {
 
     @Override
     protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return null;
+        return CODEC;
     }
 
     public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {

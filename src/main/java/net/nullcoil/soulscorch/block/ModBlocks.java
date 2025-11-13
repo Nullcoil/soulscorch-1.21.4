@@ -105,6 +105,17 @@ public class ModBlocks {
                     .nonOpaque()
                     .registryKey(Key("glarynx"))));
 
+    public static final Block NURVIS_CONDUIT = registerBlock("nurvis_conduit",
+            new NurvisConduitBlock(AbstractBlock.Settings.create()
+                    .mapColor(Blocks.SOUL_FIRE.getDefaultMapColor())
+                    .strength(2,6)
+                    .sounds(BlockSoundGroup.SCULK)
+                    .requiresTool()
+                    .allowsSpawning((state, world, pos, type) -> false)
+                    .ticksRandomly()
+                    .nonOpaque()
+                    .registryKey(Key("nurvis_conduit"))));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -139,6 +150,7 @@ public class ModBlocks {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(IRON_BULB_BLOCK);
             entries.add(GLARYNX);
+            entries.add(NURVIS_CONDUIT);
         });
     }
 }

@@ -6,7 +6,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 import net.nullcoil.soulscorch.Soulscorch;
-import net.nullcoil.soulscorch.nurvis.blockentity.glarynx.GlarynxBlockEntity;
+import net.nullcoil.soulscorch.nurvis.blockentity.NurvisConduitBlockEntity;
+import net.nullcoil.soulscorch.nurvis.blockentity.organ.GlarynxBlockEntity;
 import net.nullcoil.soulscorch.block.entity.SoulBrewingStandBlockEntity;
 
 public class ModBlockEntities {
@@ -28,6 +29,12 @@ public class ModBlockEntities {
             Identifier.of(Soulscorch.MOD_ID, "glarynx"),
             FabricBlockEntityTypeBuilder.create(GlarynxBlockEntity::new,
                     ModBlocks.GLARYNX).build());
+
+    public static BlockEntityType<NurvisConduitBlockEntity> NURVIS_CONDUIT = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            Identifier.of(Soulscorch.MOD_ID, "nurvis_conduit"),
+            FabricBlockEntityTypeBuilder.create(NurvisConduitBlockEntity::new,
+                    ModBlocks.NURVIS_CONDUIT).build());
 
     public static void register() {
         Soulscorch.LOGGER.info("Registering Mod Block Entities for " + Soulscorch.MOD_ID);

@@ -41,6 +41,21 @@ public class NurvisPacketHolderBlockEntity extends BlockEntity {
         }
     }
 
+    public void iteratePackets(NurvisPacketHolderBlockEntity holder) {
+        if (holder.hasPackets()) {
+            System.out.println("Performing onArrive:");
+            for (int i = 0; i < 3; i++) {
+                NurvisPacketParent pkt = holder.getPacket(i);
+                System.out.println("Index " + i + ": " + (holder.getPacket(i).isNull() ? null : holder.getPacket(i)));
+                pkt.onArrive();
+            }
+        }
+    }
+
+    public void iteratePackets() {
+        iteratePackets(this);
+    }
+
     public NurvisPacketParent getPacket(int slot) {
         return slot >= 0 && slot < packets.size() ? this.packets.get(slot) : null;
     }
@@ -61,10 +76,6 @@ public class NurvisPacketHolderBlockEntity extends BlockEntity {
             }
         }
         return false; // no room
-    }
-
-    public boolean createPacket(NurvisPacketType type) {
-        return insertPacket(type.create(this.world).build());
     }
 
     public boolean pushPacket(ServerWorld world, int slot) {
@@ -108,7 +119,7 @@ public class NurvisPacketHolderBlockEntity extends BlockEntity {
             }
         }
 
-        if (packet == null || slot == -1) return false; // packets is empty
+        if (packet == null || slot == -1) return false; // inventory is empty
 
         for(Direction dir : order) {
             BlockPos targetPos = pos.offset(dir);

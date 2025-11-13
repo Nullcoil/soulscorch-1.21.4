@@ -1,4 +1,4 @@
-package net.nullcoil.soulscorch.nurvis.blockentity.glarynx;
+package net.nullcoil.soulscorch.nurvis.blockentity.organ;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.block.Block;
@@ -111,6 +111,8 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
 
     public static void tick(World world, BlockPos pos, BlockState state, GlarynxBlockEntity entity) {
         if (world.isClient) return;
+
+        entity.iteratePackets();
 
         Vibrations.Ticker.tick(world, entity.getVibrationListenerData(), entity.getVibrationCallback());
 

@@ -8,4 +8,8 @@ public class PacketInstruction {
         this.action = action;
         this.priority = priority;
     }
+
+    public void execute() {
+        if(action != null) action.run();
+    }
 }

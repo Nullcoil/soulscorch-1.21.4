@@ -161,21 +161,31 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
             if (cooldown <= 0 && playerSeen) {
                 NurvisPacketParent packet = NurvisPacketType.ALERT
                         .create(world)
-                        .overrideOnArrive(p -> new PacketInstruction(() -> System.out.println("Schmoinkamups"), 0))
+                        .overrideOnArrive(p -> new PacketInstruction(() -> {
+                            System.out.println("Schmoinkamups");
+                            if (entity instanceof NurvisPacketHolderBlockEntity holder) holder.pushPacket((ServerWorld) world);
+                        }, 0))
                         .build();
                 System.out.println("Built packet: " + packet);
                 boolean inserted = entity.insertPacket(packet);
                 System.out.println("Inserted? " + inserted);
-                System.out.println("Index 0: " + entity.getPacket(0));
-                System.out.println("Index 1: " + entity.getPacket(1));
-                System.out.println("Index 2: " + entity.getPacket(2));
+                System.out.println("Index 0: " + (entity.getPacket(0).isNull() ? null : entity.getPacket(0)));
+                System.out.println("Index 1: " + (entity.getPacket(1).isNull() ? null : entity.getPacket(1)));
+                System.out.println("Index 2: " + (entity.getPacket(2).isNull() ? null : entity.getPacket(2)));
                 cooldown = MAX_COOLDOWN;
             }
 
             if(!playerSeen) entity.setState(GlarynxState.WATCHFUL);
         }
 
-        entity.pushPacket((ServerWorld) world);
+        if (entity.hasPackets()) {
+            System.out.println("Performing onArrive:");
+            for (int i = 0; i < 3; i++) {
+                NurvisPacketParent pkt = entity.getPacket(i);
+                System.out.println("Index " + i + ": " + (entity.getPacket(i).isNull() ? null : entity.getPacket(i)));
+                pkt.onArrive();
+            }
+        }
     }
 
     private static boolean isPlayerInVisionCone(PlayerEntity player, Vec3d eyePos, Vec3d facingVec, double range) {

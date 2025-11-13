@@ -28,7 +28,8 @@ public abstract class NurvisPacketParent {
 
     public NurvisPacketType getType() { return type; };
     public void onArrive() {
-        onArriveHandler.apply(this);
+        PacketInstruction instruction = onArriveHandler.apply(this);
+        if(instruction != null) instruction.execute();
     }
 
     protected PacketInstruction defaultInstruction(NurvisPacketParent packet) {

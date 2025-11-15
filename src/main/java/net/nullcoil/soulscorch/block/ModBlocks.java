@@ -112,7 +112,6 @@ public class ModBlocks {
                     .sounds(BlockSoundGroup.SCULK)
                     .requiresTool()
                     .allowsSpawning((state, world, pos, type) -> false)
-                    .ticksRandomly()
                     .nonOpaque()
                     .registryKey(Key("nurvis_conduit"))));
 

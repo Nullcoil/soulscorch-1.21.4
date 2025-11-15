@@ -30,7 +30,7 @@ public class GlarynxBlock extends BlockWithEntity {
         super(settings);
         this.setDefaultState(this.getStateManager().getDefaultState()
                 .with(FACING, Direction.NORTH)
-                .with(STATE, GlarynxState.SLEEPY));
+                .with(STATE, GlarynxState.COOLDOWN));
     }
 
     public static boolean isInactive(BlockState state) {

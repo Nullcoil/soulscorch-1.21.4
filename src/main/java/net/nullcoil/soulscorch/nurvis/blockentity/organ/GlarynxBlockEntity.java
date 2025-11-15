@@ -52,20 +52,21 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
     private GlarynxState currentState = GlarynxState.SLEEPY;
     private int watchfulTicks = 0;
     private static final int MAX_COOLDOWN = 60;
-    private static int cooldown = MAX_COOLDOWN;
+    private static int seeingCooldown = MAX_COOLDOWN;
+    private boolean placed;
+    private int cooldownTicks = 0;
 
     private GlarynxBlockEntity(BlockEntityType<?> blockEntityType, BlockPos blockPos, BlockState blockState) {
         super(blockEntityType, blockPos, blockState);
         this.callback = this.createCallback();
         this.listenerData = new Vibrations.ListenerData();
         this.listener = new Vibrations.VibrationListener(this);
+        this.placed = false;
     }
 
     public GlarynxBlockEntity(BlockPos pos, BlockState state) {
         this(ModBlockEntities.GLARYNX, pos, state);
-        if(world != null && !world.isClient()) {
-            world.setBlockState(pos, state.with(GlarynxBlock.STATE, GlarynxState.SLEEPY), Block.NOTIFY_ALL);
-        }
+        this.currentState = GlarynxState.COOLDOWN;
     }
 
     private void setState(GlarynxState newState) {
@@ -115,6 +116,21 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
         entity.iteratePackets();
 
         Vibrations.Ticker.tick(world, entity.getVibrationListenerData(), entity.getVibrationCallback());
+        if (entity.currentState == GlarynxState.COOLDOWN) {
+            entity.cooldownTicks++;
+            if (!entity.placed) {
+                if(entity.cooldownTicks > 2) {
+                    entity.placed = true;
+                    entity.setState(GlarynxState.SLEEPY);
+                    entity.cooldownTicks = 0;
+                }
+            } else {
+                if(entity.cooldownTicks > 100) {
+                    entity.setState(GlarynxState.SLEEPY);
+                    entity.cooldownTicks = 0;
+                }
+            }
+        }
 
         if (entity.currentState == GlarynxState.WATCHFUL) {
             entity.watchfulTicks++;
@@ -142,7 +158,7 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
         }
 
         if(entity.currentState == GlarynxState.SEEING) {
-            cooldown--;
+            seeingCooldown--;
             boolean playerSeen = false;
             final double visionRange = 8;
             Direction facing = state.get(GlarynxBlock.FACING);
@@ -160,7 +176,7 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
                 }
             }
 
-            if (cooldown <= 0 && playerSeen) {
+            if (seeingCooldown <= 0 && playerSeen) {
                 NurvisPacketParent packet = NurvisPacketType.ALERT
                         .create(world)
                         .overrideOnArrive(p -> new PacketInstruction(() -> {
@@ -174,7 +190,7 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
                 System.out.println("Index 0: " + (entity.getPacket(0).isNull() ? null : entity.getPacket(0)));
                 System.out.println("Index 1: " + (entity.getPacket(1).isNull() ? null : entity.getPacket(1)));
                 System.out.println("Index 2: " + (entity.getPacket(2).isNull() ? null : entity.getPacket(2)));
-                cooldown = MAX_COOLDOWN;
+                seeingCooldown = MAX_COOLDOWN;
             }
 
             if(!playerSeen) entity.setState(GlarynxState.WATCHFUL);
@@ -255,10 +271,10 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
                 if (blockState.contains(GlarynxBlock.STATE)) {
                     this.currentState = blockState.get(GlarynxBlock.STATE);
                 } else {
-                    this.currentState = GlarynxState.SLEEPY;
+                    this.currentState = GlarynxState.COOLDOWN;
                 }
             } else {
-                this.currentState = GlarynxState.SLEEPY;
+                this.currentState = GlarynxState.COOLDOWN;
             }
         }
 
@@ -351,10 +367,15 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
         }
 
         @Override
-        public boolean accepts(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event, @Nullable GameEvent.Emitter emitter) {
+        public boolean accepts(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event,
+                               @Nullable GameEvent.Emitter emitter) {
 
-            if (emitter != null &&
-                    emitter.sourceEntity() != null &&
+            // If the Glarynx is cooling down, it pretends to be deaf.
+            if (GlarynxBlockEntity.this.currentState == GlarynxState.COOLDOWN) {
+                return false;
+            }
+
+            if (emitter != null && emitter.sourceEntity() != null &&
                     !(emitter.sourceEntity().getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES))) {
                 return true;
             }
@@ -362,19 +383,25 @@ public class GlarynxBlockEntity extends NurvisPacketHolderBlockEntity implements
             return false;
         }
 
+
         @Override
         public void accept(ServerWorld world, BlockPos pos, RegistryEntry<GameEvent> event,
                            @Nullable Entity sourceEntity, @Nullable Entity entity, float distance) {
+
+            // If cooling down, ignore all vibrations.
+            if (GlarynxBlockEntity.this.currentState == GlarynxState.COOLDOWN) {
+                return;
+            }
+
             GlarynxBlockEntity.this.setLastVibrationFrequency(Vibrations.getFrequency(event));
 
-            // Move from SLEEPY to WATCHFUL when any vibration is detected
             if (GlarynxBlockEntity.this.currentState == GlarynxState.SLEEPY) {
                 GlarynxBlockEntity.this.setState(GlarynxState.WATCHFUL);
             }
 
-            // Reset the watchful timer
             GlarynxBlockEntity.this.watchfulTicks = 0;
         }
+
 
         @Override
         public void onListen() {

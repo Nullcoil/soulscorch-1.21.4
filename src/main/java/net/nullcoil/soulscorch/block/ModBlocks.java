@@ -115,6 +115,14 @@ public class ModBlocks {
                     .nonOpaque()
                     .registryKey(Key("nurvis_conduit"))));
 
+    public static final Block CERULEAN_FROGLIGHT = registerBlock("cerulean_froglight",
+            new PillarBlock(AbstractBlock.Settings.create()
+                    .mapColor(MapColor.CYAN)
+                    .strength(0.3f)
+                    .luminance((state) -> 15)
+                    .sounds(BlockSoundGroup.FROGLIGHT)
+                    .registryKey(Key("cerulean_froglight"))));
+
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);
         return Registry.register(Registries.BLOCK, Identifier.of(Soulscorch.MOD_ID, name), block);
@@ -145,6 +153,7 @@ public class ModBlocks {
             entries.add(SOUL_STONE);
             entries.add(SOUL_ZOL);
             entries.add(SOUL_VENT);
+            entries.add(CERULEAN_FROGLIGHT);
         });
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register(entries -> {
             entries.add(IRON_BULB_BLOCK);

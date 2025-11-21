@@ -12,6 +12,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.passive.FrogEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.HitResult;
@@ -73,7 +74,8 @@ public class JellyfishEntity extends FlyingEntity {
         if(!this.getWorld().isClient) {
             this.getWorld().getOtherEntities(this, this.getBoundingBox(),
                     e -> e instanceof LivingEntity &&
-                              !e.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES)).forEach(e -> {
+                              !e.getType().isIn(ModTags.Entities.SOULSCORCH_ENTITIES) &&
+                    !(e instanceof FrogEntity)).forEach(e -> {
                 LivingEntity living = (LivingEntity) e;
                 double dx = living.getX() - this.getX();
                 double dz = living.getZ() - this.getZ();
